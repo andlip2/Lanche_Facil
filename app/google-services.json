@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "718647284802",
+    "firebase_url": "https://lanche-facil-15e11.firebaseio.com",
+    "project_id": "lanche-facil-15e11",
+    "storage_bucket": "lanche-facil-15e11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718647284802:android:4402db2c1f330119",
+        "android_client_info": {
+          "package_name": "lanchefacil.dalksoft.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718647284802-sumiqqfnr66nc7tngfrpvdaqn9vr7qp2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lanchefacil.dalksoft.com",
+            "certificate_hash": "028b7c44b13f25b5a841793b2626e6c5c5fc3db6"
+          }
+        },
+        {
+          "client_id": "718647284802-30cmurf1ui6rh6fpcegf4audsgtggaq7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyo-XzeD1JMSj5xV5iOgsJ5UjHaTQfevY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718647284802-30cmurf1ui6rh6fpcegf4audsgtggaq7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
