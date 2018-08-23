@@ -22,7 +22,7 @@
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
-                    android:layout_height="250dp"
+                    android:layout_height="230dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
                     app:srcCompat="@drawable/logo" />
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInputLayout"
+                    android:id="@+id/editLogEmail"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginEnd="8dp"
@@ -51,7 +51,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInputLayout2"
+                    android:id="@+id/editLogSenha"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -61,7 +61,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                    app:layout_constraintTop_toBottomOf="@+id/editLogEmail">
 
                     <android.support.design.widget.TextInputEditText
                         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/buttonLogRecuSenha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -79,12 +79,12 @@
                     android:layout_marginTop="20dp"
                     android:text="@string/recuperar_senha"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@+id/textView4"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonLogCadastrar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+                    app:layout_constraintTop_toBottomOf="@+id/editLogSenha" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/buttonLogCadastrar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -92,22 +92,52 @@
                     android:layout_marginTop="20dp"
                     android:text="@string/cadastrar"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView3"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+                    app:layout_constraintStart_toEndOf="@+id/buttonLogRecuSenha"
+                    app:layout_constraintTop_toBottomOf="@+id/editLogSenha" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/buttonLogLogar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="24dp"
                     android:padding="16dp"
-                    android:text="@string/login"
+                    android:text="@string/entrar"
                     android:theme="@style/botaoPadrao"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    app:layout_constraintTop_toBottomOf="@+id/buttonLogRecuSenha" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/entrar_facebook"
+                    android:textSize="13sp"
+                    android:theme="@style/botaoFacebook"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/button5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonLogLogar" />
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/entrar_google"
+                    android:textSize="13sp"
+                    android:theme="@style/botaoGoogle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/button4"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonLogLogar" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>

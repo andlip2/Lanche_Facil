@@ -23,5 +23,17 @@
         <item name="android:textColor">@android:color/white</item>
 
     </style>
+    <style name="botaoFacebook" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">#4267b2</item>
+        <item name="colorButtonNormal">#3B5998</item>
+        <item name="android:textColor">@android:color/white</item>
+
+    </style>
+    <style name="botaoGoogle" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">#437EEE</item>
+        <item name="colorButtonNormal">#6090ec</item>
+        <item name="android:textColor">@android:color/white</item>
+
+    </style>
 
 </resources>
