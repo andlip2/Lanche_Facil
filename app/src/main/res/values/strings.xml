@@ -6,4 +6,9 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="senha">Senha:</string>
+    <string name="email">Email:</string>
+    <string name="recuperar_senha">Recuperar senha:</string>
+    <string name="cadastrar">Cadastre-se</string>
+    <string name="login">Logar</string>
 </resources>
