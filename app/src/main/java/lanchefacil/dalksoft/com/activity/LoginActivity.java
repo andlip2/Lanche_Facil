@@ -10,10 +10,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthProvider;
 
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
@@ -22,9 +31,11 @@ import lanchefacil.dalksoft.com.model.Usuarios;
 public class LoginActivity extends AppCompatActivity {
 
     private TextView btCadastrar, btRecuSenha;
-    private Button btEntrar;
+    private Button btEntrar, btGoogle;
     private EditText editEmail, editSenha;
     private Usuarios usuarios;
+    private CallbackManager callbackManager;
+    private LoginButton btFacobook;
 
     private FirebaseAuth autenticacao;
 
@@ -34,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         inicializarComponentes();
+        inicializarFirebaseCallback();
+        loginFace();
 
         btCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+
     }
 
     private void validarLogin () {
@@ -88,7 +102,55 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //login com facebook
+    private void inicializarFirebaseCallback () {
+        autenticacao = FirebaseAuth.getInstance();
+        callbackManager = CallbackManager.Factory.create();
+    }
+    private void loginFace () {
+        btFacobook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                firebaseLogin(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                alerta("Operação cancelada!");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                alerta("Erro ao realizar login!");
+            }
+        });
+    }
+
+    private void firebaseLogin(AccessToken accessToken) {
+        AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
+
+        autenticacao.signInWithCredential(credencial).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
+                    startActivity(i);
+                }else {
+                    alerta("Erro de autenticação!");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void inicializarComponentes () {
+        btFacobook = findViewById(R.id.buttonLogFacebook);
+        btFacobook.setReadPermissions("email", "public_profile");
         btEntrar = findViewById(R.id.buttonLogEntrar);
         btCadastrar = findViewById(R.id.buttonLogCadastrar);
         editEmail = findViewById(R.id.editLogEmail1);

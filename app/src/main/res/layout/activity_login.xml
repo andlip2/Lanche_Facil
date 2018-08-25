@@ -112,33 +112,38 @@
                     app:layout_constraintTop_toBottomOf="@+id/buttonLogRecuSenha" />
 
                 <Button
-                    android:id="@+id/button4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/entrar_facebook"
-                    android:textSize="13sp"
-                    android:theme="@style/botaoFacebook"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonLogEntrar" />
-
-                <Button
-                    android:id="@+id/button5"
+                    android:id="@+id/buttonLogGoogle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/entrar_google"
                     android:textSize="13sp"
                     android:theme="@style/botaoGoogle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/button4"
+                    app:layout_constraintStart_toEndOf="@+id/buttonLogFacebook"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonLogEntrar" />
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/buttonLogFacebook"
+                    style="@style/botaoFacebooks"
+                    com_facebook_login_text=""
+                    com_facebook_logout_text=""
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonLogGoogle"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/buttonLogEntrar" />
 
             </android.support.constraint.ConstraintLayout>

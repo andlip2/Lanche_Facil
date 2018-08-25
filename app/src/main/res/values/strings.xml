@@ -31,6 +31,9 @@
     <string name="cadastrar">Cadastrar</string>
     <string name="comNewSenha">Confirmar nova senha:</string>
     <string name="titulo_anuncio">Titulo do anúncio</string>
+    <string name="facebook_app_id">291388058112722</string>
+    <string name="fb_login_protocol_scheme">fb291388058112722</string>
+
 
     <string name="action_example">Example action</string>
 </resources>

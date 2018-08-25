@@ -33,6 +33,9 @@ dependencies {
     api 'com.google.firebase:firebase-storage:15.0.0'
     api 'com.google.firebase:firebase-auth:15.0.0'
 
+    /* Login com Facebook */
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
