@@ -26,6 +26,7 @@
             android:name=".activity.PrincipalActivity"
             android:label="@string/title_activity_principal"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.RecuperarSenhaActivity"></activity>
     </application>
 
 </manifest>

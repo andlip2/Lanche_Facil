@@ -42,7 +42,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btEntrar = findViewById(R.id.buttonLogEntrar);
+
+        btRecuSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, RecuperarSenhaActivity.class);
+                startActivity(i);
+            }
+        });
+
         btEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,10 +89,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void inicializarComponentes () {
-
+        btEntrar = findViewById(R.id.buttonLogEntrar);
         btCadastrar = findViewById(R.id.buttonLogCadastrar);
         editEmail = findViewById(R.id.editLogEmail1);
         editSenha = findViewById(R.id.editLogSenha1);
+        btRecuSenha = findViewById(R.id.buttonLogRecuSenha);
     }
 
     private void alerta (String texto) {

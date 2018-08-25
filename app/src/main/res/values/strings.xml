@@ -13,7 +13,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="app_name">Lanche Facil</string>
-    <string name="intrucao">Insira a baixo o email cadastrado para q sejá enviado um codigo de verificação</string>
+    <string name="aviso">Insira a baixo o email cadastrado para q sejá enviado um codigo de verificação</string>
     <string name="enviar">Enviar</string>
     <string name="codigo">Codigo:</string>
     <string name="verificar">Verificar</string>
