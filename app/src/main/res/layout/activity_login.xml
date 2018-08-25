@@ -98,7 +98,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/editLogSenha" />
 
                 <Button
-                    android:id="@+id/buttonLogLogar"
+                    android:id="@+id/buttonLogEntrar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -124,7 +124,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/button5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonLogLogar" />
+                    app:layout_constraintTop_toBottomOf="@+id/buttonLogEntrar" />
 
                 <Button
                     android:id="@+id/button5"
@@ -139,7 +139,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/button4"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonLogLogar" />
+                    app:layout_constraintTop_toBottomOf="@+id/buttonLogEntrar" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>

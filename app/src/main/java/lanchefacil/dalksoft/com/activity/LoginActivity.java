@@ -2,7 +2,6 @@ package lanchefacil.dalksoft.com.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,31 +42,26 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        btEntrar = findViewById(R.id.buttonLogEntrar);
         btEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = editEmail.getText().toString();
                 String senha = editSenha.getText().toString();
+                if (!email.equals(null) && !senha.equals(null)) {
 
-                if (!email.isEmpty()) {
-                    if (!senha.isEmpty()) {
-
-                        usuarios = new Usuarios();
-                        usuarios.setEmail(email);
-                        usuarios.setSenha(senha);
-                        validarLogin();
-
-                    }else {
-                        alerta("Preencha a senha!");
-                    }
+                    usuarios = new Usuarios();
+                    usuarios.setEmail(email);
+                    usuarios.setSenha(senha);
+                    validarLogin();
 
                 }else {
-                    alerta("Preencha o E-mail!");
+                    alerta("Preencha todos os campos");
                 }
-
             }
         });
+
+
     }
 
     private void validarLogin () {
@@ -77,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     alerta("Login efetuado com sucesso");
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
                     startActivity(i);
                 }else {
                     alerta("Erro ao realizar login");
@@ -87,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void inicializarComponentes () {
-        btEntrar = findViewById(R.id.buttonLogLogar);
+
         btCadastrar = findViewById(R.id.buttonLogCadastrar);
         editEmail = findViewById(R.id.editLogEmail1);
         editSenha = findViewById(R.id.editLogSenha1);
