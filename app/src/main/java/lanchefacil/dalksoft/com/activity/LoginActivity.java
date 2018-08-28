@@ -23,6 +23,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.lang.reflect.Array;
 
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
@@ -36,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private Usuarios usuarios;
     private CallbackManager callbackManager;
     private LoginButton btFacobook;
-
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseAuth autenticacao;
 
     @Override
@@ -108,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
     }
     private void loginFace () {
+        btFacobook.setReadPermissions();
         btFacobook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -126,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     private void firebaseLogin(AccessToken accessToken) {
         AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
 
@@ -143,12 +148,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+    protected void onStart() {
+        super.onStart();
+        autenticacao.addAuthStateListener(firebaseAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        autenticacao.removeAuthStateListener(firebaseAuthListener);
     }
 
     private void inicializarComponentes () {
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null){
+                    Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
+                    startActivity(i);
+                }
+
+            }
+        };
         btFacobook = findViewById(R.id.buttonLogFacebook);
         btFacobook.setReadPermissions("email", "public_profile");
         btEntrar = findViewById(R.id.buttonLogEntrar);
@@ -161,4 +184,11 @@ public class LoginActivity extends AppCompatActivity {
     private void alerta (String texto) {
         Toast.makeText(LoginActivity.this, texto, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 }
+

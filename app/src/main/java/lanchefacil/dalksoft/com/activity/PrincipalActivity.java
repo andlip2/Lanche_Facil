@@ -13,11 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import lanchefacil.dalksoft.com.R;
+import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 
 public class PrincipalActivity extends AppCompatActivity
+
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseAuth autenticacao = ConfigFireBase.getFirebaseAuth();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,10 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
 
+
+
+
+        //Codigos gerados automaticos abaixo
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -43,6 +56,37 @@ public class PrincipalActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+    //Codigos q eu escrevi, Config_Menu_Logar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //Codigos q eu escrevi, Config_Menu_Logar
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if (autenticacao.getCurrentUser() == null){
+            menu.setGroupVisible(R.id.group_deslogado, true);
+        }else {
+
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+        @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_cadastrar:
+                    Intent i = new Intent(PrincipalActivity.this, LoginActivity.class);
+                    startActivity(i);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -55,32 +99,14 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.principal, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-//        int id = item.getItemId();
+        int id = item.getItemId();
 //
 //        if (id == R.id.menu_perfil) {
 //            Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
@@ -101,12 +127,21 @@ public class PrincipalActivity extends AppCompatActivity
 //        } else if (id == R.id.menu_ajuda) {
 //            Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
 //            startActivity(i);
-//        } else if (id == R.id.menu_sair) {
-//
 //        }
+        if (id == R.id.menu_sair) {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+            finish();
+            Intent i = new Intent(PrincipalActivity.this, PrincipalActivity.class);
+            startActivity(i);
+            alerta("Usuario desconectado!");
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void alerta (String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 }

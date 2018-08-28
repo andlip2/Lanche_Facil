@@ -24,7 +24,6 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_anuncios">AnunciosActivity</string>
     <string name="comSenha">Comfirmar Senha:</string>
@@ -36,4 +35,6 @@
 
 
     <string name="action_example">Example action</string>
+    <string name="title_activity_meus_anuncios">MeusAnunciosActivity</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
