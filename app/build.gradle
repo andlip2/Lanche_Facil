@@ -27,13 +27,19 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     /* Dependencias FireBase */
-    api 'com.google.firebase:firebase-core:15.0.0'
-    api 'com.google.firebase:firebase-database:15.0.0'
-    api 'com.google.firebase:firebase-storage:15.0.0'
-    api 'com.google.firebase:firebase-auth:15.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.firebase:firebase-database:15.0.0'
     /* Login com Facebook */
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-    implementation 'com.google.android.gms:play-services-maps:10.2.1'
+    implementation 'com.google.android.gms:play-services-maps:15.0.0'
+    implementation 'com.google.android.gms:play-services:11.4.0'
+    implementation 'com.google.android.gms:play-services-maps:11.4.0'
+    implementation 'com.google.android.gms:play-services-places:11.4.0'
+    implementation 'com.google.android.gms:play-services-location:11.4.0'
+    implementation 'me.drakeet.materialdialog:library:1.2.2'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
