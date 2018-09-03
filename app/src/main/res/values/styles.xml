@@ -23,10 +23,13 @@
         <item name="android:textColor">@android:color/white</item>
 
     </style>
-    <style name="botaoFacebook" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">#4267b2</item>
-        <item name="colorButtonNormal">#3B5998</item>
+    <style name="botaoGPS" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">#42b280</item>
+        <item name="colorButtonNormal">#3b985c</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:paddingTop">10sp</item>
+        <item name="android:paddingBottom">10sp</item>
 
     </style>
     <style name="botaoGoogle" parent="Theme.AppCompat.Light">

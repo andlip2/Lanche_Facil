@@ -37,4 +37,11 @@
     <string name="action_example">Example action</string>
     <string name="title_activity_meus_anuncios">MeusAnunciosActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="local">Local:</string>
+    <string name="usar_gps">Usar GPS</string>
+    <string name="estado">Estado:</string>
+    <string name="cep">CEP:</string>
+    <string name="rua">Rua:</string>
+    <string name="cidade">Cidade:</string>
+    <string name="uf">UF:</string>
 </resources>
