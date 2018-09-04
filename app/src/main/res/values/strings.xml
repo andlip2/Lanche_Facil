@@ -44,4 +44,9 @@
     <string name="rua">Rua:</string>
     <string name="cidade">Cidade:</string>
     <string name="uf">UF:</string>
+    <string name="informacoes_do_pedido">Informações do pedido:</string>
+    <string name="titulo">Titulo:</string>
+    <string name="valor">Valor:</string>
+    <string name="descricao">Descrição:</string>
+    <string name="cadastrar_anuncio">Cadastrar Anúncio</string>
 </resources>

@@ -21,7 +21,7 @@ import lanchefacil.dalksoft.com.R;
 public class CadastrarAnuncioActivity extends AppCompatActivity {
 
 
-    private EditText editCidade, editCEP, editUF, editRua;
+    private EditText editCidade, editCEP, editRua;
     private Button buttonGPS;
     private LocationManager mLocalizacao;
     protected Location localizacao;
@@ -56,7 +56,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
                 try {
                     endereco = buscarEndereco(latitude, longitude);
                     editCidade.setText(endereco.getLocality());
-                    editUF.setText(endereco.getCountryCode());
                     editCEP.setText(endereco.getPostalCode());
                     editRua.setText(endereco.getAddressLine(0));
                 } catch (IOException e) {
@@ -94,7 +93,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
         editCEP = findViewById(R.id.editAnuncioCEP);
         editCidade = findViewById(R.id.editAnuncioCidade);
         editRua = findViewById(R.id.editAnuncioRua);
-        editUF = findViewById(R.id.editAnuncioUF);
     }
 
 }

@@ -41,40 +41,44 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         callAccessLocation();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+        if (autenticacao.getCurrentUser() != null){
+                    Intent i = new Intent(PrincipalActivity.this, CadastrarAnuncioActivity.class);
+                    startActivity(i);
 
-                Intent i = new Intent(PrincipalActivity.this, CadastrarAnuncioActivity.class);
-                startActivity(i);
+        }else {
+            alerta("Você precisa está logado para cadastrar um anúncio!");
+        }
             }
         });
 
 
 
 
-        //Codigos gerados automaticos abaixo
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        if (autenticacao.getCurrentUser() != null) {
+            //Codigos gerados automaticos abaixo
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+        }
     }
     //Codigos q eu escrevi, Config_Menu_Logar
     @Override
@@ -125,7 +129,8 @@ public class PrincipalActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
+
+            int id = item.getItemId();
 //
 //        if (id == R.id.menu_perfil) {
 //            Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
@@ -147,17 +152,18 @@ public class PrincipalActivity extends AppCompatActivity
 //            Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
 //            startActivity(i);
 //        }
-        if (id == R.id.menu_sair) {
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
-            finish();
-            Intent i = new Intent(PrincipalActivity.this, PrincipalActivity.class);
-            startActivity(i);
-            alerta("Usuario desconectado!");
-        }
+            if (id == R.id.menu_sair) {
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                finish();
+                Intent i = new Intent(PrincipalActivity.this, PrincipalActivity.class);
+                startActivity(i);
+                alerta("Usuario desconectado!");
+            }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
