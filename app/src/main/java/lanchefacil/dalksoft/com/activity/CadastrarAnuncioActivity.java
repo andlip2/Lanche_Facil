@@ -9,19 +9,25 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.blackcat.currencyedittext.CurrencyEditText;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+
 import lanchefacil.dalksoft.com.R;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity {
 
 
-    private EditText editCidade, editCEP, editRua;
+    private EditText editCidade, editCEP, editRua, editTitulo, editDescricao;
+    private CurrencyEditText editValor;
     private Button buttonGPS;
     private LocationManager mLocalizacao;
     protected Location localizacao;
@@ -83,6 +89,12 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
         }
         return address;
     }
+
+    public void salvarAnuncio (View view) {
+        String valor =editValor.getHintString();
+        Log.d("Salvar", "salvarAnuncio" + valor);
+    }
+
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
@@ -90,9 +102,16 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
     private void iniciarComponentes () {
         buttonGPS = findViewById(R.id.buttonAnuncioGPS);
         editCidade = findViewById(R.id.editAnuncioCidade);
-        editCEP = findViewById(R.id.editAnuncioCEP);
+        editCEP = findViewById(R.id.editAnuncioCP);
         editCidade = findViewById(R.id.editAnuncioCidade);
         editRua = findViewById(R.id.editAnuncioRua);
+        editTitulo = findViewById(R.id.editAnuncioTitulo);
+        editDescricao = findViewById(R.id.editAnuncioDescricao);
+
+        editValor = findViewById(R.id.editAnuncioValor);
+        //configurar localidade para pt -> portugues BR -> Brasil
+        Locale locale = new Locale ("pt", "BR");
+        editValor.setLocale(locale);
     }
 
 }

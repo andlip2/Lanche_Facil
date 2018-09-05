@@ -79,7 +79,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="29dp"
                     android:background="@drawable/bg_edit_text"
-                    app:layout_constraintEnd_toStartOf="@+id/textInputLayout3"
+                    app:layout_constraintEnd_toStartOf="@+id/editAnuncioCEP"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView6">
 
@@ -92,7 +92,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInputLayout3"
+                    android:id="@+id/editAnuncioCEP"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -104,7 +104,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView6">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editAnuncioCEP"
+                        android:id="@+id/editAnuncioCP"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/cep"
@@ -119,12 +119,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_edit_text"
-                    app:layout_constraintEnd_toEndOf="parent"
 
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout9">
 
                     <android.support.design.widget.TextInputEditText
+                        android:id="@+id/editAnuncioDescricao"
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
                         android:hint="@string/descricao" />
@@ -157,6 +158,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView3">
 
                     <android.support.design.widget.TextInputEditText
+                        android:id="@+id/editAnuncioTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/titulo" />
@@ -175,24 +177,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/textInputLayout7"
+                <com.blackcat.currencyedittext.CurrencyEditText
+                    android:id="@+id/editAnuncioValor"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+
                     android:background="@drawable/bg_edit_text"
-                    app:layout_constraintEnd_toEndOf="parent"
-
+                    app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
+                    app:layout_constraintEnd_toStartOf="@+id/textInputLayout9"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/valor" />
-                </android.support.design.widget.TextInputLayout>
+
 
                 <Button
                     android:id="@+id/buttonAnuncioGPS"
@@ -204,7 +203,26 @@
                     android:text="@string/usar_gps"
                     android:theme="@style/botaoGPS"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+                    app:layout_constraintTop_toBottomOf="@+id/editAnuncioCEP" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayout9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editAnuncioValor"
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/editAnuncioTelefone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/telefone" />
+                </android.support.design.widget.TextInputLayout>
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
