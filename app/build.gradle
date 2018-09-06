@@ -45,6 +45,9 @@ dependencies {
     /* Formatação de valores */
    implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
 
+    /* Formatação de Telefones */
+    implementation 'com.github.santalu:mask-edittext:1.0.9'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
