@@ -1,13 +1,17 @@
 package lanchefacil.dalksoft.com.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -17,24 +21,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.santalu.widget.MaskEditText;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 
-public class CadastrarAnuncioActivity extends AppCompatActivity {
+public class CadastrarAnuncioActivity extends AppCompatActivity
+                implements View.OnClickListener{
 
 
     private EditText editCidade, editCEP, editRua, editTitulo, editDescricao;
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
+    private ImageView imagem1, imagem2, imagem3;
     private Button buttonGPS;
     private LocationManager mLocalizacao;
     protected Location localizacao;
@@ -44,6 +52,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
     };
+    private List<String> listaImgRecuperadas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +61,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
         Permissoes.validarPermissoes(permissoes, this,1);
 
         iniciarComponentes();
-
-        buttonGPS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                geolocalizacao ();
-            }
-        });
-
-
 
 
     }
@@ -113,14 +113,68 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
 
         //Como recuperar o telefone
 //        String telefone = editTelefone.getRawText();
+        Intent i = new Intent(CadastrarAnuncioActivity.this, CadastrarAnuncioActivity.class);
+        startActivity(i);
     }
 
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.imageAnuncio1:
+                escolherImagem(1);
+                break;
+            case R.id.imageAnuncio2:
+                escolherImagem(2);
+                break;
+            case R.id.imageAnuncio3:
+                escolherImagem(3);
+                break;
+            case R.id.buttonAnuncioGPS:
+                geolocalizacao ();
+                break;
+
+        }
+
+
+
+
+    }
+
+    private void escolherImagem(int requestCode) {
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, requestCode);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            Uri imagemSelecionada = data.getData();
+            String caminhoImagem = imagemSelecionada.toString();
+
+            if (requestCode == 1) {
+                imagem1.setImageURI(imagemSelecionada);
+                listaImgRecuperadas.add(caminhoImagem);
+            }else if (requestCode == 2) {
+                imagem2.setImageURI(imagemSelecionada);
+            }else if ( requestCode == 3) {
+                imagem3.setImageURI(imagemSelecionada);
+            }
+
+            listaImgRecuperadas.add(caminhoImagem);
+
+        }
+    }
+
     private void iniciarComponentes () {
         buttonGPS = findViewById(R.id.buttonAnuncioGPS);
+        buttonGPS.setOnClickListener(this);
         editCidade = findViewById(R.id.editAnuncioCidade);
         editCEP = findViewById(R.id.editAnuncioCP);
         editCidade = findViewById(R.id.editAnuncioCidade);
@@ -134,6 +188,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity {
         editValor.setLocale(locale);
 
         editTelefone = findViewById(R.id.editAnuncioTelefone);
+        imagem1 = findViewById(R.id.imageAnuncio1);
+        imagem1.setOnClickListener(this);
+        imagem2 = findViewById(R.id.imageAnuncio2);
+        imagem2.setOnClickListener(this);
+        imagem3 = findViewById(R.id.imageAnuncio3);
+        imagem3.setOnClickListener(this);
+
 
     }
 

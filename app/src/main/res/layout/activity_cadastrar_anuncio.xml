@@ -17,36 +17,36 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="636dp">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/imageAnuncio1"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView6"
+                    app:layout_constraintEnd_toStartOf="@+id/imageAnuncio2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/padrao" />
 
                 <ImageView
-                    android:id="@+id/imageView6"
+                    android:id="@+id/imageAnuncio2"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView7"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintEnd_toStartOf="@+id/imageAnuncio3"
+                    app:layout_constraintStart_toEndOf="@+id/imageAnuncio1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/padrao" />
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/imageAnuncio3"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView6"
+                    app:layout_constraintStart_toEndOf="@+id/imageAnuncio2"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/padrao" />
 
@@ -81,7 +81,7 @@
                     android:background="@drawable/bg_edit_text"
                     app:layout_constraintEnd_toStartOf="@+id/editAnuncioCEP"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView6">
+                    app:layout_constraintTop_toBottomOf="@+id/imageAnuncio2">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/editAnuncioCidade"
@@ -101,7 +101,7 @@
                     android:background="@drawable/bg_edit_text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView6">
+                    app:layout_constraintTop_toBottomOf="@+id/imageAnuncio2">
 
                     <android.support.design.widget.TextInputEditText
                         android:id="@+id/editAnuncioCP"
@@ -133,7 +133,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
-                    android:id="@+id/editAnuncioSalvarAnuncio"
+                    android:id="@+id/buttonAnuncioSalvarAnuncio"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -144,8 +144,10 @@
                     android:theme="@style/botaoPadrao"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/textInputLayout6"
@@ -172,12 +174,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
                     android:text="@string/informacoes_do_pedido"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
+                    app:layout_constraintVertical_bias="0.04" />
 
                 <com.blackcat.currencyedittext.CurrencyEditText
                     android:id="@+id/editAnuncioValor"
@@ -192,7 +195,6 @@
                     app:layout_constraintEnd_toStartOf="@+id/editAnuncioTelefone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
-
 
 
                 <Button
