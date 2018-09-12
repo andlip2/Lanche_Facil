@@ -25,21 +25,29 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.santalu.widget.MaskEditText;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import lanchefacil.dalksoft.com.R;
+import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
+import lanchefacil.dalksoft.com.model.Anuncio;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity
                 implements View.OnClickListener{
 
 
-    private EditText editCidade, editCEP, editRua, editTitulo, editDescricao;
+    private EditText editCidade, editCEP, editEndereco, editTitulo, editDescricao;
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
     private ImageView imagem1, imagem2, imagem3;
@@ -47,6 +55,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private LocationManager mLocalizacao;
     protected Location localizacao;
     private Address endereco;
+    private Anuncio anuncio;
+    private StorageReference storage;
 
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -58,10 +68,12 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_anuncio);
+
         Permissoes.validarPermissoes(permissoes, this,1);
 
         iniciarComponentes();
 
+        storage = ConfigFireBase.getReferenciaStorage();
 
     }
 
@@ -85,7 +97,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             endereco = buscarEndereco(latitude, longitude);
             editCidade.setText(endereco.getLocality());
             editCEP.setText(endereco.getPostalCode());
-            editRua.setText(endereco.getAddressLine(0));
+            editEndereco.setText(endereco.getAddressLine(0));
         } catch (IOException e) {
             alerta("Erro ao recuperar localização");
         }
@@ -106,15 +118,110 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         return address;
     }
 
-    public void salvarAnuncio (View view) {
-        //Como Recuperar o valor
-//        String valor =editValor.getHintString();
-//        Log.d("Salvar", "salvarAnuncio" + valor);
+    public void validarDadosAnuncio (View view) {
 
-        //Como recuperar o telefone
-//        String telefone = editTelefone.getRawText();
-        Intent i = new Intent(CadastrarAnuncioActivity.this, CadastrarAnuncioActivity.class);
-        startActivity(i);
+        String fone = "";
+        if (editTelefone.getRawText() != null) {
+            fone = editTelefone.getRawText().toString();
+        }
+        anuncio = configurarAnuncio();
+        if (listaImgRecuperadas.size() != 0){
+            if (!anuncio.getTitulo().isEmpty()){
+                if (!anuncio.getCidade().isEmpty()){
+                    if (!anuncio.getCep().isEmpty()){
+                        if (!anuncio.getEndereco().isEmpty()){
+                            if (!anuncio.getValor().isEmpty() && !anuncio.getValor().equals("0")){
+                                if (!anuncio.getTelefone().isEmpty()){
+                                    if (fone.length() >=11) {
+                                        if (!anuncio.getDescricao().isEmpty()){
+                                            salvarAnuncio();
+                                        }else {
+                                            alerta("Defina a descrição do anúncio");
+                                        }
+                                    }else {
+                                        alerta("O numero digitado não é valido");
+                                    }
+                                }else {
+                                    alerta("Defina o valor do anúncio");
+                                }
+                            }else {
+                                alerta("Defina o valor do anúncio");
+                            }
+                        }else {
+                            alerta("Defina o endereço do anúncio");
+                        }
+                    }else {
+                        alerta("Defina o CEP do anúncio");
+                    }
+                }else {
+                    alerta("Defina a cidade do anúncio");
+                }
+            }else {
+                alerta("Defina o titulo do anúncio");
+            }
+
+        }else {
+            alerta("Você precisa adicionar ao menos uma foto!");
+        }
+
+    }
+
+    public void salvarAnuncio () {
+        //Salvar imagens
+        for (int i=0; i< listaImgRecuperadas.size(); i++) {
+            String urlIMG = listaImgRecuperadas.get(i);
+            int tamanho = listaImgRecuperadas.size();
+           salvarImagens (urlIMG, tamanho, i);
+        }
+
+    }
+
+    private void salvarImagens(String urlIMG, int totalIMG, int contador) {
+        //criando nó no banco
+        StorageReference imgAnuncio = storage.child("imagens")
+                .child("anuncios")
+                .child(anuncio.getIdAnuncio())
+                .child("imagem"+contador);
+
+        //enviar imagem
+        UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                alerta("Falha ao fazer upload da imagem");
+                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
+            }
+        });
+
+    }
+
+    private Anuncio configurarAnuncio () {
+        String titulo = editTitulo.getText().toString();
+        String cidade = editCidade.getText().toString();
+        String cep = editCEP.getText().toString();
+        String endereco = editEndereco.getText().toString();
+        String valor = String.valueOf(editValor.getRawValue());
+        String telefone = editTelefone.getText().toString();
+        String descricao = editDescricao.getText().toString();
+
+        Anuncio anuncio = new Anuncio();
+        anuncio.setTitulo(titulo);
+        anuncio.setCidade(cidade);
+        anuncio.setCep(cep);
+        anuncio.setEndereco(endereco);
+        anuncio.setValor(valor);
+        anuncio.setTelefone(telefone);
+        anuncio.setDescricao(descricao);
+
+        return anuncio;
     }
 
     private void alerta (String texto) {
@@ -178,7 +285,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         editCidade = findViewById(R.id.editAnuncioCidade);
         editCEP = findViewById(R.id.editAnuncioCP);
         editCidade = findViewById(R.id.editAnuncioCidade);
-        editRua = findViewById(R.id.editAnuncioRua);
+        editEndereco = findViewById(R.id.editAnuncioRua);
         editTitulo = findViewById(R.id.editAnuncioTitulo);
         editDescricao = findViewById(R.id.editAnuncioDescricao);
 
@@ -194,6 +301,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         imagem2.setOnClickListener(this);
         imagem3 = findViewById(R.id.imageAnuncio3);
         imagem3.setOnClickListener(this);
+
+
+
 
 
     }

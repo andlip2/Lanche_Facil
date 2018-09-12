@@ -139,7 +139,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="24dp"
-                    android:onClick="salvarAnuncio"
+                    android:onClick="validarDadosAnuncio"
                     android:text="@string/cadastrar_anuncio"
                     android:theme="@style/botaoPadrao"
                     app:layout_constraintBottom_toBottomOf="parent"

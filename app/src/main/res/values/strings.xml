@@ -41,7 +41,7 @@
     <string name="usar_gps">Usar GPS</string>
     <string name="estado">Estado:</string>
     <string name="cep">CEP:</string>
-    <string name="rua">Rua:</string>
+    <string name="rua">Endereço:</string>
     <string name="cidade">Cidade:</string>
     <string name="uf">UF:</string>
     <string name="informacoes_do_pedido">Informações do pedido:</string>
