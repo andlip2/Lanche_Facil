@@ -18,9 +18,30 @@ public class Anuncio {
     private List <String> fotos;
 
     public Anuncio() {
-        DatabaseReference anuncio = ConfigFireBase.getFirebase().child("meus_anuncios");
-        setIdAnuncio(anuncio.push().getKey());
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
+        setIdAnuncio(anuncioRef.push().getKey());
     }
+
+    public void salvar () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
+        setIdAnuncio(anuncioRef.push().getKey());
+
+        anuncioRef.child(idUsuario)
+                .child(getIdAnuncio())
+                .setValue(this);
+        salvarPublico();
+    }
+
+    public void salvarPublico () {
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("anuncios");
+        setIdAnuncio(anuncioRef.push().getKey());
+
+        anuncioRef.child(getTitulo())
+                .child(getCep())
+                .setValue(this);
+    }
+
 
     public String getIdAnuncio() {
         return idAnuncio;

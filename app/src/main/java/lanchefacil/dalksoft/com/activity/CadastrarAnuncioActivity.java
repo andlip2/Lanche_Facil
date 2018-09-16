@@ -2,6 +2,7 @@ package lanchefacil.dalksoft.com.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,21 +23,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santalu.widget.MaskEditText;
-
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
@@ -57,12 +54,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private Address endereco;
     private Anuncio anuncio;
     private StorageReference storage;
-
+    private AlertDialog dialog;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
     };
     private List<String> listaImgRecuperadas = new ArrayList<>();
+    private List<String> listaURLFotos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +116,31 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         return address;
     }
 
+    private Anuncio configurarAnuncio () {
+        String titulo = editTitulo.getText().toString();
+        String cidade = editCidade.getText().toString();
+        String cep = editCEP.getText().toString();
+        String endereco = editEndereco.getText().toString();
+        String valor = editValor.getText().toString();
+        String telefone = editTelefone.getText().toString();
+        String descricao = editDescricao.getText().toString();
+
+        Anuncio anuncio = new Anuncio();
+        anuncio.setTitulo(titulo);
+        anuncio.setCidade(cidade);
+        anuncio.setCep(cep);
+        anuncio.setEndereco(endereco);
+        anuncio.setValor(valor);
+        anuncio.setTelefone(telefone);
+        anuncio.setDescricao(descricao);
+
+        return anuncio;
+    }
+
     public void validarDadosAnuncio (View view) {
+
+
+        String valor = String.valueOf(editValor.getRawValue());
 
         String fone = "";
         if (editTelefone.getRawText() != null) {
@@ -130,7 +152,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 if (!anuncio.getCidade().isEmpty()){
                     if (!anuncio.getCep().isEmpty()){
                         if (!anuncio.getEndereco().isEmpty()){
-                            if (!anuncio.getValor().isEmpty() && !anuncio.getValor().equals("0")){
+                            if (!valor.isEmpty() && !valor.equals("0")){
                                 if (!anuncio.getTelefone().isEmpty()){
                                     if (fone.length() >=11) {
                                         if (!anuncio.getDescricao().isEmpty()){
@@ -167,6 +189,14 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     public void salvarAnuncio () {
+
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Salvando Anúncio")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
         //Salvar imagens
         for (int i=0; i< listaImgRecuperadas.size(); i++) {
             String urlIMG = listaImgRecuperadas.get(i);
@@ -176,14 +206,14 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     }
 
-    private void salvarImagens(String urlIMG, int totalIMG, int contador) {
+    private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
         //criando nó no banco
         StorageReference imgAnuncio = storage.child("imagens")
                 .child("anuncios")
                 .child(anuncio.getIdAnuncio())
                 .child("imagem"+contador);
 
-        //enviar imagem
+        //enviar imagem e anuncio
         UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -191,7 +221,19 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
                 Uri firebaseUrl = taskSnapshot.getDownloadUrl();
                 String urlConvertida = firebaseUrl.toString();
+                listaURLFotos.add(urlConvertida);
 
+                if (totalIMG == listaURLFotos.size()) {
+                    anuncio.setFotos(listaURLFotos);
+                    //Salvar anuncio
+                    anuncio.salvar();
+
+                    //finaliza carregamento
+                    dialog.dismiss();
+                    finish();
+                }else {
+
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -201,27 +243,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             }
         });
 
-    }
-
-    private Anuncio configurarAnuncio () {
-        String titulo = editTitulo.getText().toString();
-        String cidade = editCidade.getText().toString();
-        String cep = editCEP.getText().toString();
-        String endereco = editEndereco.getText().toString();
-        String valor = String.valueOf(editValor.getRawValue());
-        String telefone = editTelefone.getText().toString();
-        String descricao = editDescricao.getText().toString();
-
-        Anuncio anuncio = new Anuncio();
-        anuncio.setTitulo(titulo);
-        anuncio.setCidade(cidade);
-        anuncio.setCep(cep);
-        anuncio.setEndereco(endereco);
-        anuncio.setValor(valor);
-        anuncio.setTelefone(telefone);
-        anuncio.setDescricao(descricao);
-
-        return anuncio;
     }
 
     private void alerta (String texto) {
