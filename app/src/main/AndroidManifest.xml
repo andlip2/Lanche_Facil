@@ -5,10 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -60,15 +60,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.MeusAnunciosActivity"
-            android:label="@string/title_activity_anuncios"
-            android:parentActivityName=".activity.PrincipalActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="lanchefacil.dalksoft.com.activity.PrincipalActivity" />
-        </activity>
+        <activity android:name=".activity.MeusAnunciosActivity" />
         <activity android:name=".activity.CadastrarAnuncioActivity" />
+        <activity android:name=".activity.AnunciosUsuarioActivity"></activity>
     </application>
 
 </manifest>

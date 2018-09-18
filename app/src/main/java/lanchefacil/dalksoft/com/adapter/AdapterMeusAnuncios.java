@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -55,21 +56,21 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView titulo;
-        TextView titulo2;
         TextView valor;
-        TextView valor2;
-        TextView foto;
-        TextView foto2;
+        ImageView foto;
+//        TextView titulo2;
+//        TextView valor2;
+//        TextView foto2;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             titulo = itemView.findViewById(R.id.textAdapterTitulo1);
-            titulo2 = itemView.findViewById(R.id.textAdapterTitulo2);
             valor = itemView.findViewById(R.id.textAdapterValor1);
-            valor2 = itemView.findViewById(R.id.textAdapterValor2);
             foto = itemView.findViewById(R.id.imageAdapterAnuncio1);
-            foto2 = itemView.findViewById(R.id.imageAdapterAnuncio2);
+//            titulo2 = itemView.findViewById(R.id.textAdapterTitulo2);
+//            valor2 = itemView.findViewById(R.id.textAdapterValor2);
+//            foto2 = itemView.findViewById(R.id.imageAdapterAnuncio2);
         }
     }
 }

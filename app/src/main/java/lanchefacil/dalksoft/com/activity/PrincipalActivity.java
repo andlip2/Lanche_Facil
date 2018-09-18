@@ -56,7 +56,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
         if (autenticacao.getCurrentUser() != null){
-                    Intent i = new Intent(PrincipalActivity.this, CadastrarAnuncioActivity.class);
+                    Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
                     startActivity(i);
 
         }else {
@@ -132,16 +132,19 @@ public class PrincipalActivity extends AppCompatActivity
 
             int id = item.getItemId();
 //
-//        if (id == R.id.menu_perfil) {
+        if (id == R.id.menu_perfil) {
 //            Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
 //            startActivity(i);
-//        } else if (id == R.id.menu_pedidos) {
+        }
+     else if (id == R.id.menu_anuncios) {
+        Intent i = new Intent(PrincipalActivity.this, MeusAnunciosActivity.class);
+        startActivity(i);
+        }
+//        else if (id == R.id.menu_pedidos) {
 //            Intent i = new Intent(PrincipalActivity.this, PedidosActivity.class);
 //            startActivity(i);
 //
-//        } else if (id == R.id.menu_anuncios) {
-//            Intent i = new Intent(PrincipalActivity.this, AnunciosActivity.class);
-//            startActivity(i);
+//        }
 //        } else if (id == R.id.menu_favoritos) {
 //            Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
 //            startActivity(i);
@@ -152,7 +155,7 @@ public class PrincipalActivity extends AppCompatActivity
 //            Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
 //            startActivity(i);
 //        }
-            if (id == R.id.menu_sair) {
+           else if (id == R.id.menu_sair) {
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
                 finish();

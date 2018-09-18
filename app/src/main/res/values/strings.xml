@@ -50,4 +50,5 @@
     <string name="descricao">Descrição:</string>
     <string name="cadastrar_anuncio">Cadastrar Anúncio</string>
     <string name="telefone">Telefone:</string>
+    <string name="title_activity_meus_anuncios_u">MeusAnunciosUActivity</string>
 </resources>

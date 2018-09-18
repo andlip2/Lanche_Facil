@@ -24,10 +24,9 @@ import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.model.Anuncio;
 
-public class MeusAnunciosActivity extends AppCompatActivity {
+public class AnunciosUsuarioActivity extends AppCompatActivity {
 
     private RecyclerView recyclerAnuncios;
-
     private List <Anuncio> anuncios = new ArrayList<>();
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference usuarioRef;
@@ -35,32 +34,20 @@ public class MeusAnunciosActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meus_anuncios);
+        setContentView(R.layout.activity_anuncios_usuario);
 
-        usuarioRef = ConfigFireBase.getFirebase()
+                usuarioRef = ConfigFireBase.getFirebase()
                 .child("meus_anuncios")
                 .child(ConfigFireBase.getIdUsuario());
         inicializarComponentes ();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        recyclerAnuncios.setLayoutManager(new LinearLayoutManager(AnunciosUsuarioActivity.this));
+        recyclerAnuncios.setHasFixedSize(true);
+        adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios,this);
+        recyclerAnuncios.setAdapter(adapterMeusAnuncios);
 
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-//        recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerAnuncios.setHasFixedSize(true);
-//        adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios,this);
-//        recyclerAnuncios.setAdapter(adapterMeusAnuncios);
-//
-//        recuperarAnuncios ();
+        recuperarAnuncios ();
     }
-
     private void recuperarAnuncios() {
         usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,9 +67,7 @@ public class MeusAnunciosActivity extends AppCompatActivity {
             }
         });
     }
-
     private void inicializarComponentes() {
-        recyclerAnuncios = findViewById(R.id.recyclerMeusAnuncios);
+        recyclerAnuncios = findViewById(R.id.recyclerMeusAnuncios2);
     }
-
 }
