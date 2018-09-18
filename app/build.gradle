@@ -48,7 +48,9 @@ dependencies {
     /* Dialog de Carregamento */
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
     /* Biblioteca picasso */
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    api 'com.squareup.picasso:picasso:2.71828'
+
+    implementation 'com.android.support:cardview-v7:27.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

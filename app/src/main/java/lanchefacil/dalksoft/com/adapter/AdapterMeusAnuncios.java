@@ -40,11 +40,13 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         Anuncio anuncio = anuncios.get(position);
         holder.titulo.setText(anuncio.getTitulo());
         holder.valor.setText(anuncio.getValor());
+        holder.descricao.setText(anuncio.getDescricao());
 
         List<String> urlIMG = anuncio.getFotos();
         String urlCapa = urlIMG.get(0);
 
-        Picasso.get().load(urlCapa).into((Target) holder.foto);
+        Picasso.get().load(urlCapa).into(holder.foto);
+
 
 
     }
@@ -57,6 +59,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView titulo;
         TextView valor;
+        TextView descricao;
         ImageView foto;
 //        TextView titulo2;
 //        TextView valor2;
@@ -65,9 +68,10 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            titulo = itemView.findViewById(R.id.textAdapterTitulo1);
-            valor = itemView.findViewById(R.id.textAdapterValor1);
-            foto = itemView.findViewById(R.id.imageAdapterAnuncio1);
+            titulo = itemView.findViewById(R.id.textAdapterTitulo);
+            valor = itemView.findViewById(R.id.textAdapterValor);
+            foto = itemView.findViewById(R.id.imageAdapterAnuncio);
+            descricao = itemView.findViewById(R.id.textAdapterDescricao);
 //            titulo2 = itemView.findViewById(R.id.textAdapterTitulo2);
 //            valor2 = itemView.findViewById(R.id.textAdapterValor2);
 //            foto2 = itemView.findViewById(R.id.imageAdapterAnuncio2);

@@ -56,7 +56,7 @@ public class PrincipalActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
         if (autenticacao.getCurrentUser() != null){
-                    Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
+                    Intent i = new Intent(PrincipalActivity.this, CadastrarAnuncioActivity.class);
                     startActivity(i);
 
         }else {
@@ -137,7 +137,7 @@ public class PrincipalActivity extends AppCompatActivity
 //            startActivity(i);
         }
      else if (id == R.id.menu_anuncios) {
-        Intent i = new Intent(PrincipalActivity.this, MeusAnunciosActivity.class);
+        Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
         startActivity(i);
         }
 //        else if (id == R.id.menu_pedidos) {

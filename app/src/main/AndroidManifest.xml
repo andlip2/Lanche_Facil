@@ -60,7 +60,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MeusAnunciosActivity" />
         <activity android:name=".activity.CadastrarAnuncioActivity" />
         <activity android:name=".activity.AnunciosUsuarioActivity"></activity>
     </application>
