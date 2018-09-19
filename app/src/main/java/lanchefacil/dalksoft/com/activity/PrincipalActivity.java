@@ -1,34 +1,45 @@
 package lanchefacil.dalksoft.com.activity;
 
 import android.Manifest;
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
+import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
+import lanchefacil.dalksoft.com.model.Anuncio;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class PrincipalActivity extends AppCompatActivity
@@ -38,10 +49,17 @@ public class PrincipalActivity extends AppCompatActivity
 
 
     private FirebaseAuth autenticacao = ConfigFireBase.getFirebaseAuth();
+    private DatabaseReference anunciosPublicosRef;
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
     private FloatingActionButton fab;
+    private RecyclerView recyclerAnunciosPublicos;
+    private SearchView pesquisa;
+    private AdapterMeusAnuncios adapterMeusAnuncios;
+    private List<Anuncio> listaAnuncios = new ArrayList<>();
+    private AlertDialog dialog;
+    private String filtroTitulo ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +68,10 @@ public class PrincipalActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Solicitar permição ao GPS
         callAccessLocation();
+
+        inicializarComponentes ();
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,9 +86,6 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
 
-
-
-
         if (autenticacao.getCurrentUser() != null) {
             //Codigos gerados automaticos abaixo
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -78,8 +96,66 @@ public class PrincipalActivity extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+
         }
+        recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAnunciosPublicos.setHasFixedSize(true);
+        adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
+        recyclerAnunciosPublicos.setAdapter(adapterMeusAnuncios);
+
+        recuperarAnunciosPublicos();
+
+//        pesquisa.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                filtroTitulo = s;
+//                anunciosPublicosRef.child("anuncios")
+//                .child(s);
+//                return true;
+//            }
+//        });
     }
+
+    public void recuperarAnunciosPublicos () {
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Carregando Anúncios")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
+
+        anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listaAnuncios.clear();
+                for (DataSnapshot titulo: dataSnapshot.getChildren()) {
+                    for (DataSnapshot cep: titulo.getChildren()){
+                        for (DataSnapshot anuncios: cep.getChildren()){
+                            listaAnuncios.add(anuncios.getValue(Anuncio.class));
+                        }
+                    }
+                }
+                Collections.reverse(listaAnuncios);
+                adapterMeusAnuncios.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
     //Codigos q eu escrevi, Config_Menu_Logar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -206,6 +282,13 @@ public class PrincipalActivity extends AppCompatActivity
                     }
                 });
         mMaterialDialog.show();
+    }
+
+    private void inicializarComponentes() {
+        anunciosPublicosRef = ConfigFireBase.getFirebase()
+                .child("Anuncios");
+        recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
+        pesquisa = findViewById(R.id.searchPrincipalPesquisa);
     }
 
     private void alerta (String texto) {

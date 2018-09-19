@@ -34,14 +34,38 @@ public class Anuncio {
     }
 
     public void salvarPublico () {
-        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("anuncios");
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("anuncios");
         setIdAnuncio(anuncioRef.push().getKey());
 
         anuncioRef.child(getTitulo())
                 .child(getCep())
+                .child(getIdAnuncio())
                 .setValue(this);
     }
 
+    public void excluirAnuncio () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("meus_anuncios")
+                .child(idUsuario)
+                .child(getIdAnuncio());
+
+        anuncioRef.removeValue();
+        excluirAnuncioPublico();
+
+    }
+    public void excluirAnuncioPublico () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("anuncios")
+                .child(getTitulo())
+                .child(getCep())
+                .child(getIdAnuncio());
+
+        anuncioRef.removeValue();
+
+    }
 
     public String getIdAnuncio() {
         return idAnuncio;
