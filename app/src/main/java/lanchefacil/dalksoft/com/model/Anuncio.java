@@ -34,13 +34,10 @@ public class Anuncio {
     }
 
     public void salvarPublico () {
-        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
-                .child("anuncios");
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("anuncios");
         setIdAnuncio(anuncioRef.push().getKey());
 
         anuncioRef.child(getTitulo())
-                .child(getCep())
-                .child(getIdAnuncio())
                 .setValue(this);
     }
 
@@ -59,8 +56,6 @@ public class Anuncio {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
                 .child("anuncios")
-                .child(getTitulo())
-                .child(getCep())
                 .child(getIdAnuncio());
 
         anuncioRef.removeValue();

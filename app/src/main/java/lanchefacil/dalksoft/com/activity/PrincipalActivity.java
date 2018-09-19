@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -49,7 +50,6 @@ public class PrincipalActivity extends AppCompatActivity
 
 
     private FirebaseAuth autenticacao = ConfigFireBase.getFirebaseAuth();
-    private DatabaseReference anunciosPublicosRef;
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
@@ -57,9 +57,11 @@ public class PrincipalActivity extends AppCompatActivity
     private RecyclerView recyclerAnunciosPublicos;
     private SearchView pesquisa;
     private AdapterMeusAnuncios adapterMeusAnuncios;
+    private DatabaseReference anunciosPublicosRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
     private AlertDialog dialog;
     private String filtroTitulo ="";
+    private Anuncio anuncio = new Anuncio();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,9 @@ public class PrincipalActivity extends AppCompatActivity
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
+
 
         //Solicitar permição ao GPS
         callAccessLocation();
@@ -98,53 +103,35 @@ public class PrincipalActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
 
         }
+
+
         recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
         recyclerAnunciosPublicos.setHasFixedSize(true);
         adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
         recyclerAnunciosPublicos.setAdapter(adapterMeusAnuncios);
-
         recuperarAnunciosPublicos();
-
-//        pesquisa.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                filtroTitulo = s;
-//                anunciosPublicosRef.child("anuncios")
-//                .child(s);
-//                return true;
-//            }
-//        });
     }
 
     public void recuperarAnunciosPublicos () {
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Carregando Anúncios")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+//        dialog = new SpotsDialog.Builder()
+//                .setContext(this)
+//                .setMessage("Carregando Anúncios")
+//                .setCancelable(false)
+//                .build();
+//        dialog.show();
+
 
 
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaAnuncios.clear();
-                for (DataSnapshot titulo: dataSnapshot.getChildren()) {
-                    for (DataSnapshot cep: titulo.getChildren()){
-                        for (DataSnapshot anuncios: cep.getChildren()){
-                            listaAnuncios.add(anuncios.getValue(Anuncio.class));
-                        }
-                    }
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    listaAnuncios.add(ds.getValue(Anuncio.class));
                 }
                 Collections.reverse(listaAnuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
-                dialog.dismiss();
-            }
+                    }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -285,8 +272,6 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void inicializarComponentes() {
-        anunciosPublicosRef = ConfigFireBase.getFirebase()
-                .child("Anuncios");
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
     }
