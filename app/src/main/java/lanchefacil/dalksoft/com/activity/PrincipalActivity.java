@@ -20,7 +20,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
+import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
 import lanchefacil.dalksoft.com.model.Anuncio;
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -110,6 +113,30 @@ public class PrincipalActivity extends AppCompatActivity
         adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
         recyclerAnunciosPublicos.setAdapter(adapterMeusAnuncios);
         recuperarAnunciosPublicos();
+
+        recyclerAnunciosPublicos.addOnItemTouchListener(new RecyclerItemClickListener(
+                this,
+                recyclerAnunciosPublicos,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Anuncio anuncioSelecionado = listaAnuncios.get(position);
+                        Intent i = new Intent(PrincipalActivity.this, DetalhesAnuncioActivity.class);
+                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
     }
 
     public void recuperarAnunciosPublicos () {

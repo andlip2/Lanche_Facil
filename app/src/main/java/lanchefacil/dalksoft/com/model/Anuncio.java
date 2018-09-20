@@ -2,11 +2,12 @@ package lanchefacil.dalksoft.com.model;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 
-public class Anuncio {
+public class Anuncio implements Serializable{
     private String idAnuncio;
     private String titulo;
     private String cidade;
@@ -17,7 +18,7 @@ public class Anuncio {
     private String descricao;
     private List <String> fotos;
 
-    public Anuncio() {
+    public Anuncio()  {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
         setIdAnuncio(anuncioRef.push().getKey());
     }

@@ -60,8 +60,19 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CadastrarAnuncioActivity" />
-        <activity android:name=".activity.AnunciosUsuarioActivity"></activity>
+        <activity
+            android:name=".activity.CadastrarAnuncioActivity"
+            android:parentActivityName=".activity.PrincipalActivity" />
+        <activity
+            android:name=".activity.AnunciosUsuarioActivity"
+            android:parentActivityName=".activity.PrincipalActivity" />
+        <activity
+            android:name=".activity.DetalhesAnuncioActivity"
+            android:parentActivityName=".activity.PrincipalActivity" />
+        <activity android:name=".activity.PerfilActivity" />
+        <activity android:name=".activity.MeusPedidosActivity" />
+        <activity android:name=".activity.FavoritosActivity" />
+        <activity android:name=".activity.AjudaActivity"></activity>
     </application>
 
 </manifest>
