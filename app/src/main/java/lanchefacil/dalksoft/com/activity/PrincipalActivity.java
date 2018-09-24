@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -22,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -54,8 +57,10 @@ import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
+import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
 import lanchefacil.dalksoft.com.model.Anuncio;
+import lanchefacil.dalksoft.com.model.Usuarios;
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class PrincipalActivity extends AppCompatActivity
@@ -77,10 +82,16 @@ public class PrincipalActivity extends AppCompatActivity
     private AlertDialog dialog;
     private String filtroTitulo ="";
     private Anuncio anuncio = new Anuncio();
+    private Usuarios usuario = new Usuarios();
     private TextView menuEmail, menuNome;
     private ImageView menuIMGPerfil;
     private String listaImgRecuperadas;
+    private List<String> listaURLFotos = new ArrayList<>();
     private StorageReference storage;
+    private String [] permissoes = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +101,9 @@ public class PrincipalActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
+
+        storage = ConfigFireBase.getReferenciaStorage();
+        Permissoes.validarPermissoes(permissoes, this,1);
 
         //Solicitar permição ao GPS
         callAccessLocation();
@@ -315,67 +329,72 @@ public class PrincipalActivity extends AppCompatActivity
 
 
     private void escolherImagem(int requestCode) {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, requestCode);
     }
-    public void adicionarImagemPerfil (View v) {
-        switch (v.getId()) {
-            case R.id.imageMenuPrincipalPerfil:
-                escolherImagem(1);
-    }}
+
+//    public void adicionarImagemPerfil (View v) {
+//        switch (v.getId()) {
+//            case R.id.imageMenuPrincipalPerfil:
+//                escolherImagem(1);
+//        }
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
-            Uri imagemSelecionada = data.getData();
-            String caminhoImagem = imagemSelecionada.toString();
-
-            if (requestCode == 1) {
-                menuIMGPerfil.setImageURI(imagemSelecionada);
-                listaImgRecuperadas = caminhoImagem;
-            }
-
-            listaImgRecuperadas = caminhoImagem;
-
-            salvarImagens(listaImgRecuperadas);
+        if (resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            menuIMGPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         }
     }
-    private void salvarImagens(String urlIMG) {
-        //criando nó no banco
-        StorageReference imgAnuncio = storage.child("imagens")
-                .child("perfil")
-                .child(anuncio.getIdAnuncio())
-                .child("imagem");
+//    private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
+//        //criando nó no banco
+//        StorageReference imgPerfil = storage.child("imagens")
+//                .child("perfil")
+//                .child(usuario.getId())
+//                .child("imagem"+contador);
+//
+//        //enviar imagem e anuncio
+//        UploadTask uploadTask = imgPerfil.putFile(Uri.parse(urlIMG));
+//        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+//                String urlConvertida = firebaseUrl.toString();
+//                listaURLFotos.add(urlConvertida);
+//
+//                if (totalIMG == listaURLFotos.size()) {
+//                    usuario.setFotosPerfil(listaURLFotos);
+//                    finish();
+//                }else {
+//
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                alerta("Falha ao fazer upload da imagem");
+//                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
+//            }
+//        });
+//
+//    }
 
-        //enviar imagem e anuncio
-        UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
-                String urlConvertida = firebaseUrl.toString();
-                List<String> listaURLFotos = new ArrayList<>();
-                listaURLFotos.add(urlConvertida);
-                    anuncio.setFotosPerfil(listaURLFotos);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                alerta("Falha ao fazer upload da imagem");
-                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
-            }
-        });
-
-    }
     public void recuperarImagem () {
         ImageListener imageListener = new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
                 Anuncio anuncio;
                 anuncio = new Anuncio();
-                String url = anuncio.getFotosPerfil().get(position);
+                String url = usuario.getFotosPerfil().get(position);
                 Picasso.get().load(url).into(imageView);
             }
         };
@@ -386,9 +405,10 @@ public class PrincipalActivity extends AppCompatActivity
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
         menuEmail = findViewById(R.id.textMenuPrincipalEmail);
-        menuEmail.setText(autenticacao.getCurrentUser().toString());
+//        menuEmail.setText(autenticacao.getCurrentUser().toString());
         menuNome = findViewById(R.id.textMenuPrincipalNome);
-        menuIMGPerfil = findViewById(R.id.imageMenuPrincipalPerfil);
+        menuIMGPerfil = findViewById(R.id.imageMenuPerfil);
+
     }
 
     private void alerta (String texto) {

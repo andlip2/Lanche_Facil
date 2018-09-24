@@ -17,15 +17,7 @@ public class Anuncio implements Serializable{
     private String telefone;
     private String descricao;
     private List <String> fotos;
-    private List <String> fotosPerfil;
 
-    public List<String> getFotosPerfil() {
-        return fotosPerfil;
-    }
-
-    public void setFotosPerfil(List<String> fotosPerfil) {
-        this.fotosPerfil = fotosPerfil;
-    }
 
     public Anuncio()  {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");

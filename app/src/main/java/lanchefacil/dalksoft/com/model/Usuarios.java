@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
@@ -14,6 +15,15 @@ public class Usuarios {
     private String id;
     private String email;
     private String senha;
+    private List<String> fotosPerfil;
+
+    public List<String> getFotosPerfil() {
+        return fotosPerfil;
+    }
+
+    public void setFotosPerfil(List<String> fotosPerfil) {
+        this.fotosPerfil = fotosPerfil;
+    }
 
     public Usuarios() {
     }

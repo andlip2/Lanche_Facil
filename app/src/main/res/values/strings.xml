@@ -53,4 +53,5 @@
     <string name="title_activity_meus_anuncios_u">MeusAnunciosUActivity</string>
     <string name="detalhes">Detalhes</string>
     <string name="ver_telefone">Ver telefone</string>
+    <string name="salvar_alteracoes">Salvar alterações</string>
 </resources>
