@@ -1,11 +1,15 @@
 package lanchefacil.dalksoft.com.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -23,16 +27,24 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +61,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 public class PrincipalActivity extends AppCompatActivity
 
 
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
 
     private FirebaseAuth autenticacao = ConfigFireBase.getFirebaseAuth();
@@ -65,6 +77,10 @@ public class PrincipalActivity extends AppCompatActivity
     private AlertDialog dialog;
     private String filtroTitulo ="";
     private Anuncio anuncio = new Anuncio();
+    private TextView menuEmail, menuNome;
+    private ImageView menuIMGPerfil;
+    private String listaImgRecuperadas;
+    private StorageReference storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +91,12 @@ public class PrincipalActivity extends AppCompatActivity
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
 
-
         //Solicitar permição ao GPS
         callAccessLocation();
 
         inicializarComponentes ();
+
+        //iniciar tela para cadastrar anuncios
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +111,7 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
 
+        //Verificar se o usuario está logado
         if (autenticacao.getCurrentUser() != null) {
             //Codigos gerados automaticos abaixo
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -104,10 +122,14 @@ public class PrincipalActivity extends AppCompatActivity
 
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
-
         }
 
+        //Acho q o nome do metodo já diz tudo né
+        exibirAnuncios();
 
+    }
+
+    public void exibirAnuncios () {
         recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
         recyclerAnunciosPublicos.setHasFixedSize(true);
         adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
@@ -140,15 +162,12 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     public void recuperarAnunciosPublicos () {
-//        dialog = new SpotsDialog.Builder()
-//                .setContext(this)
-//                .setMessage("Carregando Anúncios")
-//                .setCancelable(false)
-//                .build();
-//        dialog.show();
-
-
-
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Carregando Anúncios")
+                .setCancelable(false)
+                .build();
+        dialog.show();
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -158,17 +177,14 @@ public class PrincipalActivity extends AppCompatActivity
                 }
                 Collections.reverse(listaAnuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
+                dialog.dismiss();
                     }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
-
-
-
 
     //Codigos q eu escrevi, Config_Menu_Logar
     @Override
@@ -211,10 +227,6 @@ public class PrincipalActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -260,6 +272,7 @@ public class PrincipalActivity extends AppCompatActivity
         return true;
     }
 
+    //Verifica/solicita permissão ao GPS
     public void callAccessLocation() {
         Log.i (TAG,"callAccessLocation()");
 
@@ -277,6 +290,7 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    //Configura a caixa para aceitar permissão
     private void callDialog( String message, final String[] permissions ){
         mMaterialDialog = new MaterialDialog(this)
                 .setTitle("Permission")
@@ -298,9 +312,83 @@ public class PrincipalActivity extends AppCompatActivity
         mMaterialDialog.show();
     }
 
+
+
+    private void escolherImagem(int requestCode) {
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, requestCode);
+    }
+    public void adicionarImagemPerfil (View v) {
+        switch (v.getId()) {
+            case R.id.imageMenuPrincipalPerfil:
+                escolherImagem(1);
+    }}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            Uri imagemSelecionada = data.getData();
+            String caminhoImagem = imagemSelecionada.toString();
+
+            if (requestCode == 1) {
+                menuIMGPerfil.setImageURI(imagemSelecionada);
+                listaImgRecuperadas = caminhoImagem;
+            }
+
+            listaImgRecuperadas = caminhoImagem;
+
+            salvarImagens(listaImgRecuperadas);
+        }
+    }
+    private void salvarImagens(String urlIMG) {
+        //criando nó no banco
+        StorageReference imgAnuncio = storage.child("imagens")
+                .child("perfil")
+                .child(anuncio.getIdAnuncio())
+                .child("imagem");
+
+        //enviar imagem e anuncio
+        UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+                List<String> listaURLFotos = new ArrayList<>();
+                listaURLFotos.add(urlConvertida);
+                    anuncio.setFotosPerfil(listaURLFotos);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                alerta("Falha ao fazer upload da imagem");
+                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
+            }
+        });
+
+    }
+    public void recuperarImagem () {
+        ImageListener imageListener = new ImageListener() {
+            @Override
+            public void setImageForPosition(int position, ImageView imageView) {
+                Anuncio anuncio;
+                anuncio = new Anuncio();
+                String url = anuncio.getFotosPerfil().get(position);
+                Picasso.get().load(url).into(imageView);
+            }
+        };
+
+    }
+
     private void inicializarComponentes() {
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
+        menuEmail = findViewById(R.id.textMenuPrincipalEmail);
+        menuEmail.setText(autenticacao.getCurrentUser().toString());
+        menuNome = findViewById(R.id.textMenuPrincipalNome);
+        menuIMGPerfil = findViewById(R.id.imageMenuPrincipalPerfil);
     }
 
     private void alerta (String texto) {

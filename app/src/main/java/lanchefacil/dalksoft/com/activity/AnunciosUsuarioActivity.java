@@ -65,9 +65,7 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-
                         alerdDialogEscluirAnuncio(position);
-
                     }
 
                     @Override

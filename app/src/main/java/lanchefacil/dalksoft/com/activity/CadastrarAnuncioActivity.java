@@ -267,10 +267,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 break;
 
         }
-
-
-
-
     }
 
     private void escolherImagem(int requestCode) {
