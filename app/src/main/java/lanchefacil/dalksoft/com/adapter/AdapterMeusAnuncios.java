@@ -34,6 +34,7 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         return new MyViewHolder(item);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
@@ -61,9 +62,6 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
         TextView valor;
         TextView descricao;
         ImageView foto;
-//        TextView titulo2;
-//        TextView valor2;
-//        TextView foto2;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -72,9 +70,6 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
             valor = itemView.findViewById(R.id.textAdapterValor);
             foto = itemView.findViewById(R.id.imageAdapterAnuncio);
             descricao = itemView.findViewById(R.id.textAdapterDescricao);
-//            titulo2 = itemView.findViewById(R.id.textAdapterTitulo2);
-//            valor2 = itemView.findViewById(R.id.textAdapterValor2);
-//            foto2 = itemView.findViewById(R.id.imageAdapterAnuncio2);
         }
     }
 }

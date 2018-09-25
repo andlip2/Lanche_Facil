@@ -128,13 +128,13 @@ public class PrincipalActivity extends AppCompatActivity
         //Verificar se o usuario está logado
         if (autenticacao.getCurrentUser() != null) {
             //Codigos gerados automaticos abaixo
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NavigationView navigationView =  findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
         }
 
@@ -234,7 +234,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -261,16 +261,17 @@ public class PrincipalActivity extends AppCompatActivity
 //            startActivity(i);
 //
 //        }
-//        } else if (id == R.id.menu_favoritos) {
-//            Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
-//            startActivity(i);
+         else if (id == R.id.menu_favoritos) {
+            Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
+            startActivity(i);}
 //        } else if (id == R.id.menu_config) {
 //            Intent i = new Intent(PrincipalActivity.this, ConfigiracaoActivity.class);
 //            startActivity(i);
-//        } else if (id == R.id.menu_ajuda) {
-//            Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
-//            startActivity(i);
 //        }
+        else if (id == R.id.menu_ajuda) {
+            Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
+            startActivity(i);
+        }
            else if (id == R.id.menu_sair) {
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
@@ -280,7 +281,7 @@ public class PrincipalActivity extends AppCompatActivity
                 alerta("Usuario desconectado!");
             }
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer =  findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
 
         return true;
@@ -407,7 +408,6 @@ public class PrincipalActivity extends AppCompatActivity
         menuEmail = findViewById(R.id.textMenuPrincipalEmail);
 //        menuEmail.setText(autenticacao.getCurrentUser().toString());
         menuNome = findViewById(R.id.textMenuPrincipalNome);
-        menuIMGPerfil = findViewById(R.id.imageMenuPerfil);
 
     }
 

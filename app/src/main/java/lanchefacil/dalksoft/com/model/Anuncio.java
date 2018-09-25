@@ -17,11 +17,27 @@ public class Anuncio implements Serializable{
     private String telefone;
     private String descricao;
     private List <String> fotos;
+    private int favoritos;
 
+    public int getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(int favoritos) {
+        this.favoritos = favoritos;
+    }
 
     public Anuncio()  {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
         setIdAnuncio(anuncioRef.push().getKey());
+    }
+
+    public void salvarFavoritos () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("favoritos");
+
+        anuncioRef.child(getIdAnuncio())
+                .setValue(this);
     }
 
     public void salvar () {

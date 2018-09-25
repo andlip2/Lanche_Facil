@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
     private CarouselView carouselView;
     private TextView titulo, descricao, cidade, valor;
     private Anuncio anuncioSelecionado;
+    private Button fazerPedido, favoritos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,18 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
 
     }
 
+    public void adicionarFavoritos (View view) {
+        anuncioSelecionado.salvarFavoritos();
+    }
+
     private void inicializarComponentes() {
         carouselView = findViewById(R.id.carouselViewDetalheAnuncio);
         titulo = findViewById(R.id.textDetalheAnuncioTitulo);
         descricao = findViewById(R.id.textDetalheAnuncioDescricao);
         cidade = findViewById(R.id.textDetalheAnuncioCidade);
         valor = findViewById(R.id.textDetelhesAnuncioValor);
+        fazerPedido = findViewById(R.id.buttonDetalheAnuncioFazerPedido);
+        favoritos = findViewById(R.id.buttonDetalheAnuncioFavoritos);
+
     }
 }

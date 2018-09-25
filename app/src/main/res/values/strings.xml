@@ -54,4 +54,6 @@
     <string name="detalhes">Detalhes</string>
     <string name="ver_telefone">Ver telefone</string>
     <string name="salvar_alteracoes">Salvar alterações</string>
+    <string name="fazer_pedido">Fazer Pedido</string>
+    <string name="favoritos">favoritos</string>
 </resources>

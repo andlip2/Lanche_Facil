@@ -89,4 +89,35 @@
         android:text="@string/ver_telefone"
         android:theme="@style/botaoPadrao" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonDetalheAnuncioFazerPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="@string/fazer_pedido"
+            android:textSize="14sp"
+            android:theme="@style/botaoPadrao" />
+
+        <Button
+            android:id="@+id/buttonDetalheAnuncioFavoritos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="adicionarFavoritos"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="@string/favoritos"
+            android:theme="@style/botaoPadrao" />
+
+    </LinearLayout>
+
 </LinearLayout>

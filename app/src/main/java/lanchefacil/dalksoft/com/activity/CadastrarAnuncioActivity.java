@@ -201,7 +201,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         for (int i=0; i< listaImgRecuperadas.size(); i++) {
             String urlIMG = listaImgRecuperadas.get(i);
             int tamanho = listaImgRecuperadas.size();
-//           salvarImagens (urlIMG, tamanho, i);
+           salvarImagens (urlIMG, tamanho, i);
         }
 
     }
@@ -254,44 +254,44 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         }
     }
-//    private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
-//        //criando nó no banco
-//        StorageReference imgAnuncio = storage.child("imagens")
-//                .child("anuncios")
-//                .child(anuncio.getIdAnuncio())
-//                .child("imagem"+contador);
-//
-//        //enviar imagem e anuncio
-//        UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
-//        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
-//                String urlConvertida = firebaseUrl.toString();
-//                listaURLFotos.add(urlConvertida);
-//
-//                if (totalIMG == listaURLFotos.size()) {
-//                    anuncio.setFotos(listaURLFotos);
-//                    //Salvar anuncio
-//                    anuncio.salvar();
-//
-//                    //finaliza carregamento
-//                    dialog.dismiss();
-//                    finish();
-//                }else {
-//
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                alerta("Falha ao fazer upload da imagem");
-//                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
-//            }
-//        });
-//
-//    }
+    private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
+        //criando nó no banco
+        StorageReference imgAnuncio = storage.child("imagens")
+                .child("anuncios")
+                .child(anuncio.getIdAnuncio())
+                .child("imagem"+contador);
+
+        //enviar imagem e anuncio
+        UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+                listaURLFotos.add(urlConvertida);
+
+                if (totalIMG == listaURLFotos.size()) {
+                    anuncio.setFotos(listaURLFotos);
+                    //Salvar anuncio
+                    anuncio.salvar();
+
+                    //finaliza carregamento
+                    dialog.dismiss();
+                    finish();
+                }else {
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                alerta("Falha ao fazer upload da imagem");
+                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
+            }
+        });
+
+    }
 
     private void iniciarComponentes () {
         buttonGPS = findViewById(R.id.buttonAnuncioGPS);
