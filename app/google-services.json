@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "718647284802-cdf2la4sgqltas47sk84abnreh0qos3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lanchefacil.dalksoft.com",
+            "certificate_hash": "4c51bd5e1967c8926585c877784466db5d5c6856"
+          }
+        },
+        {
           "client_id": "718647284802-30cmurf1ui6rh6fpcegf4audsgtggaq7.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -3,6 +3,7 @@ package lanchefacil.dalksoft.com.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -164,7 +165,6 @@ public class PrincipalActivity extends AppCompatActivity
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-
                     }
 
                     @Override
@@ -199,6 +199,7 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
     }
+
 
     //Codigos q eu escrevi, Config_Menu_Logar
     @Override

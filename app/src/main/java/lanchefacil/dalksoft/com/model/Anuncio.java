@@ -36,7 +36,8 @@ public class Anuncio implements Serializable{
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("favoritos");
 
-        anuncioRef.child(getIdAnuncio())
+        anuncioRef.child(idUsuario)
+                .child(getIdAnuncio())
                 .setValue(this);
     }
 
@@ -68,12 +69,23 @@ public class Anuncio implements Serializable{
 
         anuncioRef.removeValue();
         excluirAnuncioPublico();
+        excluirFavorito();
 
     }
     public void excluirAnuncioPublico () {
-        String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
                 .child("anuncios")
+                .child(getIdAnuncio());
+
+        anuncioRef.removeValue();
+
+    }
+
+    public void excluirFavorito () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("favoritos")
+                .child(idUsuario)
                 .child(getIdAnuncio());
 
         anuncioRef.removeValue();

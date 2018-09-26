@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
@@ -63,6 +64,8 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
 
     public void adicionarFavoritos (View view) {
         anuncioSelecionado.salvarFavoritos();
+        alerta("Adicionado com sucesso!");
+
     }
 
     private void inicializarComponentes() {
@@ -74,5 +77,8 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
         fazerPedido = findViewById(R.id.buttonDetalheAnuncioFazerPedido);
         favoritos = findViewById(R.id.buttonDetalheAnuncioFavoritos);
 
+    }
+    private void alerta (String texto) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
 }

@@ -55,5 +55,9 @@
     <string name="ver_telefone">Ver telefone</string>
     <string name="salvar_alteracoes">Salvar alterações</string>
     <string name="fazer_pedido">Fazer Pedido</string>
-    <string name="favoritos">favoritos</string>
+    <string name="favoritos">adicionar aos favoritos</string>
+    <string name="nome">Nome:</string>
+    <string name="lanche">Lanche:</string>
+    <string name="quantd">Quantidade:</string>
+    <string name="enviar_pedido">Enviar Pedido</string>
 </resources>

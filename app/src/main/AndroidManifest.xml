@@ -72,7 +72,8 @@
         <activity android:name=".activity.PerfilActivity" />
         <activity android:name=".activity.MeusPedidosActivity" />
         <activity android:name=".activity.FavoritosActivity" />
-        <activity android:name=".activity.AjudaActivity"></activity>
+        <activity android:name=".activity.AjudaActivity" />
+        <activity android:name=".activity.FazerPedidoActivity"></activity>
     </application>
 
 </manifest>

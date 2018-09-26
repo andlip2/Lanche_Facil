@@ -1,6 +1,7 @@
 package lanchefacil.dalksoft.com.activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class FavoritosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerFavoritos;
     private AdapterMeusAnuncios adapterMeusAnuncios;
-    private DatabaseReference anunciosPublicosRef;
+    private DatabaseReference usuarioRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
     private AlertDialog dialog;
 
@@ -38,7 +39,8 @@ public class FavoritosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritos);
 
-        anunciosPublicosRef = ConfigFireBase.getFirebase().child("favoritos");
+        usuarioRef = ConfigFireBase.getFirebase().child("favoritos")
+                .child(ConfigFireBase.getIdUsuario());
         recyclerFavoritos = findViewById(R.id.recyclerFavoritos);
 
         exibirAnuncios();
@@ -48,7 +50,7 @@ public class FavoritosActivity extends AppCompatActivity {
         recyclerFavoritos.setHasFixedSize(true);
         adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
         recyclerFavoritos.setAdapter(adapterMeusAnuncios);
-        recuperarAnunciosPublicos();
+        recuperarFavoritos();
 
         recyclerFavoritos.addOnItemTouchListener(new RecyclerItemClickListener(
                 this,
@@ -64,7 +66,7 @@ public class FavoritosActivity extends AppCompatActivity {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-
+                        alerdDialogEscluirAnuncio(position);
                     }
 
                     @Override
@@ -74,28 +76,54 @@ public class FavoritosActivity extends AppCompatActivity {
                 }
         ));
     }
-    public void recuperarAnunciosPublicos () {
+    private void recuperarFavoritos() {
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
-                .setMessage("Carregando Anúncios")
+                .setMessage("Carregando Favoritos")
                 .setCancelable(false)
                 .build();
         dialog.show();
-        anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
+        usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 listaAnuncios.clear();
-                for (DataSnapshot ds: dataSnapshot.getChildren()){
-                    listaAnuncios.add(ds.getValue(Anuncio.class));
+                for (DataSnapshot id: dataSnapshot.getChildren()){
+                    listaAnuncios.add(id.getValue(Anuncio.class));
                 }
                 Collections.reverse(listaAnuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
+
                 dialog.dismiss();
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+    }
+
+    private void alerdDialogEscluirAnuncio (final int position) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Remover Favorito");
+        builder.setMessage("Tem certeza que deseja remover esse anuncio dos seus favoritos? ");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Anuncio anuncioSelecionado = listaAnuncios.get(position);
+                anuncioSelecionado.excluirFavorito();
+
+                adapterMeusAnuncios.notifyDataSetChanged();
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                builder.setCancelable(true);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
