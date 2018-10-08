@@ -40,6 +40,14 @@ public class Anuncio implements Serializable{
                 .child(getIdAnuncio())
                 .setValue(this);
     }
+    public void salvarPedidos (String id) {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_pedidos");
+
+        anuncioRef.child(id)
+                .child(getIdAnuncio())
+                .setValue(this);
+    }
 
     public void salvar () {
         String idUsuario = ConfigFireBase.getIdUsuario();

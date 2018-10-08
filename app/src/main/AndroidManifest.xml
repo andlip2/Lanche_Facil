@@ -73,7 +73,7 @@
         <activity android:name=".activity.MeusPedidosActivity" />
         <activity android:name=".activity.FavoritosActivity" />
         <activity android:name=".activity.AjudaActivity" />
-        <activity android:name=".activity.FazerPedidoActivity"></activity>
+        <activity android:name=".activity.FazerPedidoActivity" />
     </application>
 
 </manifest>
