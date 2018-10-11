@@ -257,11 +257,11 @@ public class PrincipalActivity extends AppCompatActivity
         Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
         startActivity(i);
         }
-//        else if (id == R.id.menu_pedidos) {
-//            Intent i = new Intent(PrincipalActivity.this, PedidosActivity.class);
-//            startActivity(i);
-//
-//        }
+        else if (id == R.id.menu_pedidos) {
+            Intent i = new Intent(PrincipalActivity.this, MeusPedidosActivity.class);
+            startActivity(i);
+
+        }
          else if (id == R.id.menu_favoritos) {
             Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
             startActivity(i);}

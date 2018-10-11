@@ -30,6 +30,14 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
+        fazerPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetalhesAnuncioActivity.this, FazerPedidoActivity.class);
+                startActivity(i);
+            }
+        });
+
         //Titulo da pagina
         getSupportActionBar().setTitle("Detelhes do Produto");
 

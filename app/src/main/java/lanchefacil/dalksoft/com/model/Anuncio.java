@@ -16,6 +16,9 @@ public class Anuncio implements Serializable{
     private String valor;
     private String telefone;
     private String descricao;
+    private String nome;
+    private String lanche;
+    private String quantidade;
     private List <String> fotos;
     private int favoritos;
 
@@ -23,7 +26,32 @@ public class Anuncio implements Serializable{
         return favoritos;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getLanche() {
+        return lanche;
+    }
+
+    public void setLanche(String lanche) {
+        this.lanche = lanche;
+    }
+
+    public String getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(String quantidade) {
+        this.quantidade = quantidade;
+    }
+
     public void setFavoritos(int favoritos) {
+
         this.favoritos = favoritos;
     }
 
@@ -40,11 +68,11 @@ public class Anuncio implements Serializable{
                 .child(getIdAnuncio())
                 .setValue(this);
     }
-    public void salvarPedidos (String id) {
+    public void salvarPedidos () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_pedidos");
 
-        anuncioRef.child(id)
+        anuncioRef.child(idUsuario)
                 .child(getIdAnuncio())
                 .setValue(this);
     }

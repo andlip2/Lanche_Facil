@@ -39,94 +39,94 @@ public class MeusPedidosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_pedidos);
 
-        usuarioRef = ConfigFireBase.getFirebase().child("meus_pedidos")
-                .child(ConfigFireBase.getIdUsuario());
-        recyclerPedidos = findViewById(R.id.recyclerMeusPedidos);
-
-
-        exibirAnuncios();
-    }
-    public void exibirAnuncios () {
-        recyclerPedidos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerPedidos.setHasFixedSize(true);
-        adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
-        recyclerPedidos.setAdapter(adapterMeusAnuncios);
-        recuperarFavoritos();
-
-        recyclerPedidos.addOnItemTouchListener(new RecyclerItemClickListener(
-                this,
-                recyclerPedidos,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Anuncio anuncioSelecionado = listaAnuncios.get(position);
-                        Intent i = new Intent(MeusPedidosActivity.this, DetalhesAnuncioActivity.class);
-                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
-                        startActivity(i);
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        alerdDialogEscluirAnuncio(position);
-                    }
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    }
-                }
-        ));
-    }
-
-    private void recuperarFavoritos() {
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Carregando Seus Pedidos")
-                .setCancelable(false)
-                .build();
-        dialog.show();
-        usuarioRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                listaAnuncios.clear();
-                for (DataSnapshot id: dataSnapshot.getChildren()){
-                    listaAnuncios.add(id.getValue(Anuncio.class));
-                }
-                Collections.reverse(listaAnuncios);
-                adapterMeusAnuncios.notifyDataSetChanged();
-
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void alerdDialogEscluirAnuncio (final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Comfirmar entrega");
-        builder.setMessage("Tem certeza que deseja confirmar a entrega desse anuncio?");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Anuncio anuncioSelecionado = listaAnuncios.get(position);
-                anuncioSelecionado.excluirFavorito();
-
-                adapterMeusAnuncios.notifyDataSetChanged();
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+//        usuarioRef = ConfigFireBase.getFirebase().child("meus_pedidos")
+//                .child(ConfigFireBase.getIdUsuario());
+//        recyclerPedidos = findViewById(R.id.recyclerMeusPedido);
+//
+//
+//        exibirAnuncios();
+//    }
+//    public void exibirAnuncios () {
+//        recyclerPedidos.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerPedidos.setHasFixedSize(true);
+//        adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
+//        recyclerPedidos.setAdapter(adapterMeusAnuncios);
+//        recuperarFavoritos();
+//
+//        recyclerPedidos.addOnItemTouchListener(new RecyclerItemClickListener(
+//                this,
+//                recyclerPedidos,
+//                new RecyclerItemClickListener.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        Anuncio anuncioSelecionado = listaAnuncios.get(position);
+//                        Intent i = new Intent(MeusPedidosActivity.this, DetalhesAnuncioActivity.class);
+//                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
+//                        startActivity(i);
+//                    }
+//
+//                    @Override
+//                    public void onLongItemClick(View view, int position) {
+//                        alerdDialogEscluirAnuncio(position);
+//                    }
+//
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                    }
+//                }
+//        ));
+//    }
+//
+//    private void recuperarFavoritos() {
+//        dialog = new SpotsDialog.Builder()
+//                .setContext(this)
+//                .setMessage("Carregando Seus Pedidos")
+//                .setCancelable(false)
+//                .build();
+//        dialog.show();
+//        usuarioRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                listaAnuncios.clear();
+//                for (DataSnapshot id: dataSnapshot.getChildren()){
+//                    listaAnuncios.add(id.getValue(Anuncio.class));
+//                }
+//                Collections.reverse(listaAnuncios);
+//                adapterMeusAnuncios.notifyDataSetChanged();
+//
+//                dialog.dismiss();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
+//
+//    private void alerdDialogEscluirAnuncio (final int position) {
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Comfirmar entrega");
+//        builder.setMessage("Tem certeza que deseja confirmar a entrega desse anuncio?");
+//        builder.setCancelable(false);
+//        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Anuncio anuncioSelecionado = listaAnuncios.get(position);
+//                anuncioSelecionado.excluirFavorito();
+//
+//                adapterMeusAnuncios.notifyDataSetChanged();
+//            }
+//        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                builder.setCancelable(true);
+//            }
+//        });
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
     }
 
 }
