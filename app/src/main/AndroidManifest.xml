@@ -34,7 +34,8 @@
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_principal"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.RecuperarSenhaActivity" />
+        <activity android:name=".activity.RecuperarSenhaActivity"
+            android:parentActivityName=".activity.LoginActivity"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -69,11 +70,16 @@
         <activity
             android:name=".activity.DetalhesAnuncioActivity"
             android:parentActivityName=".activity.PrincipalActivity" />
-        <activity android:name=".activity.PerfilActivity" />
-        <activity android:name=".activity.MeusPedidosActivity" />
-        <activity android:name=".activity.FavoritosActivity" />
-        <activity android:name=".activity.AjudaActivity" />
-        <activity android:name=".activity.FazerPedidoActivity" />
+        <activity android:name=".activity.PerfilActivity"
+            android:parentActivityName=".activity.PrincipalActivity"/>
+        <activity android:name=".activity.MeusPedidosActivity"
+            android:parentActivityName=".activity.PrincipalActivity"/>
+        <activity android:name=".activity.FavoritosActivity"
+            android:parentActivityName=".activity.PrincipalActivity"/>
+        <activity android:name=".activity.AjudaActivity"
+            android:parentActivityName=".activity.PrincipalActivity"/>
+        <activity android:name=".activity.FazerPedidoActivity"
+            android:parentActivityName=".activity.PrincipalActivity"/>
     </application>
 
 </manifest>
