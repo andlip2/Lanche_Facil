@@ -10,6 +10,7 @@ import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 public class Anuncio implements Serializable{
     private String idAnuncio;
     private String titulo;
+    private String titulo_pesquisa;
     private String cidade;
     private String cep;
     private String endereco;
@@ -18,42 +19,9 @@ public class Anuncio implements Serializable{
     private String descricao;
     private String nome;
     private String lanche;
-    private String quantidade;
     private List <String> fotos;
     private int favoritos;
 
-    public int getFavoritos() {
-        return favoritos;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getLanche() {
-        return lanche;
-    }
-
-    public void setLanche(String lanche) {
-        this.lanche = lanche;
-    }
-
-    public String getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(String quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public void setFavoritos(int favoritos) {
-
-        this.favoritos = favoritos;
-    }
 
     public Anuncio()  {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
@@ -63,14 +31,6 @@ public class Anuncio implements Serializable{
     public void salvarFavoritos () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("favoritos");
-
-        anuncioRef.child(idUsuario)
-                .child(getIdAnuncio())
-                .setValue(this);
-    }
-    public void salvarPedidos () {
-        String idUsuario = ConfigFireBase.getIdUsuario();
-        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_pedidos");
 
         anuncioRef.child(idUsuario)
                 .child(getIdAnuncio())
@@ -126,6 +86,40 @@ public class Anuncio implements Serializable{
 
         anuncioRef.removeValue();
 
+    }
+
+
+    public int getFavoritos() {
+        return favoritos;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getLanche() {
+        return lanche;
+    }
+
+    public void setLanche(String lanche) {
+        this.lanche = lanche;
+    }
+
+    public void setFavoritos(int favoritos) {
+
+        this.favoritos = favoritos;
+    }
+
+    public String getTitulo_pesquisa() {
+        return titulo_pesquisa;
+    }
+
+    public void setTitulo_pesquisa(String titulo_pesquisa) {
+        this.titulo_pesquisa = titulo_pesquisa;
     }
 
     public String getIdAnuncio() {

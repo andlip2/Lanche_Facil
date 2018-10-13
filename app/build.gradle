@@ -64,6 +64,9 @@ dependencies {
     implementation 'com.synnapps:carouselview:0.1.5'
 
     implementation 'com.android.support:multidex:1.0.3'
+
+    /*Imagem Circular*/
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

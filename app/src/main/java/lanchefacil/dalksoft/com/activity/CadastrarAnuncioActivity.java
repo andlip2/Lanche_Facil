@@ -127,6 +127,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         Anuncio anuncio = new Anuncio();
         anuncio.setTitulo(titulo);
+        anuncio.setTitulo_pesquisa(titulo.toUpperCase());
         anuncio.setCidade(cidade);
         anuncio.setCep(cep);
         anuncio.setEndereco(endereco);

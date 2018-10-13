@@ -44,6 +44,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -141,12 +142,67 @@ public class PrincipalActivity extends AppCompatActivity
 
         //Acho q o nome do metodo já diz tudo né
         exibirAnuncios();
+        pesquisar();
 
     }
 
+    public void pesquisar () {
+        pesquisa.setQueryHint("Buscar Anúncios");
+        pesquisa.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String txtDigitado = newText.toUpperCase();
+                pesquisarAnuncios (txtDigitado);
+                return true;
+            }
+        });
+        pesquisa.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                recuperarAnunciosPublicos();
+                return true;
+            }
+        });
+    }
+
+    private void pesquisarAnuncios(String txtDigitado) {
+        listaAnuncios.clear();
+
+        if (txtDigitado.length() >=2) {
+            Query query = anunciosPublicosRef.orderByChild("titulo_pesquisa")
+                    .startAt(txtDigitado)
+                    .endAt(txtDigitado + "\uf8ff");
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    listaAnuncios.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        listaAnuncios.add(ds.getValue(Anuncio.class));
+                    }
+
+                    adapterMeusAnuncios.notifyDataSetChanged();
+//                    int total = listaAnuncios.size();
+//                    Log.i("totalAnuncios","Total: " + total);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
     public void exibirAnuncios () {
-        recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
         recyclerAnunciosPublicos.setHasFixedSize(true);
+        recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
         adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
         recyclerAnunciosPublicos.setAdapter(adapterMeusAnuncios);
         recuperarAnunciosPublicos();
