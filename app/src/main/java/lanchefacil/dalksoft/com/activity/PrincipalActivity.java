@@ -304,10 +304,9 @@ public class PrincipalActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
             int id = item.getItemId();
-//
         if (id == R.id.menu_perfil) {
-//            Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
-//            startActivity(i);
+            Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
+            startActivity(i);
         }
      else if (id == R.id.menu_anuncios) {
         Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
@@ -446,18 +445,18 @@ public class PrincipalActivity extends AppCompatActivity
 //    }
 
 
-    public void recuperarImagem () {
-        ImageListener imageListener = new ImageListener() {
-            @Override
-            public void setImageForPosition(int position, ImageView imageView) {
-                Anuncio anuncio;
-                anuncio = new Anuncio();
-                String url = usuario.getFotosPerfil().get(position);
-                Picasso.get().load(url).into(imageView);
-            }
-        };
-
-    }
+//    public void recuperarImagem () {
+//        ImageListener imageListener = new ImageListener() {
+//            @Override
+//            public void setImageForPosition(int position, ImageView imageView) {
+//                Anuncio anuncio;
+//                anuncio = new Anuncio();
+//                String url = usuario.getFotosPerfil().get(position);
+//                Picasso.get().load(url).into(imageView);
+//            }
+//        };
+//
+//    }
 
     private void inicializarComponentes() {
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);

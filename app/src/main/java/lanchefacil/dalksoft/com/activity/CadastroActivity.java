@@ -22,6 +22,7 @@ import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.Base64Custom;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Preferencias;
+import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
 import lanchefacil.dalksoft.com.model.Usuarios;
 
 public class CadastroActivity extends AppCompatActivity {
@@ -71,16 +72,17 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    String idUsuario = Base64Custom.codificarBase64(usuarios.getEmail());
 
-                    FirebaseUser usuarioFirebase = task.getResult().getUser();
+                    String idUsuario = task.getResult().getUser().getUid();
                     usuarios.setId(idUsuario);
-                    usuarios.salvar();
+
+                    UsuarioFirebase.atualizarNomeUsuario(usuarios.getNome());
 
                     Preferencias preferencias = new Preferencias(CadastroActivity.this);
                     preferencias.salvarPreferenciasUsuario(idUsuario, usuarios.getEmail());
                     alerta("Usuario cadastrado com sucesso! ");
                     abrirLoginUsuario();
+                    usuarios.salvar();
                 }
                 else {
                     String erro = "";

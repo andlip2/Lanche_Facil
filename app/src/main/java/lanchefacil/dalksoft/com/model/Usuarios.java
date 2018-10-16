@@ -14,24 +14,40 @@ public class Usuarios {
 
     private String id;
     private String email;
+    private String nome = "teste";
     private String senha;
-    private List<String> fotosPerfil;
+    private String caminhoFoto;
 
-    public List<String> getFotosPerfil() {
-        return fotosPerfil;
-    }
 
-    public void setFotosPerfil(List<String> fotosPerfil) {
-        this.fotosPerfil = fotosPerfil;
-    }
 
     public Usuarios() {
     }
 
     public void salvar () {
         DatabaseReference referenciaFirebase = ConfigFireBase.getFirebase();
-        referenciaFirebase.child("usuarios").child(String.valueOf(getId())).setValue(this);
+        DatabaseReference usuariosRef = referenciaFirebase.child("usuarios")
+                .child(String.valueOf(getId()));
+        usuariosRef.setValue(this);
 
+    }
+
+    public void atualizar () {
+        DatabaseReference reference = ConfigFireBase.getFirebase();
+        DatabaseReference usuarioRef = reference
+                .child("usuarios")
+                .child(getId());
+        Map<String, Object> valoresUsuario = converterMap();
+        usuarioRef.updateChildren(valoresUsuario);
+    }
+
+    public Map<String, Object> converterMap () {
+        HashMap<String, Object> usuarioMap = new HashMap<>();
+        usuarioMap.put("email", getEmail());
+        usuarioMap.put("nome", getNome());
+        usuarioMap.put("id", getId());
+        usuarioMap.put("caminhoFoto", getCaminhoFoto());
+
+        return usuarioMap;
     }
 
     @Exclude
@@ -42,6 +58,22 @@ public class Usuarios {
         hashMapUsuario.put("senha", getSenha());
 
         return hashMapUsuario;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCaminhoFoto() {
+        return caminhoFoto;
+    }
+
+    public void setCaminhoFoto(String caminhoFoto) {
+        this.caminhoFoto = caminhoFoto;
     }
 
     public String getId() {
@@ -60,6 +92,7 @@ public class Usuarios {
         this.email = email;
     }
 
+    @Exclude
     public String getSenha() {
         return senha;
     }
