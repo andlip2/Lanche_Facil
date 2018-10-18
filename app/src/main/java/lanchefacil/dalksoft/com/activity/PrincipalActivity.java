@@ -36,10 +36,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,12 +57,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
+import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
 import lanchefacil.dalksoft.com.model.Anuncio;
 import lanchefacil.dalksoft.com.model.Usuarios;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -86,7 +90,7 @@ public class PrincipalActivity extends AppCompatActivity
     private Anuncio anuncio = new Anuncio();
     private Usuarios usuario = new Usuarios();
     private TextView menuEmail, menuNome;
-    private ImageView menuIMGPerfil;
+    private CircleImageView menuIMGPerfil;
     private String listaImgRecuperadas;
     private List<String> listaURLFotos = new ArrayList<>();
     private StorageReference storage;
@@ -103,7 +107,7 @@ public class PrincipalActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
-
+        FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
         storage = ConfigFireBase.getReferenciaStorage();
         Permissoes.validarPermissoes(permissoes, this,1);
 
@@ -143,6 +147,15 @@ public class PrincipalActivity extends AppCompatActivity
         //Acho q o nome do metodo já diz tudo né
         exibirAnuncios();
         pesquisar();
+
+        Uri url = user.getPhotoUrl();
+        if (url != null) {
+            Glide.with(PrincipalActivity.this)
+                    .load(url)
+                    .into(menuIMGPerfil);
+        }else {
+            menuIMGPerfil.setImageResource(R.drawable.padrao);
+        }
 
     }
 
@@ -383,19 +396,6 @@ public class PrincipalActivity extends AppCompatActivity
         mMaterialDialog.show();
     }
 
-
-
-    private void escolherImagem(int requestCode) {
-        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, requestCode);
-    }
-
-//    public void adicionarImagemPerfil (View v) {
-//        switch (v.getId()) {
-//            case R.id.imageMenuPrincipalPerfil:
-//                escolherImagem(1);
-//        }
-//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -410,53 +410,7 @@ public class PrincipalActivity extends AppCompatActivity
             menuIMGPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         }
     }
-//    private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
-//        //criando nó no banco
-//        StorageReference imgPerfil = storage.child("imagens")
-//                .child("perfil")
-//                .child(usuario.getId())
-//                .child("imagem"+contador);
-//
-//        //enviar imagem e anuncio
-//        UploadTask uploadTask = imgPerfil.putFile(Uri.parse(urlIMG));
-//        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
-//                String urlConvertida = firebaseUrl.toString();
-//                listaURLFotos.add(urlConvertida);
-//
-//                if (totalIMG == listaURLFotos.size()) {
-//                    usuario.setFotosPerfil(listaURLFotos);
-//                    finish();
-//                }else {
-//
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                alerta("Falha ao fazer upload da imagem");
-//                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
-//            }
-//        });
-//
-//    }
 
-
-//    public void recuperarImagem () {
-//        ImageListener imageListener = new ImageListener() {
-//            @Override
-//            public void setImageForPosition(int position, ImageView imageView) {
-//                Anuncio anuncio;
-//                anuncio = new Anuncio();
-//                String url = usuario.getFotosPerfil().get(position);
-//                Picasso.get().load(url).into(imageView);
-//            }
-//        };
-//
-//    }
 
     private void inicializarComponentes() {
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
@@ -464,6 +418,7 @@ public class PrincipalActivity extends AppCompatActivity
         menuEmail = findViewById(R.id.textMenuPrincipalEmail);
 //        menuEmail.setText(autenticacao.getCurrentUser().toString());
         menuNome = findViewById(R.id.textMenuPrincipalNome);
+        menuIMGPerfil = findViewById(R.id.imageMenuPefilFoto);
 
     }
 
