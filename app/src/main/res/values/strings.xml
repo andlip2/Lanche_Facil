@@ -32,8 +32,6 @@
     <string name="titulo_anuncio">Titulo do anúncio</string>
     <string name="facebook_app_id">291388058112722</string>
     <string name="fb_login_protocol_scheme">fb291388058112722</string>
-
-
     <string name="action_example">Example action</string>
     <string name="title_activity_meus_anuncios">MeusAnunciosActivity</string>
     <string name="title_activity_main">MainActivity</string>
@@ -60,4 +58,5 @@
     <string name="lanche">Lanche:</string>
     <string name="quantd">Quantidade:</string>
     <string name="enviar_pedido">Enviar Pedido</string>
+    <string name="atualizar_anuncio">Atualizar Anúncio</string>
 </resources>

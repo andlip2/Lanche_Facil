@@ -20,10 +20,6 @@
             android:id="@+id/menu_favoritos"
             android:icon="@drawable/ic_menu_favoritos"
             android:title="Favoritos" />
-        <item
-            android:id="@+id/menu_config"
-            android:icon="@drawable/ic_menu_config"
-            android:title="Configurações" />
     </group>
 
     <item android:title="Mais">

@@ -23,12 +23,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santalu.widget.MaskEditText;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +42,8 @@ import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.model.Anuncio;
 
-public class CadastrarAnuncioActivity extends AppCompatActivity
-                implements View.OnClickListener{
+public class EditarAnuncioActivity extends AppCompatActivity
+        implements View.OnClickListener{
 
 
     private EditText editCidade, editCEP, editEndereco, editTitulo, editDescricao;
@@ -65,7 +67,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastrar_anuncio);
+        setContentView(R.layout.activity_editar_anuncio);
 
         Permissoes.validarPermissoes(permissoes, this,1);
 
@@ -73,69 +75,61 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         storage = ConfigFireBase.getReferenciaStorage();
 
+        recuperarDadosAnuncio();
     }
 
-    private void geolocalizacao() {
-        double latitude =0.0;
-        double longitude = 0.0;
-        if (ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        private void geolocalizacao() {
+            double latitude =0.0;
+            double longitude = 0.0;
+            if (ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-        }else {
-            mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            localizacao = mLocalizacao.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }else {
+                mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+                localizacao = mLocalizacao.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+
+            if (localizacao != null) {
+                longitude = localizacao.getLongitude();
+                latitude = localizacao.getLatitude();
+            }
+
+            try {
+                endereco = buscarEndereco(latitude, longitude);
+                editCidade.setText(endereco.getLocality());
+                editCEP.setText(endereco.getPostalCode());
+                editEndereco.setText(endereco.getAddressLine(0));
+            } catch (IOException e) {
+                alerta("Erro ao recuperar localização");
+            }
         }
 
-        if (localizacao != null) {
-            longitude = localizacao.getLongitude();
-            latitude = localizacao.getLatitude();
+        private Address buscarEndereco(double latitude, double longitude) throws IOException {
+            Geocoder geocoder;
+            Address address = null;
+            List<Address> addresses;
+
+            geocoder = new Geocoder(getApplicationContext());
+
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+            if (addresses.size() >0) {
+                address = addresses.get(0);
+            }
+            return address;
         }
 
-        try {
-            endereco = buscarEndereco(latitude, longitude);
-            editCidade.setText(endereco.getLocality());
-            editCEP.setText(endereco.getPostalCode());
-            editEndereco.setText(endereco.getAddressLine(0));
-        } catch (IOException e) {
-            alerta("Erro ao recuperar localização");
-        }
-    }
+    private void recuperarDadosAnuncio () {
 
-    private Address buscarEndereco(double latitude, double longitude) throws IOException {
-        Geocoder geocoder;
-        Address address = null;
-        List<Address> addresses;
-
-        geocoder = new Geocoder(getApplicationContext());
-
-        addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-        if (addresses.size() >0) {
-            address = addresses.get(0);
-        }
-        return address;
-    }
-
-    private Anuncio configurarAnuncio () {
-        String titulo = editTitulo.getText().toString();
-        String cidade = editCidade.getText().toString();
-        String cep = editCEP.getText().toString();
-        String endereco = editEndereco.getText().toString();
-        String valor = editValor.getText().toString();
-        String telefone = editTelefone.getText().toString();
-        String descricao = editDescricao.getText().toString();
-
+        anuncio = (Anuncio) getIntent().getSerializableExtra("anuncioSelecionado");
         Anuncio anuncio = new Anuncio();
-        anuncio.setTitulo(titulo);
-        anuncio.setTitulo_pesquisa(titulo.toUpperCase());
-        anuncio.setCidade(cidade);
-        anuncio.setCep(cep);
-        anuncio.setEndereco(endereco);
-        anuncio.setValor(valor);
-        anuncio.setTelefone(telefone);
-        anuncio.setDescricao(descricao);
-
-        return anuncio;
+        editTitulo.setText(anuncio.getTitulo());
+        editCidade.setText(anuncio.getCidade());
+        editCEP.setText(anuncio.getCep());
+        editEndereco.setText(anuncio.getEndereco());
+        editValor.setText(anuncio.getValor());
+        editTelefone.setText(anuncio.getTelefone());
+        editDescricao.setText(anuncio.getDescricao());
     }
 
     public void validarDadosAnuncio (View view) {
@@ -147,7 +141,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         if (editTelefone.getRawText() != null) {
             fone = editTelefone.getRawText().toString();
         }
-        anuncio = configurarAnuncio();
         if (listaImgRecuperadas.size() != 0){
             if (!anuncio.getTitulo().isEmpty()){
                 if (!anuncio.getCidade().isEmpty()){
@@ -202,14 +195,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         for (int i=0; i< listaImgRecuperadas.size(); i++) {
             String urlIMG = listaImgRecuperadas.get(i);
             int tamanho = listaImgRecuperadas.size();
-           salvarImagens (urlIMG, tamanho, i);
+            salvarImagens (urlIMG, tamanho, i);
         }
 
     }
-
-
-
-
 
     @Override
     public void onClick(View v) {
@@ -316,11 +305,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         imagem2.setOnClickListener(this);
         imagem3 = findViewById(R.id.imageAnuncio3);
         imagem3.setOnClickListener(this);
-
-
-
-
-
     }
 
 
@@ -352,4 +336,5 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }
+
 }

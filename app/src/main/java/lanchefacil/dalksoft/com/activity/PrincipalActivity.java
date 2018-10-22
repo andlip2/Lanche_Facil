@@ -148,14 +148,16 @@ public class PrincipalActivity extends AppCompatActivity
         exibirAnuncios();
         pesquisar();
 
-        Uri url = user.getPhotoUrl();
-        if (url != null) {
-            Glide.with(PrincipalActivity.this)
-                    .load(url)
-                    .into(menuIMGPerfil);
-        }else {
-            menuIMGPerfil.setImageResource(R.drawable.padrao);
-        }
+//        Uri url = user.getPhotoUrl();
+//        if (url != null) {
+//            Glide.with(PrincipalActivity.this)
+//                    .load(url)
+//                    .into(menuIMGPerfil);
+//        }else {
+//            menuIMGPerfil.setImageResource(R.drawable.padrao);
+//
+//
+//        }
 
     }
 
@@ -418,7 +420,7 @@ public class PrincipalActivity extends AppCompatActivity
         menuEmail = findViewById(R.id.textMenuPrincipalEmail);
 //        menuEmail.setText(autenticacao.getCurrentUser().toString());
         menuNome = findViewById(R.id.textMenuPrincipalNome);
-        menuIMGPerfil = findViewById(R.id.imageMenuPefilFoto);
+        menuIMGPerfil = findViewById(R.id.imagePefilFoto);
 
     }
 
