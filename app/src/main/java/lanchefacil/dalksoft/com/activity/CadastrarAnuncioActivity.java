@@ -73,6 +73,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         storage = ConfigFireBase.getReferenciaStorage();
 
+
+
     }
 
     private void geolocalizacao() {
@@ -215,16 +217,16 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.imageAnuncio1:
+            case R.id.imageEditarAnuncio1:
                 escolherImagem(1);
                 break;
-            case R.id.imageAnuncio2:
+            case R.id.imageEditarAnuncio2:
                 escolherImagem(2);
                 break;
-            case R.id.imageAnuncio3:
+            case R.id.imageEditarAnuncio3:
                 escolherImagem(3);
                 break;
-            case R.id.buttonAnuncioGPS:
+            case R.id.buttonEditarAnuncioGPS:
                 geolocalizacao ();
                 break;
 
@@ -244,7 +246,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
             if (requestCode == 1) {
                 imagem1.setImageURI(imagemSelecionada);
-                listaImgRecuperadas.add(caminhoImagem);
             }else if (requestCode == 2) {
                 imagem2.setImageURI(imagemSelecionada);
             }else if ( requestCode == 3) {
@@ -295,7 +296,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     private void iniciarComponentes () {
-        buttonGPS = findViewById(R.id.buttonAnuncioGPS);
+        buttonGPS = findViewById(R.id.buttonEditarAnuncioGPS);
         buttonGPS.setOnClickListener(this);
         editCidade = findViewById(R.id.editAnuncioCidade);
         editCEP = findViewById(R.id.editAnuncioCP);
@@ -304,17 +305,17 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         editTitulo = findViewById(R.id.editAnuncioTitulo);
         editDescricao = findViewById(R.id.editAnuncioDescricao);
 
-        editValor = findViewById(R.id.editAnuncioValor);
+        editValor = findViewById(R.id.editEditarAnuncioValor);
         //configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
         editValor.setLocale(locale);
 
-        editTelefone = findViewById(R.id.editAnuncioTelefone);
-        imagem1 = findViewById(R.id.imageAnuncio1);
+        editTelefone = findViewById(R.id.editEditarAnuncioTelefone);
+        imagem1 = findViewById(R.id.imageEditarAnuncio1);
         imagem1.setOnClickListener(this);
-        imagem2 = findViewById(R.id.imageAnuncio2);
+        imagem2 = findViewById(R.id.imageEditarAnuncio2);
         imagem2.setOnClickListener(this);
-        imagem3 = findViewById(R.id.imageAnuncio3);
+        imagem3 = findViewById(R.id.imageEditarAnuncio3);
         imagem3.setOnClickListener(this);
 
 

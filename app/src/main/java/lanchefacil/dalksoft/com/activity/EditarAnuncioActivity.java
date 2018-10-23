@@ -1,5 +1,4 @@
 package lanchefacil.dalksoft.com.activity;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,9 +21,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
@@ -43,7 +45,8 @@ import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.model.Anuncio;
 
 public class EditarAnuncioActivity extends AppCompatActivity
-        implements View.OnClickListener{
+        implements View.OnClickListener
+{
 
 
     private EditText editCidade, editCEP, editEndereco, editTitulo, editDescricao;
@@ -75,8 +78,50 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
         storage = ConfigFireBase.getReferenciaStorage();
 
-        recuperarDadosAnuncio();
-    }
+        anuncio = (Anuncio) getIntent().getSerializableExtra("anuncioSelecionado");
+        if (anuncio != null) {
+            editTitulo.setText(anuncio.getTitulo());
+            editCEP.setText(anuncio.getCep());
+            editCidade.setText(anuncio.getCidade());
+            editDescricao.setText(anuncio.getDescricao());
+            editEndereco.setText(anuncio.getEndereco());
+            editTelefone.setText(anuncio.getTelefone());
+            editValor.setText(anuncio.getValor());
+
+            //Recuperar IMG
+//            for (int contador = 0; contador >=3; contador++){
+            StorageReference imgAnuncio = storage.child("imagens")
+                    .child("anuncios")
+                    .child(anuncio.getIdAnuncio())
+                    .child("imagem0");
+
+
+//            if (contador == 0) {
+                Glide.with(EditarAnuncioActivity.this)
+                        .using(new FirebaseImageLoader())
+                        .load(imgAnuncio)
+                        .into(imagem1);
+//            }else if (contador ==1) {
+//                Glide.with(EditarAnuncioActivity.this)
+//                        .using(new FirebaseImageLoader())
+//                        .load(imgAnuncio)
+//                        .into(imagem2);
+//            }else {
+//                Glide.with(EditarAnuncioActivity.this)
+//                        .using(new FirebaseImageLoader())
+//                        .load(imgAnuncio)
+//                        .into(imagem3);
+//            }
+
+            }
+
+        }
+//        }
+
+
+
+
+
 
         private void geolocalizacao() {
             double latitude =0.0;
@@ -121,16 +166,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
     private void recuperarDadosAnuncio () {
 
-        anuncio = (Anuncio) getIntent().getSerializableExtra("anuncioSelecionado");
-        Anuncio anuncio = new Anuncio();
-        editTitulo.setText(anuncio.getTitulo());
-        editCidade.setText(anuncio.getCidade());
-        editCEP.setText(anuncio.getCep());
-        editEndereco.setText(anuncio.getEndereco());
-        editValor.setText(anuncio.getValor());
-        editTelefone.setText(anuncio.getTelefone());
-        editDescricao.setText(anuncio.getDescricao());
-    }
+        }
 
     public void validarDadosAnuncio (View view) {
 
@@ -204,16 +240,16 @@ public class EditarAnuncioActivity extends AppCompatActivity
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.imageAnuncio1:
+            case R.id.imageEditarAnuncio1:
                 escolherImagem(1);
                 break;
-            case R.id.imageAnuncio2:
+            case R.id.imageEditarAnuncio2:
                 escolherImagem(2);
                 break;
-            case R.id.imageAnuncio3:
+            case R.id.imageEditarAnuncio3:
                 escolherImagem(3);
                 break;
-            case R.id.buttonAnuncioGPS:
+            case R.id.buttonEditarAnuncioGPS:
                 geolocalizacao ();
                 break;
 
@@ -284,26 +320,26 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     private void iniciarComponentes () {
-        buttonGPS = findViewById(R.id.buttonAnuncioGPS);
+        buttonGPS = findViewById(R.id.buttonEditarAnuncioGPS);
         buttonGPS.setOnClickListener(this);
-        editCidade = findViewById(R.id.editAnuncioCidade);
-        editCEP = findViewById(R.id.editAnuncioCP);
-        editCidade = findViewById(R.id.editAnuncioCidade);
-        editEndereco = findViewById(R.id.editAnuncioRua);
-        editTitulo = findViewById(R.id.editAnuncioTitulo);
-        editDescricao = findViewById(R.id.editAnuncioDescricao);
+        editCidade = findViewById(R.id.editEditarAnuncioCidade);
+        editCEP = findViewById(R.id.editEditarAnuncioCP);
+        editCidade = findViewById(R.id.editEditarAnuncioCidade);
+        editEndereco = findViewById(R.id.editEditarAnuncioRua);
+        editTitulo = findViewById(R.id.editEditarAnuncioTitulo);
+        editDescricao = findViewById(R.id.editEditarAnuncioDescricao);
 
-        editValor = findViewById(R.id.editAnuncioValor);
-        //configurar localidade para pt -> portugues BR -> Brasil
+        editValor = findViewById(R.id.editEditarAnuncioValor);
+//        configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
         editValor.setLocale(locale);
 
-        editTelefone = findViewById(R.id.editAnuncioTelefone);
-        imagem1 = findViewById(R.id.imageAnuncio1);
+        editTelefone = findViewById(R.id.editEditarAnuncioTelefone);
+        imagem1 = findViewById(R.id.imageEditarAnuncio1);
         imagem1.setOnClickListener(this);
-        imagem2 = findViewById(R.id.imageAnuncio2);
+        imagem2 = findViewById(R.id.imageEditarAnuncio2);
         imagem2.setOnClickListener(this);
-        imagem3 = findViewById(R.id.imageAnuncio3);
+        imagem3 = findViewById(R.id.imageEditarAnuncio3);
         imagem3.setOnClickListener(this);
     }
 
