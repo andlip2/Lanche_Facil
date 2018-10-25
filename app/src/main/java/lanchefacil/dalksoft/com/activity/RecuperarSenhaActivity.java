@@ -28,6 +28,7 @@ public class RecuperarSenhaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recuperar_senha);
 
         inicializarComponentes();
+        getSupportActionBar().setTitle("Recuperar Senha");
 
         btEnviar.setOnClickListener(new View.OnClickListener() {
             @Override

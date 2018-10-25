@@ -73,6 +73,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         storage = ConfigFireBase.getReferenciaStorage();
 
+        getSupportActionBar().setTitle("Cadastrar Anúncio");
+
 
 
     }

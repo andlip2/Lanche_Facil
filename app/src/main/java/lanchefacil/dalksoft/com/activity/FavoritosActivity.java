@@ -44,6 +44,7 @@ public class FavoritosActivity extends AppCompatActivity {
         recyclerFavoritos = findViewById(R.id.recyclerFavoritos);
 
         exibirAnuncios();
+        getSupportActionBar().setTitle("Favoritos");
     }
     public void exibirAnuncios () {
         recyclerFavoritos.setLayoutManager(new LinearLayoutManager(this));

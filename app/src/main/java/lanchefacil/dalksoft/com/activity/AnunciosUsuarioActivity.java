@@ -54,6 +54,7 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
         recyclerAnuncios.setAdapter(adapterMeusAnuncios);
 
         recuperarAnuncios ();
+        getSupportActionBar().setTitle("Meus Anúncios");
 
         recyclerAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
                 this,

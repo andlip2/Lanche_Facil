@@ -143,7 +143,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="24dp"
-                    android:onClick="validarDadosAnuncio"
+                    android:onClick="validarDados"
                     android:text="@string/atualizar_anuncio"
                     android:theme="@style/botaoPadrao"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -39,6 +39,8 @@ public class MeusPedidosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_pedidos);
 
+        getSupportActionBar().setTitle("Meus Pedidos" );
+
 //        usuarioRef = ConfigFireBase.getFirebase().child("meus_pedidos")
 //                .child(ConfigFireBase.getIdUsuario());
 //        recyclerPedidos = findViewById(R.id.recyclerMeusPedido);

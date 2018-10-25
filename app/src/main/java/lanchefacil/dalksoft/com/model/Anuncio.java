@@ -3,7 +3,9 @@ package lanchefacil.dalksoft.com.model;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 
@@ -48,12 +50,58 @@ public class Anuncio implements Serializable{
         salvarPublico();
     }
 
-    public void salvarPublico () {
-        DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("anuncios");
-        setIdAnuncio(anuncioRef.push().getKey());
 
-        anuncioRef.child(getTitulo())
+
+    public void salvarPublico () {
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("anuncios");
+        anuncioRef.child(getIdAnuncio())
                 .setValue(this);
+    }
+
+    public void  atualizarFavoritos () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("favoritos")
+                .child(idUsuario)
+                .child(getIdAnuncio());
+        Map<String, Object> valoresUsuario = converterMap();
+        anuncioRef.updateChildren(valoresUsuario);
+    }
+
+    public void atualizar () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("meus_anuncios")
+                .child(idUsuario)
+                .child(getIdAnuncio());
+
+        Map<String, Object> valoresUsuario = converterMap();
+        anuncioRef.updateChildren(valoresUsuario);
+        atualizarPublico();
+    }
+
+    public void atualizarPublico () {
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("anuncios")
+                .child(getIdAnuncio());
+        Map<String, Object> valoresUsuario = converterMap();
+        anuncioRef.updateChildren(valoresUsuario);
+    }
+
+    public Map<String, Object> converterMap () {
+        HashMap<String, Object> usuarioMap = new HashMap<>();
+        usuarioMap.put("titulo", getTitulo());
+        usuarioMap.put("titulo_pesquisa", getTitulo().toUpperCase());
+        usuarioMap.put("id", getIdAnuncio());
+        usuarioMap.put("cidade", getCidade());
+        usuarioMap.put("endereco", getEndereco());
+        usuarioMap.put("valor", getValor());
+        usuarioMap.put("telefone",getTelefone());
+        usuarioMap.put("descricao", getDescricao());
+        usuarioMap.put("fotos" , getFotos());
+
+        return usuarioMap;
     }
 
     public void excluirAnuncio () {

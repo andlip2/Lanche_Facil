@@ -47,6 +47,7 @@ public class PerfilActivity extends AppCompatActivity {
         identificadorUsuario = UsuarioFirebase.getUsuarioAtual().getUid();
 
         inicializarComponentes ();
+        getSupportActionBar().setTitle("Perfil");
 
         FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
         editNome.setText(user.getDisplayName());
