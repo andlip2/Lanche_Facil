@@ -133,7 +133,8 @@
                         android:id="@+id/editAnuncioDescricao"
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
-                        android:hint="@string/descricao" />
+                        android:hint="@string/descricao"
+                        android:onClick="validarDadosAnuncio" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button

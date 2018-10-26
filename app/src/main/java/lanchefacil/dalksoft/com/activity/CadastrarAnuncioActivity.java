@@ -245,16 +245,31 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         if (resultCode == Activity.RESULT_OK) {
             Uri imagemSelecionada = data.getData();
             String caminhoImagem = imagemSelecionada.toString();
+            List<String> image01 = new ArrayList<>();
+            List<String> image02 = new ArrayList<>();
+            List<String> image03 = new ArrayList<>();
 
             if (requestCode == 1) {
                 imagem1.setImageURI(imagemSelecionada);
+                image01.clear();
+                image01.add(caminhoImagem);
             }else if (requestCode == 2) {
                 imagem2.setImageURI(imagemSelecionada);
+                image02.clear();
+                image02.add(caminhoImagem);
             }else if ( requestCode == 3) {
                 imagem3.setImageURI(imagemSelecionada);
+                image03.clear();
+                image03.add(caminhoImagem);
+            }
+            if (!image01.isEmpty()) {
+                listaImgRecuperadas.add(0, image01.toString());
+            }else if (!image01.isEmpty()){
+                listaImgRecuperadas.add(0, image02.toString());
+            }else if (!image01.isEmpty()){
+                listaImgRecuperadas.add(0, image03.toString());
             }
 
-            listaImgRecuperadas.add(caminhoImagem);
 
         }
     }
