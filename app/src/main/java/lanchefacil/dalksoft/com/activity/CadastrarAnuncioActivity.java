@@ -61,6 +61,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     };
     private List<String> listaImgRecuperadas = new ArrayList<>();
     private List<String> listaURLFotos = new ArrayList<>();
+    private List<String> image01 = new ArrayList<>();
+    private List<String> image02 = new ArrayList<>();
+    private List<String> image03 = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             fone = editTelefone.getRawText().toString();
         }
         anuncio = configurarAnuncio();
+        add(image01,image02,image03);
         if (listaImgRecuperadas.size() != 0){
             if (!anuncio.getTitulo().isEmpty()){
                 if (!anuncio.getCidade().isEmpty()){
@@ -234,6 +238,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         }
     }
+
     private void escolherImagem(int requestCode) {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, requestCode);
@@ -245,14 +250,16 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         if (resultCode == Activity.RESULT_OK) {
             Uri imagemSelecionada = data.getData();
             String caminhoImagem = imagemSelecionada.toString();
-            List<String> image01 = new ArrayList<>();
-            List<String> image02 = new ArrayList<>();
-            List<String> image03 = new ArrayList<>();
+
+            int i =0
+                    ,e =0
+                    ,d =0;
 
             if (requestCode == 1) {
                 imagem1.setImageURI(imagemSelecionada);
                 image01.clear();
                 image01.add(caminhoImagem);
+                i++;
             }else if (requestCode == 2) {
                 imagem2.setImageURI(imagemSelecionada);
                 image02.clear();
@@ -262,23 +269,32 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 image03.clear();
                 image03.add(caminhoImagem);
             }
-            if (!image01.isEmpty()) {
-                listaImgRecuperadas.add(0, image01.toString());
-            }else if (!image01.isEmpty()){
-                listaImgRecuperadas.add(0, image02.toString());
-            }else if (!image01.isEmpty()){
-                listaImgRecuperadas.add(0, image03.toString());
-            }
+        }
 
+
+    }
+
+    private void add (List<String> image01, List<String> image02, List<String> image03) {
+        if (!image01.isEmpty()) {
+            listaImgRecuperadas.add(0,"");
+            listaImgRecuperadas.remove(0);
+            listaImgRecuperadas.add(0, image01.get(0));
 
         }
+        if (!image02.isEmpty()){
+            listaImgRecuperadas.add(1, image02.get(0));
+        }
+        if (!image03.isEmpty()){
+            listaImgRecuperadas.add(2, image03.get(0));
+        }
     }
+
     private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
         //criando nó no banco
         StorageReference imgAnuncio = storage.child("imagens")
                 .child("anuncios")
                 .child(anuncio.getIdAnuncio())
-                .child("imagem"+contador);
+                .child("imagem"+contador+".jpeg");
 
         //enviar imagem e anuncio
         UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));

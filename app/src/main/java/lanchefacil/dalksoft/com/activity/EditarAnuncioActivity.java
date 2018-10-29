@@ -67,6 +67,11 @@ public class EditarAnuncioActivity extends AppCompatActivity
     };
     private List<String> listaImgRecuperadas = new ArrayList<>();
     private List<String> listaURLFotos  = new ArrayList<>();
+    private List<String> image01 = new ArrayList<>();
+    private List<String> image02 = new ArrayList<>();
+    private List<String> image03 = new ArrayList<>();
+    int teste =0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +123,10 @@ public class EditarAnuncioActivity extends AppCompatActivity
                 String url2 = listaURLFotosSalvas.get(2);
                 Picasso.get().load(url2).into(imagem3);
             }
+            listaImgRecuperadas = listaURLFotosSalvas;
 
         }
         }
-//        }
 
         private void geolocalizacao() {
             double latitude =0.0;
@@ -174,7 +179,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
         if (editTelefone.getRawText() != null) {
             fone = editTelefone.getRawText().toString();
         }
-        if (listaImgRecuperadas.size() != 0){
+        add(image01,image02,image03);
             if (!anuncio.getTitulo().isEmpty()){
                 if (!anuncio.getCidade().isEmpty()){
                     if (!anuncio.getCep().isEmpty()){
@@ -210,24 +215,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
             }
 
         }
-        else {
-            alerta("Você precisa Atualizar as fotos do anúncio!");
-        }
 
-    }
-
-    public void atualizarAnuncio() {
-
-
-
-        //Salvar imagens
-        for (int i=0; i< listaImgRecuperadas.size(); i++) {
-            String urlIMG = listaImgRecuperadas.get(i);
-            int tamanho = listaImgRecuperadas.size();
-            salvarImagens (urlIMG, tamanho, i);
-        }
-
-    }
 
     @Override
     public void onClick(View v) {
@@ -250,187 +238,70 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
     private void escolherImagem(int requestCode) {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if (i.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(i, requestCode);
-        }
+        startActivityForResult(i, requestCode);
     }
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            Bitmap imagem = null;
-            Bitmap imagemBit2 = null;
-            Bitmap imagemBit3 = null;
-
-            try {
-
-                switch (requestCode) {
-                    case 1:
-                        Uri imagemSelecionada = data.getData();
-                        imagem = MediaStore.Images.Media.getBitmap(getContentResolver(), imagemSelecionada);
-                        break;
-                }
-
-                if (imagem !=null) {
-                    imagem1.setImageBitmap(imagem);
-
-                    //recupera
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-                    byte[] dadosImagem = outputStream.toByteArray();
-
-                    dialog = new SpotsDialog.Builder()
-                            .setContext(this)
-                            .setMessage("Carregando Imagem")
-                            .setCancelable(false)
-                            .build();
-                    dialog.show();
-
-                    StorageReference imagemRef = ConfigFireBase.getReferenciaStorage()
-                            .child("imagens")
-                            .child("anuncios")
-                            .child(anuncio.getIdAnuncio())
-                            .child("image1.jpeg");
-                    UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            alerta("Erro ao fazer upload da imagem");
-
-                            dialog.dismiss();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Uri url = taskSnapshot.getDownloadUrl();
-                            listaImgRecuperadas.add(0,url.toString());
-//                            atualizarFoto(url);
-                            alerta("Sucesso ao fazer upload da imagem");
-
-                            dialog.dismiss();
-                        }
-                    });
-                }
-
-            }catch (Exception e) {
-                e.printStackTrace();
+        if (resultCode == Activity.RESULT_OK) {
+            Uri imagemSelecionada = data.getData();
+            String caminhoImagem = imagemSelecionada.toString();
+            if (requestCode == 1) {
+                teste++;
+                imagem1.setImageURI(imagemSelecionada);
+                image01.clear();
+                image01.add(caminhoImagem);
+            }else if (requestCode == 2) {
+                teste++;
+                imagem2.setImageURI(imagemSelecionada);
+                image02.clear();
+                image02.add(caminhoImagem);
+            }else if ( requestCode == 3) {
+                teste++;
+                imagem3.setImageURI(imagemSelecionada);
+                image03.clear();
+                image03.add(caminhoImagem);
             }
-            try {
+        }
 
-                switch (requestCode) {
-                    case 2:
-                        Uri imagemSelecionada = data.getData();
-                        imagemBit2 = MediaStore.Images.Media.getBitmap(getContentResolver(), imagemSelecionada);
-                        break;
-                }
 
-                if (imagemBit2 !=null) {
-                    imagem2.setImageBitmap(imagemBit2);
+    }
 
-                    //recupera
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    imagemBit2.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-                    byte[] dadosImagem = outputStream.toByteArray();
+    private void add (List<String> image01, List<String> image02, List<String> image03) {
+        listaImgRecuperadas.clear();
+        if (!image01.isEmpty()) {
+            listaImgRecuperadas.add(0,"");
+            listaImgRecuperadas.remove(0);
+            listaImgRecuperadas.add(0, image01.get(0));
 
-                    dialog = new SpotsDialog.Builder()
-                            .setContext(this)
-                            .setMessage("Carregando Imagem")
-                            .setCancelable(false)
-                            .build();
-                    dialog.show();
-
-                    StorageReference imagemRef = ConfigFireBase.getReferenciaStorage()
-                            .child("imagens")
-                            .child("anuncios")
-                            .child(anuncio.getIdAnuncio())
-                            .child("image2.jpeg");
-                    UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            alerta("Erro ao fazer upload da imagem");
-                            dialog.dismiss();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Uri url = taskSnapshot.getDownloadUrl();
-                            listaImgRecuperadas.add(1,url.toString());
-//                            atualizarFoto(url);
-                            alerta("Sucesso ao fazer upload da imagem");
-                            dialog.dismiss();
-                        }
-                    });
-                }
-
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-
-                switch (requestCode) {
-                    case 3:
-                        Uri imagemSelecionada = data.getData();
-                        imagemBit3 = MediaStore.Images.Media.getBitmap(getContentResolver(), imagemSelecionada);
-                        break;
-                }
-
-                if (imagemBit3 !=null) {
-                    imagem3.setImageBitmap(imagemBit3);
-
-                    //recupera
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    imagemBit3.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-                    byte[] dadosImagem = outputStream.toByteArray();
-
-                    dialog = new SpotsDialog.Builder()
-                            .setContext(this)
-                            .setMessage("Carregando Imagem")
-                            .setCancelable(false)
-                            .build();
-                    dialog.show();
-
-                    StorageReference imagemRef = ConfigFireBase.getReferenciaStorage()
-                            .child("imagens")
-                            .child("anuncios")
-                            .child(anuncio.getIdAnuncio())
-                            .child("image3.jpeg");
-                    UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            alerta("Erro ao fazer upload da imagem");
-                            dialog.dismiss();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Uri url = taskSnapshot.getDownloadUrl();
-                            listaImgRecuperadas.add(2,url.toString());
-//                            atualizarFoto(url);
-                            alerta("Sucesso ao fazer upload da imagem");
-                            dialog.dismiss();
-                        }
-                    });
-                }
-
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
+        }
+        if (!image02.isEmpty()){
+            listaImgRecuperadas.add(1, image02.get(0));
+        }
+        if (!image03.isEmpty()){
+            listaImgRecuperadas.add(2, image03.get(0));
         }
     }
 
-
     private void salvarImagens(String urlIMG, final int totalIMG, int contador) {
         //criando nó no banco
+        StorageReference imgAnuncio = storage.child("imagens")
+                .child("anuncios")
+                .child(anuncio.getIdAnuncio())
+                .child("imagem"+contador+".jpeg");
 
-                    listaURLFotos = listaImgRecuperadas;
-                    anuncio.setFotos(listaURLFotos);
-                    //Salvar anuncio
+        //enviar imagem e anuncio
+        UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+                listaURLFotos.add(urlConvertida);
+
+                if (totalIMG == listaURLFotos.size()) {
                     anuncio.setTitulo(editTitulo.getText().toString());
                     anuncio.setCep(editCEP.getText().toString());
                     anuncio.setCidade(editCidade.getText().toString());
@@ -438,14 +309,53 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     anuncio.setEndereco(editEndereco.getText().toString());
                     anuncio.setTelefone(editTelefone.getText().toString());
                     anuncio.setValor(editValor.getText().toString());
+                    anuncio.setFotos(listaURLFotos);
 
                     anuncio.atualizar();
-                    anuncio.atualizarFavoritos();
 
                     //finaliza carregamento
+                    dialog.dismiss();
                     finish();
-                    Intent i = new Intent(EditarAnuncioActivity.this, PrincipalActivity.class);
-                    startActivity(i);
+                }else {
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                alerta("Falha ao fazer upload da imagem");
+                Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
+            }
+        });
+
+    }
+
+    public void atualizarAnuncio() {
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Atualizando Anúncio")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+        //Salvar imagens
+        if (teste >0){
+            for (int i=0; i< listaImgRecuperadas.size(); i++) {
+                String urlIMG = listaImgRecuperadas.get(i);
+                int tamanho = listaImgRecuperadas.size();
+                salvarImagens (urlIMG, tamanho, i);
+
+            }}else {
+            anuncio.setTitulo(editTitulo.getText().toString());
+            anuncio.setCep(editCEP.getText().toString());
+            anuncio.setCidade(editCidade.getText().toString());
+            anuncio.setDescricao(editDescricao.getText().toString());
+            anuncio.setEndereco(editEndereco.getText().toString());
+            anuncio.setTelefone(editTelefone.getText().toString());
+            anuncio.setValor(editValor.getText().toString());
+            anuncio.atualizarParcial();
+            dialog.dismiss();
+            finish();
+        }
 
     }
 

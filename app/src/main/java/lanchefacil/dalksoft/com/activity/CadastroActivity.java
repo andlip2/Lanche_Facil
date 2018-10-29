@@ -27,7 +27,7 @@ import lanchefacil.dalksoft.com.model.Usuarios;
 
 public class CadastroActivity extends AppCompatActivity {
 
-    private EditText editEmail, editComEmail, editSenha, editComSenha;
+    private EditText editEmail, editSenha, editComSenha, editnome;
     private Button btCadastrar;
     private FirebaseAuth autenticacao;
     private Usuarios usuarios;
@@ -43,24 +43,20 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email = editEmail.getText().toString();
-                String confEmail = editComEmail.getText().toString();
                 String senha = editSenha.getText().toString();
+                String nome = editnome.getText().toString();
                 String confSenha = editComSenha.getText().toString();
 
-                if (!email.isEmpty() && email.equals(confEmail)) {
                     if (!senha.isEmpty() && senha.equals(confSenha)) {
                         usuarios = new Usuarios();
                         usuarios.setEmail(email);
                         usuarios.setSenha(senha);
+                        usuarios.setNome(nome);
                         criarUser ();
 
                     }else {
                         alerta("Senha invalida!");
                     }
-
-                }else {
-                    alerta("Email invalido!");
-                }
             }
         });
 
@@ -116,9 +112,9 @@ public class CadastroActivity extends AppCompatActivity {
     private void inicializarComponentes () {
         btCadastrar = findViewById(R.id.buttonCadCadratrar);
         editEmail = findViewById(R.id.editCadEmail1);
-        editComEmail = findViewById(R.id.editCadConfEmail1);
         editSenha = findViewById(R.id.editCadSenha1);
         editComSenha = findViewById(R.id.editCadConfSenha1);
+        editnome = findViewById(R.id.editCadNome);
     }
     private void alerta (String texto) {
         Toast.makeText(CadastroActivity.this, texto, Toast.LENGTH_SHORT).show();
