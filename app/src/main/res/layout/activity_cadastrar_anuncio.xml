@@ -16,15 +16,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="630dp">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageEditarAnuncio1"
+                    android:id="@+id/imageCadAnuncio1"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
@@ -39,7 +39,7 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toStartOf="@+id/imageEditarAnuncio3"
-                    app:layout_constraintStart_toEndOf="@+id/imageEditarAnuncio1"
+                    app:layout_constraintStart_toEndOf="@+id/imageCadAnuncio1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/padrao" />
 
@@ -73,7 +73,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/rua"
-                        android:inputType="textCapSentences"/>
+                        android:inputType="textCapSentences" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -135,7 +135,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
                         android:hint="@string/descricao"
-                        android:inputType="textCapSentences"/>
+                        android:inputType="textCapSentences" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -148,12 +148,10 @@
                     android:onClick="validarDadosAnuncio"
                     android:text="@string/cadastrar_anuncio"
                     android:theme="@style/botaoPadrao"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/textInputLayout6"
@@ -172,7 +170,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/titulo"
-                        android:inputType="textCapSentences"/>
+                        android:inputType="textCapSentences" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -234,6 +232,21 @@
                     app:layout_constraintStart_toEndOf="@+id/editEditarAnuncioValor"
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout6"
                     app:met_mask="(##) #####-####" />
+
+                <Button
+                    android:id="@+id/buttonCadAnuncioCancelar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/cancelar_cadastro"
+                    android:theme="@style/botaoPadrao"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/buttonAnuncioSalvarAnuncio" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>

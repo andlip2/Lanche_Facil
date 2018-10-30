@@ -48,7 +48,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
     private ImageView imagem1, imagem2, imagem3;
-    private Button buttonGPS;
+    private Button buttonGPS, cancelarCadastro;
     private LocationManager mLocalizacao;
     protected Location localizacao;
     private Address endereco;
@@ -77,6 +77,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         storage = ConfigFireBase.getReferenciaStorage();
 
         getSupportActionBar().setTitle("Cadastrar Anúncio");
+
+        cancelarCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
 
@@ -223,7 +230,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.imageEditarAnuncio1:
+            case R.id.imageCadAnuncio1:
                 escolherImagem(1);
                 break;
             case R.id.imageEditarAnuncio2:
@@ -337,6 +344,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         editEndereco = findViewById(R.id.editAnuncioRua);
         editTitulo = findViewById(R.id.editAnuncioTitulo);
         editDescricao = findViewById(R.id.editAnuncioDescricao);
+        cancelarCadastro = findViewById(R.id.buttonCadAnuncioCancelar);
 
         editValor = findViewById(R.id.editEditarAnuncioValor);
         //configurar localidade para pt -> portugues BR -> Brasil
@@ -344,7 +352,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         editValor.setLocale(locale);
 
         editTelefone = findViewById(R.id.editEditarAnuncioTelefone);
-        imagem1 = findViewById(R.id.imageEditarAnuncio1);
+        imagem1 = findViewById(R.id.imageCadAnuncio1);
         imagem1.setOnClickListener(this);
         imagem2 = findViewById(R.id.imageEditarAnuncio2);
         imagem2.setOnClickListener(this);

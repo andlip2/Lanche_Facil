@@ -37,6 +37,7 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference usuarioRef;
     private AlertDialog dialog;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,14 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
                     }
                 }
         ));
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AnunciosUsuarioActivity.this, CadastrarAnuncioActivity.class);
+                startActivity(i);
+            }
+        });
     }
     private void recuperarAnuncios() {
         dialog = new SpotsDialog.Builder()
@@ -135,5 +144,6 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
 
     private void inicializarComponentes() {
         recyclerAnuncios = findViewById(R.id.recyclerMeusAnuncios2);
+        fab = findViewById(R.id.floatingActionCadAnuncio);
     }
 }

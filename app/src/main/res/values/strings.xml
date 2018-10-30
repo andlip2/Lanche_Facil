@@ -59,4 +59,5 @@
     <string name="quantd">Quantidade:</string>
     <string name="enviar_pedido">Enviar Pedido</string>
     <string name="atualizar_anuncio">Atualizar Anúncio</string>
+    <string name="cancelar_cadastro">Cancelar cadastro</string>
 </resources>

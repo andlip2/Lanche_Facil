@@ -24,7 +24,7 @@
                 android:layout_height="630dp">
 
                 <ImageView
-                    android:id="@+id/imageEditarAnuncio1"
+                    android:id="@+id/imageCadAnuncio1"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
@@ -39,7 +39,7 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toStartOf="@+id/imageEditarAnuncio3"
-                    app:layout_constraintStart_toEndOf="@+id/imageEditarAnuncio1"
+                    app:layout_constraintStart_toEndOf="@+id/imageCadAnuncio1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/padrao" />
 
@@ -72,7 +72,8 @@
                         android:id="@+id/editEditarAnuncioRua"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="@string/rua" />
+                        android:hint="@string/rua"
+                        android:inputType="textCapSentences" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -92,7 +93,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
 
-                        android:hint="@string/cidade" />
+                        android:hint="@string/cidade"
+                        android:inputType="textCapSentences"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -133,7 +135,8 @@
                         android:id="@+id/editEditarAnuncioDescricao"
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
-                        android:hint="@string/descricao" />
+                        android:hint="@string/descricao"
+                        android:inputType="textCapSentences"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -169,7 +172,8 @@
                         android:id="@+id/editEditarAnuncioTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/titulo" />
+                        android:hint="@string/titulo"
+                        android:inputType="textCapSentences" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -195,6 +199,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_edit_text"
+                    android:paddingStart="3dp"
                     app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
                     app:layout_constraintEnd_toStartOf="@+id/editEditarAnuncioTelefone"
                     app:layout_constraintStart_toStartOf="parent"
@@ -224,6 +229,7 @@
                     android:background="@drawable/bg_edit_text"
                     android:hint="Telefone"
                     android:inputType="phone"
+                    android:paddingStart="3dp"
                     app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/editEditarAnuncioValor"

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -32,7 +31,6 @@ import com.google.firebase.storage.UploadTask;
 import com.santalu.widget.MaskEditText;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -221,7 +219,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.imageEditarAnuncio1:
+            case R.id.imageCadAnuncio1:
                 escolherImagem(1);
                 break;
             case R.id.imageEditarAnuncio2:
@@ -375,7 +373,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
         editValor.setLocale(locale);
 //
         editTelefone = findViewById(R.id.editEditarAnuncioTelefone);
-        imagem1 = findViewById(R.id.imageEditarAnuncio1);
+        imagem1 = findViewById(R.id.imageCadAnuncio1);
         imagem1.setOnClickListener(this);
         imagem2 = findViewById(R.id.imageEditarAnuncio2);
         imagem2.setOnClickListener(this);
