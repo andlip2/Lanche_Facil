@@ -44,7 +44,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 implements View.OnClickListener{
 
 
-    private EditText editCidade, editCEP, editEndereco, editTitulo, editDescricao;
+    private EditText editCEP, editEndereco, editTitulo, editDescricao;
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
     private ImageView imagem1, imagem2, imagem3;
@@ -64,6 +64,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private List<String> image01 = new ArrayList<>();
     private List<String> image02 = new ArrayList<>();
     private List<String> image03 = new ArrayList<>();
+    private double latitude =0.0;
+    private double longitude = 0.0;
+    private String cidade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +88,13 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             }
         });
 
+        anuncio = new Anuncio();
+
 
 
     }
 
     private void geolocalizacao() {
-        double latitude =0.0;
-        double longitude = 0.0;
         if (ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -107,9 +110,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         try {
             endereco = buscarEndereco(latitude, longitude);
-            editCidade.setText(endereco.getLocality());
             editCEP.setText(endereco.getPostalCode());
             editEndereco.setText(endereco.getAddressLine(0));
+            cidade = endereco.getLocality();
         } catch (IOException e) {
             alerta("Erro ao recuperar localização");
         }
@@ -132,7 +135,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     private Anuncio configurarAnuncio () {
         String titulo = editTitulo.getText().toString();
-        String cidade = editCidade.getText().toString();
         String cep = editCEP.getText().toString();
         String endereco = editEndereco.getText().toString();
         String valor = editValor.getText().toString();
@@ -142,12 +144,14 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         Anuncio anuncio = new Anuncio();
         anuncio.setTitulo(titulo);
         anuncio.setTitulo_pesquisa(titulo.toUpperCase());
-        anuncio.setCidade(cidade);
         anuncio.setCep(cep);
         anuncio.setEndereco(endereco);
         anuncio.setValor(valor);
         anuncio.setTelefone(telefone);
         anuncio.setDescricao(descricao);
+        anuncio.setLatitude(latitude);
+        anuncio.setLongitude(longitude);
+        anuncio.setCidade(cidade);
 
         return anuncio;
     }
@@ -165,7 +169,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         add(image01,image02,image03);
         if (listaImgRecuperadas.size() != 0){
             if (!anuncio.getTitulo().isEmpty()){
-                if (!anuncio.getCidade().isEmpty()){
                     if (!anuncio.getCep().isEmpty()){
                         if (!anuncio.getEndereco().isEmpty()){
                             if (!valor.isEmpty() && !valor.equals("0")){
@@ -191,9 +194,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     }else {
                         alerta("Defina o CEP do anúncio");
                     }
-                }else {
-                    alerta("Defina a cidade do anúncio");
-                }
             }else {
                 alerta("Defina o titulo do anúncio");
             }
@@ -258,9 +258,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             Uri imagemSelecionada = data.getData();
             String caminhoImagem = imagemSelecionada.toString();
 
-            int i =0
-                    ,e =0
-                    ,d =0;
+            int i =0;
 
             if (requestCode == 1) {
                 imagem1.setImageURI(imagemSelecionada);
@@ -338,9 +336,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private void iniciarComponentes () {
         buttonGPS = findViewById(R.id.buttonEditarAnuncioGPS);
         buttonGPS.setOnClickListener(this);
-        editCidade = findViewById(R.id.editAnuncioCidade);
         editCEP = findViewById(R.id.editAnuncioCP);
-        editCidade = findViewById(R.id.editAnuncioCidade);
         editEndereco = findViewById(R.id.editAnuncioRua);
         editTitulo = findViewById(R.id.editAnuncioTitulo);
         editDescricao = findViewById(R.id.editAnuncioDescricao);

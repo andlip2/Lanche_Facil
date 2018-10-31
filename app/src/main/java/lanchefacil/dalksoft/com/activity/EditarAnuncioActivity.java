@@ -47,7 +47,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
 {
 
 
-    private EditText editCidade, editCEP, editEndereco, editTitulo, editDescricao;
+    private EditText editCEP, editEndereco, editTitulo, editDescricao;
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
     private static final int SELECAO_GALERIA = 200;
@@ -88,7 +88,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
         if (anuncio != null) {
             editTitulo.setText(anuncio.getTitulo());
             editCEP.setText(anuncio.getCep());
-            editCidade.setText(anuncio.getCidade());
             editDescricao.setText(anuncio.getDescricao());
             editEndereco.setText(anuncio.getEndereco());
             editTelefone.setText(anuncio.getTelefone());
@@ -144,9 +143,11 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
             try {
                 endereco = buscarEndereco(latitude, longitude);
-                editCidade.setText(endereco.getLocality());
                 editCEP.setText(endereco.getPostalCode());
                 editEndereco.setText(endereco.getAddressLine(0));
+                anuncio.setLongitude(longitude);
+                anuncio.setLatitude(latitude);
+                anuncio.setCidade(endereco.getLocality());
             } catch (IOException e) {
                 alerta("Erro ao recuperar localização");
             }
@@ -302,11 +303,11 @@ public class EditarAnuncioActivity extends AppCompatActivity
                 if (totalIMG == listaURLFotos.size()) {
                     anuncio.setTitulo(editTitulo.getText().toString());
                     anuncio.setCep(editCEP.getText().toString());
-                    anuncio.setCidade(editCidade.getText().toString());
                     anuncio.setDescricao(editDescricao.getText().toString());
                     anuncio.setEndereco(editEndereco.getText().toString());
                     anuncio.setTelefone(editTelefone.getText().toString());
                     anuncio.setValor(editValor.getText().toString());
+                    anuncio.setCidade(anuncio.getCidade());
                     anuncio.setFotos(listaURLFotos);
 
                     anuncio.atualizar();
@@ -345,11 +346,11 @@ public class EditarAnuncioActivity extends AppCompatActivity
             }}else {
             anuncio.setTitulo(editTitulo.getText().toString());
             anuncio.setCep(editCEP.getText().toString());
-            anuncio.setCidade(editCidade.getText().toString());
             anuncio.setDescricao(editDescricao.getText().toString());
             anuncio.setEndereco(editEndereco.getText().toString());
             anuncio.setTelefone(editTelefone.getText().toString());
             anuncio.setValor(editValor.getText().toString());
+            anuncio.setCidade(anuncio.getCidade());
             anuncio.atualizarParcial();
             dialog.dismiss();
             finish();
@@ -360,9 +361,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private void iniciarComponentes () {
         buttonGPS = findViewById(R.id.buttonEditarAnuncioGPS);
         buttonGPS.setOnClickListener(this);
-        editCidade = findViewById(R.id.editEditarAnuncioCidade);
         editCEP = findViewById(R.id.editEditarAnuncioCP);
-        editCidade = findViewById(R.id.editEditarAnuncioCidade);
         editEndereco = findViewById(R.id.editEditarAnuncioRua);
         editTitulo = findViewById(R.id.editEditarAnuncioTitulo);
         editDescricao = findViewById(R.id.editEditarAnuncioDescricao);

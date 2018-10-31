@@ -60,4 +60,6 @@
     <string name="enviar_pedido">Enviar Pedido</string>
     <string name="atualizar_anuncio">Atualizar Anúncio</string>
     <string name="cancelar_cadastro">Cancelar cadastro</string>
+    <string name="title_activity_localizacao">Map</string>
+    <string name="ver_localizacao">Ver localização</string>
 </resources>

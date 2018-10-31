@@ -127,8 +127,6 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Anuncio anuncioSelecionado = anuncios.get(position);
                 anuncioSelecionado.excluirAnuncio();
-                anuncioSelecionado.excluirAnuncioPublico();
-                anuncioSelecionado.excluirFavorito();
 
                 adapterMeusAnuncios.notifyDataSetChanged();
             }

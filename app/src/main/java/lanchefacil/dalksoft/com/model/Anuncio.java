@@ -22,10 +22,9 @@ public class Anuncio implements Serializable{
     private String nome;
     private String lanche;
     private List <String> fotos;
-    private String caminhoFoto1;
-    private String caminhoFoto2;
-    private String caminhoFoto3;
     private int favoritos;
+    private double latitude;
+    private double longitude;
 
 
     public Anuncio()  {
@@ -170,28 +169,20 @@ public class Anuncio implements Serializable{
 
     }
 
-    public String getCaminhoFoto1() {
-        return caminhoFoto1;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setCaminhoFoto1(String caminhoFoto1) {
-        this.caminhoFoto1 = caminhoFoto1;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public String getCaminhoFoto2() {
-        return caminhoFoto2;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setCaminhoFoto2(String caminhoFoto2) {
-        this.caminhoFoto2 = caminhoFoto2;
-    }
-
-    public String getCaminhoFoto3() {
-        return caminhoFoto3;
-    }
-
-    public void setCaminhoFoto3(String caminhoFoto3) {
-        this.caminhoFoto3 = caminhoFoto3;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public int getFavoritos() {
