@@ -120,6 +120,8 @@ public class Anuncio implements Serializable{
         usuarioMap.put("telefone",getTelefone());
         usuarioMap.put("descricao", getDescricao());
         usuarioMap.put("fotos" , getFotos());
+        usuarioMap.put("latitude", getLatitude());
+        usuarioMap.put("Longitude", getLongitude());
 
         return usuarioMap;
     }
@@ -128,11 +130,13 @@ public class Anuncio implements Serializable{
         usuarioMap.put("titulo", getTitulo());
         usuarioMap.put("titulo_pesquisa", getTitulo().toUpperCase());
         usuarioMap.put("id", getIdAnuncio());
-        usuarioMap.put("cidade", getCidade());
+//        usuarioMap.put("cidade", getCidade());
         usuarioMap.put("endereco", getEndereco());
         usuarioMap.put("valor", getValor());
         usuarioMap.put("telefone",getTelefone());
         usuarioMap.put("descricao", getDescricao());
+//        usuarioMap.put("latitude", getLatitude());
+//        usuarioMap.put("Longitude", getLongitude());
 
         return usuarioMap;
     }

@@ -69,6 +69,10 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private List<String> image02 = new ArrayList<>();
     private List<String> image03 = new ArrayList<>();
     int teste =0;
+    private double latitude =0.0;
+    private double longitude = 0.0;
+    private String cidade;
+
 
 
     @Override
@@ -92,6 +96,8 @@ public class EditarAnuncioActivity extends AppCompatActivity
             editEndereco.setText(anuncio.getEndereco());
             editTelefone.setText(anuncio.getTelefone());
             editValor.setText(anuncio.getValor());
+            cidade = anuncio.getCidade();
+
 
             //Recuperar IMG
             recuperarFotos();
@@ -126,8 +132,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
         }
 
         private void geolocalizacao() {
-            double latitude =0.0;
-            double longitude = 0.0;
             if (ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -145,9 +149,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                 endereco = buscarEndereco(latitude, longitude);
                 editCEP.setText(endereco.getPostalCode());
                 editEndereco.setText(endereco.getAddressLine(0));
-                anuncio.setLongitude(longitude);
-                anuncio.setLatitude(latitude);
-                anuncio.setCidade(endereco.getLocality());
+                cidade = endereco.getLocality();
             } catch (IOException e) {
                 alerta("Erro ao recuperar localização");
             }
@@ -171,7 +173,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
     public void validarDados(View view) {
 
-
         String valor = String.valueOf(editValor.getRawValue());
 
         String fone = "";
@@ -180,7 +181,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
         }
         add(image01,image02,image03);
             if (!anuncio.getTitulo().isEmpty()){
-                if (!anuncio.getCidade().isEmpty()){
                     if (!anuncio.getCep().isEmpty()){
                         if (!anuncio.getEndereco().isEmpty()){
                             if (!valor.isEmpty() && !valor.equals("0")){
@@ -206,9 +206,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     }else {
                         alerta("Defina o CEP do anúncio");
                     }
-                }else {
-                    alerta("Defina a cidade do anúncio");
-                }
             }else {
                 alerta("Defina o titulo do anúncio");
             }
@@ -220,16 +217,16 @@ public class EditarAnuncioActivity extends AppCompatActivity
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.imageCadAnuncio1:
+            case R.id.imageEditAnuncio1:
                 escolherImagem(1);
                 break;
-            case R.id.imageEditarAnuncio2:
+            case R.id.imageEditAnuncio2:
                 escolherImagem(2);
                 break;
-            case R.id.imageEditarAnuncio3:
+            case R.id.imageEditAnuncio3:
                 escolherImagem(3);
                 break;
-            case R.id.buttonEditarAnuncioGPS:
+            case R.id.buttonEditAnuncioGPS:
                 geolocalizacao ();
                 break;
 
@@ -307,8 +304,10 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     anuncio.setEndereco(editEndereco.getText().toString());
                     anuncio.setTelefone(editTelefone.getText().toString());
                     anuncio.setValor(editValor.getText().toString());
-                    anuncio.setCidade(anuncio.getCidade());
                     anuncio.setFotos(listaURLFotos);
+                    anuncio.setLatitude(latitude);
+                    anuncio.setLongitude(longitude);
+                    anuncio.setCidade(cidade);
 
                     anuncio.atualizar();
 
@@ -350,7 +349,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
             anuncio.setEndereco(editEndereco.getText().toString());
             anuncio.setTelefone(editTelefone.getText().toString());
             anuncio.setValor(editValor.getText().toString());
-            anuncio.setCidade(anuncio.getCidade());
+            anuncio.setLatitude(latitude);
+            anuncio.setLongitude(longitude);
+            anuncio.setCidade(cidade);
             anuncio.atualizarParcial();
             dialog.dismiss();
             finish();
@@ -359,24 +360,24 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     private void iniciarComponentes () {
-        buttonGPS = findViewById(R.id.buttonEditarAnuncioGPS);
+        buttonGPS = findViewById(R.id.buttonEditAnuncioGPS);
         buttonGPS.setOnClickListener(this);
-        editCEP = findViewById(R.id.editEditarAnuncioCP);
-        editEndereco = findViewById(R.id.editEditarAnuncioRua);
-        editTitulo = findViewById(R.id.editEditarAnuncioTitulo);
-        editDescricao = findViewById(R.id.editEditarAnuncioDescricao);
+        editCEP = findViewById(R.id.editEditAnuncioCP);
+        editEndereco = findViewById(R.id.editEditAnuncioRua);
+        editTitulo = findViewById(R.id.editEditAnuncioTitulo);
+        editDescricao = findViewById(R.id.editEditAnuncioDescricao);
 
-        editValor = findViewById(R.id.editEditarAnuncioValor);
+        editValor = findViewById(R.id.editEditAnuncioValor);
 //        configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
         editValor.setLocale(locale);
 //
-        editTelefone = findViewById(R.id.editEditarAnuncioTelefone);
-        imagem1 = findViewById(R.id.imageCadAnuncio1);
+        editTelefone = findViewById(R.id.editEditAnuncioTelefone);
+        imagem1 = findViewById(R.id.imageEditAnuncio1);
         imagem1.setOnClickListener(this);
-        imagem2 = findViewById(R.id.imageEditarAnuncio2);
+        imagem2 = findViewById(R.id.imageEditAnuncio2);
         imagem2.setOnClickListener(this);
-        imagem3 = findViewById(R.id.imageEditarAnuncio3);
+        imagem3 = findViewById(R.id.imageEditAnuncio3);
         imagem3.setOnClickListener(this);
     }
 

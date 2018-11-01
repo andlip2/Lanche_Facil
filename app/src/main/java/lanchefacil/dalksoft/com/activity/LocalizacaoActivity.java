@@ -53,7 +53,7 @@ public class LocalizacaoActivity extends FragmentActivity implements OnMapReadyC
         LatLng localizacao = new LatLng(anuncio.getLatitude(), anuncio.getLongitude());
         mMap.addMarker(new MarkerOptions()
                 .position(localizacao)
-                .title("nao")
+                .title(anuncio.getTitulo())
                 .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory
                                             .HUE_YELLOW)));
