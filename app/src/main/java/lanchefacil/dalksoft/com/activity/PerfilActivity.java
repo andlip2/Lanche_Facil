@@ -1,6 +1,9 @@
 package lanchefacil.dalksoft.com.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -24,6 +27,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
@@ -38,6 +42,8 @@ public class PerfilActivity extends AppCompatActivity {
     private Usuarios usuarioLogado;
     private static final int SELECAO_GALERIA = 200;
     private String identificadorUsuario;
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +76,7 @@ public class PerfilActivity extends AppCompatActivity {
 
                 usuarioLogado.setNome(novoNome);
                 usuarioLogado.atualizar();
+                alerta("Alteração feita com sucesso");
             }
         });
 
@@ -109,6 +116,13 @@ public class PerfilActivity extends AppCompatActivity {
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
                     byte[] dadosImagem = outputStream.toByteArray();
 
+
+                    dialog = new SpotsDialog.Builder()
+                            .setContext(this)
+                            .setMessage("Atualizando Anúncio")
+                            .setCancelable(false)
+                            .build();
+                    dialog.show();
                     StorageReference imagemRef = ConfigFireBase.getReferenciaStorage()
                             .child("imagens")
                             .child("perfil")
@@ -125,6 +139,7 @@ public class PerfilActivity extends AppCompatActivity {
                             Uri url = taskSnapshot.getDownloadUrl();
                             atualizarFoto(url);
 
+                            dialog.dismiss();
                             alerta("Sucesso ao fazer upload da imagem");
                         }
                     });
@@ -151,6 +166,30 @@ public class PerfilActivity extends AppCompatActivity {
         editNome = findViewById(R.id.editPerfilNome);
         btSalvar = findViewById(R.id.buttonPerfilSalvarAlteracoes);
         editEmail.setFocusable(false);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (int permissaoResult : grantResults) {
+            if (permissaoResult == PackageManager.PERMISSION_DENIED) {
+                alerdDialogPermissaoGaleria();
+            }
+        }
+    }
+    private void alerdDialogPermissaoGaleria () {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permissões Negadas");
+        builder.setMessage("Para cadastrar um anúncio é necessário aceitar as permissões");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();

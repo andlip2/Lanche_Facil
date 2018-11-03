@@ -168,10 +168,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         anuncio = configurarAnuncio();
         add(image01,image02,image03);
         if (listaImgRecuperadas.size() != 0){
-            if (!anuncio.getTitulo().isEmpty()){
-                    if (!anuncio.getCep().isEmpty()){
-                        if (!anuncio.getEndereco().isEmpty()){
-                            if (!valor.isEmpty() && !valor.equals("0")){
+            if (!anuncio.getCep().isEmpty()){
+                if (!anuncio.getEndereco().isEmpty()){
+                    if (!anuncio.getTitulo().isEmpty()){
+                        if (!valor.isEmpty() && !valor.equals("0")){
                                 if (!anuncio.getTelefone().isEmpty()){
                                     if (fone.length() >=11) {
                                         if (!anuncio.getDescricao().isEmpty()){
@@ -183,21 +183,20 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                                         alerta("O numero digitado não é valido");
                                     }
                                 }else {
-                                    alerta("Defina o valor do anúncio");
+                                    alerta("Defina o telefone do anúncio");
                                 }
                             }else {
-                                alerta("Defina o valor do anúncio");
+                                alerta("Defina o valor anúncio");
                             }
                         }else {
-                            alerta("Defina o endereço do anúncio");
+                        alerta("Defina o titulo do anúncio");
                         }
                     }else {
                         alerta("Defina o CEP do anúncio");
                     }
             }else {
-                alerta("Defina o titulo do anúncio");
+                alerta("Defina o endereço do anúncio");
             }
-
         }else {
             alerta("Você precisa adicionar ao menos uma foto!");
         }

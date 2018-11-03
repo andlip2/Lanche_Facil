@@ -16,7 +16,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +41,7 @@ import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
+import lanchefacil.dalksoft.com.adapter.AdapterAnunciosUsuario;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.model.Anuncio;
@@ -52,7 +56,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private MaskEditText editTelefone;
     private static final int SELECAO_GALERIA = 200;
     private ImageView imagem1, imagem2, imagem3;
-    private Button buttonGPS;
+    private Button buttonGPS, buttonExcluir, buttonOcutar;
     private LocationManager mLocalizacao;
     protected Location localizacao;
     private Address endereco;
@@ -79,13 +83,15 @@ public class EditarAnuncioActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_anuncio);
+//        Toolbar toolbar = findViewById(R.id.toolbarEditAnuncio);
+//        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Editar Anúncio");
 
         Permissoes.validarPermissoes(permissoes, this,1);
 //
         iniciarComponentes();
 //
         storage = ConfigFireBase.getReferenciaStorage();
-        getSupportActionBar().setTitle("Editar Anúncio");
 
 //      Recuperando e enviando dados
         anuncio = (Anuncio) getIntent().getSerializableExtra("anuncioSelecionado");
@@ -102,6 +108,8 @@ public class EditarAnuncioActivity extends AppCompatActivity
             //Recuperar IMG
             recuperarFotos();
             }
+
+
 
         }
 
@@ -229,7 +237,12 @@ public class EditarAnuncioActivity extends AppCompatActivity
             case R.id.buttonEditAnuncioGPS:
                 geolocalizacao ();
                 break;
-
+//            case R.id.buttonEditAnuncioExcluir:
+//                alerdDialogEscluirAnuncio();
+//                break;
+            case R.id.buttonEditAnuncioOcutar:
+                alerdDialogOcutarAnuncio();
+                break;
         }
     }
     private void escolherImagem(int requestCode) {
@@ -366,7 +379,10 @@ public class EditarAnuncioActivity extends AppCompatActivity
         editEndereco = findViewById(R.id.editEditAnuncioRua);
         editTitulo = findViewById(R.id.editEditAnuncioTitulo);
         editDescricao = findViewById(R.id.editEditAnuncioDescricao);
-
+//        buttonExcluir = findViewById(R.id.buttonEditAnuncioExcluir);
+//        buttonExcluir.setOnClickListener(this);
+        buttonOcutar = findViewById(R.id.buttonEditAnuncioOcutar);
+        buttonOcutar.setOnClickListener(this);
         editValor = findViewById(R.id.editEditAnuncioValor);
 //        configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
@@ -381,6 +397,30 @@ public class EditarAnuncioActivity extends AppCompatActivity
         imagem3.setOnClickListener(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_excluir, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //Codigos q eu escrevi, Config_Menu_Logar
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+            menu.setGroupVisible(R.id.group_excluir, true);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_excluir:
+                alerdDialogEscluirAnuncio();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 //    //Verifica as permissões de galeria
     @Override
@@ -391,6 +431,49 @@ public class EditarAnuncioActivity extends AppCompatActivity
                 alerdDialogPermissaoGaleria();
             }
         }
+    }
+
+    private void alerdDialogEscluirAnuncio () {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Excluir anúncio");
+        builder.setMessage("Tem certeza que deseja excluir esse anuncio? ");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                anuncio.excluirAnuncio();
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                builder.setCancelable(true);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void alerdDialogOcutarAnuncio () {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ocutar anúncio");
+        builder.setMessage("Tem certeza que deseja ocutar esse anuncio para o publico? ");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                anuncio.excluirAnuncioPublico();
+
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                builder.setCancelable(true);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void alerdDialogPermissaoGaleria () {

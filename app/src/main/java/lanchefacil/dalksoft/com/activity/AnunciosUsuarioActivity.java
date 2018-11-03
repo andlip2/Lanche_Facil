@@ -5,13 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +22,7 @@ import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
-import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
+import lanchefacil.dalksoft.com.adapter.AdapterAnunciosUsuario;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
 import lanchefacil.dalksoft.com.model.Anuncio;
@@ -34,7 +31,7 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
 
     private RecyclerView recyclerAnuncios;
     private List <Anuncio> anuncios = new ArrayList<>();
-    private AdapterMeusAnuncios adapterMeusAnuncios;
+    private AdapterAnunciosUsuario adapterMeusAnuncios;
     private DatabaseReference usuarioRef;
     private AlertDialog dialog;
     private FloatingActionButton fab;
@@ -51,7 +48,7 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
 
         recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
         recyclerAnuncios.setHasFixedSize(true);
-        adapterMeusAnuncios = new AdapterMeusAnuncios(anuncios,this);
+        adapterMeusAnuncios = new AdapterAnunciosUsuario(anuncios,this);
         recyclerAnuncios.setAdapter(adapterMeusAnuncios);
 
         recuperarAnuncios ();
@@ -71,11 +68,15 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
+
+
                         alerdDialogEscluirAnuncio(position);
                     }
 
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
 
                     }
                 }

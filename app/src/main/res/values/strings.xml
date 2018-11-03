@@ -62,4 +62,7 @@
     <string name="cancelar_cadastro">Cancelar cadastro</string>
     <string name="title_activity_localizacao">Map</string>
     <string name="ver_localizacao">Ver localização</string>
+    <string name="editar">Editar Anuncio</string>
+    <string name="excluir">Excluir anúncio</string>
+    <string name="ocutar">Ocutar Anuncio</string>
 </resources>

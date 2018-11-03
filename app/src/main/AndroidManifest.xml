@@ -86,7 +86,9 @@
         <activity
             android:name=".activity.FazerPedidoActivity"
             android:parentActivityName=".activity.PrincipalActivity" />
-        <activity android:name=".activity.EditarAnuncioActivity" />
+        <activity android:name=".activity.EditarAnuncioActivity"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".activity.MeusPedidosActivity"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
