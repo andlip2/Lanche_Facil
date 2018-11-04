@@ -66,4 +66,11 @@
     <string name="excluir">Excluir anúncio</string>
     <string name="ocutar">Ocutar Anuncio</string>
     <string name="excluir_conta">Excluir conta</string>
+    <string name="duvidas_frequentes">Duvidas Frequentes</string>
+    <string name="pergunta1">Porque meu anúncio foi excluído?</string>
+    <string name="pergunta2">Porque não consigo adicionar uma foto?</string>
+    <string name="pergunta3">Como excluir minha conta?</string>
+    <string name="pergunta4">Como visualizar meus anúncios?</string>
+    <string name="pergunta5">Como saber onde o vendedor está?</string>
+    <string name="pergunta6">Como solicitar uma entrega?</string>
 </resources>
