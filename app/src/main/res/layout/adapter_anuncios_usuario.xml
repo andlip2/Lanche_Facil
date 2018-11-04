@@ -42,14 +42,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/buttonAdapterUsuarioExcluir"
-                    android:layout_width="65dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/ic_delete_cinza_24dp"
-                    android:onClick="onItemClick"
-                    android:textAlignment="center" />
+
             </LinearLayout>
 
             <TextView
@@ -67,7 +60,7 @@
                 android:id="@+id/textAdapterUsuarioDescricao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:ellipsize="end"
                 android:paddingStart="3dp"
                 android:text="Coxinha bem quentinha" />
@@ -76,7 +69,7 @@
                 android:id="@+id/buttonAdapterUsuarioEditar"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="25dp"
                 android:text="@string/editar"
                 android:theme="@style/botaoPadrao" />
 

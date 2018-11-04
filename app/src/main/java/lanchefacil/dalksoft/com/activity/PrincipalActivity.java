@@ -91,6 +91,7 @@ public class PrincipalActivity extends AppCompatActivity
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = findViewById(R.id.toolbarEditAnuncio);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Lanche Fácil");
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
         FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
@@ -404,9 +405,9 @@ public class PrincipalActivity extends AppCompatActivity
         usuario = new Usuarios();
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
-        menuEmail = findViewById(R.id.textMenuPrincipalEmail);
+//        menuEmail = findViewById(R.id.textMenuPrincipalEmail);
 //        menuEmail.setText(usuario);
-        menuNome = findViewById(R.id.textMenuPrincipalNome);
+//        menuNome = findViewById(R.id.textMenuPrincipalNome);
 //        menuNome.setText(usuario.getNome());
         menuIMGPerfil = findViewById(R.id.imagePefilFoto);
 

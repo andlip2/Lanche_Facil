@@ -13,7 +13,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="app_name">Lanche Facil</string>
-    <string name="aviso">Insira a baixo o email cadastrado para q sejá enviado um codigo de verificação</string>
+    <string name="aviso">Insira a baixo o email cadastrado para que seja enviado um código de verificação</string>
     <string name="enviar">Enviar</string>
     <string name="codigo">Codigo:</string>
     <string name="verificar">Verificar</string>
@@ -27,7 +27,7 @@
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_anuncios">AnunciosActivity</string>
     <string name="comSenha">Comfirmar Senha:</string>
-    <string name="cadastrar">Cadastrar</string>
+    <string name="cadastrar">Cadastrar:</string>
     <string name="comNewSenha">Confirmar nova senha:</string>
     <string name="titulo_anuncio">Titulo do anúncio</string>
     <string name="facebook_app_id">291388058112722</string>
@@ -43,7 +43,7 @@
     <string name="cidade">Cidade:</string>
     <string name="uf">UF:</string>
     <string name="informacoes_do_pedido">Informações do pedido:</string>
-    <string name="titulo">Titulo:</string>
+    <string name="titulo">Título:</string>
     <string name="valor">Valor:</string>
     <string name="descricao">Descrição:</string>
     <string name="cadastrar_anuncio">Cadastrar Anúncio</string>

@@ -187,7 +187,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
         if (editTelefone.getRawText() != null) {
             fone = editTelefone.getRawText().toString();
         }
-        add(image01,image02,image03);
             if (!anuncio.getTitulo().isEmpty()){
                     if (!anuncio.getCep().isEmpty()){
                         if (!anuncio.getEndereco().isEmpty()){
@@ -195,6 +194,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                                 if (!anuncio.getTelefone().isEmpty()){
                                     if (fone.length() >=11) {
                                         if (!anuncio.getDescricao().isEmpty()){
+                                            add(image01,image02,image03);
                                             atualizarAnuncio();
                                         }else {
                                             alerta("Defina a descrição do anúncio");
@@ -203,7 +203,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                                         alerta("O numero digitado não é valido");
                                     }
                                 }else {
-                                    alerta("Defina o valor do anúncio");
+                                    alerta("Defina o telefone do anúncio");
                                 }
                             }else {
                                 alerta("Defina o valor do anúncio");
@@ -237,9 +237,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
             case R.id.buttonEditAnuncioGPS:
                 geolocalizacao ();
                 break;
-//            case R.id.buttonEditAnuncioExcluir:
-//                alerdDialogEscluirAnuncio();
-//                break;
             case R.id.buttonEditAnuncioOcutar:
                 alerdDialogOcutarAnuncio();
                 break;
@@ -286,9 +283,13 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
         }
         if (!image02.isEmpty()){
+            listaImgRecuperadas.add(1,"");
+            listaImgRecuperadas.remove(1);
             listaImgRecuperadas.add(1, image02.get(0));
         }
         if (!image03.isEmpty()){
+            listaImgRecuperadas.add(2,"");
+            listaImgRecuperadas.remove(2);
             listaImgRecuperadas.add(2, image03.get(0));
         }
     }

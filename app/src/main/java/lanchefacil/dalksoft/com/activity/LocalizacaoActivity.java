@@ -58,6 +58,6 @@ public class LocalizacaoActivity extends FragmentActivity implements OnMapReadyC
                         .defaultMarker(BitmapDescriptorFactory
                                             .HUE_YELLOW)));
         mMap.moveCamera(CameraUpdateFactory
-                .newLatLngZoom(localizacao, 10));
+                .newLatLngZoom(localizacao, 17));
     }
 }

@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editEmail, editSenha;
     private Usuarios usuarios;
     private CallbackManager callbackManager;
-    private LoginButton btFacobook;
+//    private LoginButton btFacobook;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseAuth autenticacao;
 
@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         inicializarComponentes();
-        inicializarFirebaseCallback();
-        loginFace();
+//        inicializarFirebaseCallback();
+//        loginFace();
 
         btCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,60 +104,60 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+//
     //login com facebook
-    private void inicializarFirebaseCallback () {
-        autenticacao = FirebaseAuth.getInstance();
-        callbackManager = CallbackManager.Factory.create();
-    }
-    private void loginFace () {
-        btFacobook.setReadPermissions();
-        btFacobook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                firebaseLogin(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                alerta("Operação cancelada!");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                alerta("Erro ao realizar login!");
-            }
-        });
-    }
-
-
-    private void firebaseLogin(AccessToken accessToken) {
-        AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
-
-        autenticacao.signInWithCredential(credencial).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
-                    startActivity(i);
-                }else {
-                    alerta("Erro de autenticação!");
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        autenticacao.addAuthStateListener(firebaseAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        autenticacao.removeAuthStateListener(firebaseAuthListener);
-    }
+//    private void inicializarFirebaseCallback () {
+//        autenticacao = FirebaseAuth.getInstance();
+//        callbackManager = CallbackManager.Factory.create();
+//    }
+//    private void loginFace () {
+//        btFacobook.setReadPermissions();
+//        btFacobook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                firebaseLogin(loginResult.getAccessToken());
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                alerta("Operação cancelada!");
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//                alerta("Erro ao realizar login!");
+//            }
+//        });
+//    }
+//
+//
+//    private void firebaseLogin(AccessToken accessToken) {
+//        AuthCredential credencial = FacebookAuthProvider.getCredential(accessToken.getToken());
+//
+//        autenticacao.signInWithCredential(credencial).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                if (task.isSuccessful()) {
+//                    Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
+//                    startActivity(i);
+//                }else {
+//                    alerta("Erro de autenticação!");
+//                }
+//            }
+//        });
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        autenticacao.addAuthStateListener(firebaseAuthListener);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        autenticacao.removeAuthStateListener(firebaseAuthListener);
+//    }
 
     private void inicializarComponentes () {
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -172,8 +172,8 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         };
-        btFacobook = findViewById(R.id.buttonLogFacebook);
-        btFacobook.setReadPermissions("email", "public_profile");
+//        btFacobook = findViewById(R.id.buttonLogFacebook);
+//        btFacobook.setReadPermissions("email", "public_profile");
         btEntrar = findViewById(R.id.buttonLogEntrar);
         btCadastrar = findViewById(R.id.buttonLogCadastrar);
         editEmail = findViewById(R.id.editLogEmail1);
