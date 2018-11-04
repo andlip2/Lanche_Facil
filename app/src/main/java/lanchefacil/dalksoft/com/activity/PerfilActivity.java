@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,8 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,7 +43,7 @@ public class PerfilActivity extends AppCompatActivity {
     private CircleImageView imagePerfil;
     private TextView txtAlterarFoto;
     private TextInputEditText editNome, editEmail;
-    private Button btSalvar;
+    private Button btSalvar, btExcluir;
     private Usuarios usuarioLogado;
     private static final int SELECAO_GALERIA = 200;
     private String identificadorUsuario;
@@ -87,6 +92,13 @@ public class PerfilActivity extends AppCompatActivity {
                 if (i.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(i, SELECAO_GALERIA);
                 }
+            }
+        });
+
+        btExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                excluirUsuario();
             }
         });
 
@@ -151,6 +163,20 @@ public class PerfilActivity extends AppCompatActivity {
         }
     }
 
+    private void excluirUsuario () {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("sucesso", "Conta excluida.");
+                    finish();
+                }
+            }
+        });
+    }
+
     private void atualizarFoto(Uri url) {
         UsuarioFirebase.atualizarFotoUsuario(url);
         usuarioLogado.setCaminhoFoto(url.toString());
@@ -166,6 +192,7 @@ public class PerfilActivity extends AppCompatActivity {
         editNome = findViewById(R.id.editPerfilNome);
         btSalvar = findViewById(R.id.buttonPerfilSalvarAlteracoes);
         editEmail.setFocusable(false);
+        btExcluir = findViewById(R.id.buttonPerfilExcluirConta);
     }
 
     @Override

@@ -305,32 +305,27 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
+        if (autenticacao.getCurrentUser() != null) {
             int id = item.getItemId();
-        if (id == R.id.menu_perfil) {
-            Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
-            startActivity(i);
-        }
-     else if (id == R.id.menu_anuncios) {
-        Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
-        startActivity(i);
-        }
-        else if (id == R.id.menu_pedidos) {
-            Intent i = new Intent(PrincipalActivity.this, MeusPedidosActivity.class);
-            startActivity(i);
-
-        }
-         else if (id == R.id.menu_favoritos) {
-            Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
-            startActivity(i);}
-//        } else if (id == R.id.menu_config) {
-//            Intent i = new Intent(PrincipalActivity.this, ConfigiracaoActivity.class);
+            if (id == R.id.menu_perfil) {
+                Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
+                startActivity(i);
+            } else if (id == R.id.menu_anuncios) {
+                Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
+                startActivity(i);
+            }
+//        else if (id == R.id.menu_pedidos) {
+//            Intent i = new Intent(PrincipalActivity.this, MeusPedidosActivity.class);
 //            startActivity(i);
+//
 //        }
-        else if (id == R.id.menu_ajuda) {
-            Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
-            startActivity(i);
-        }
-           else if (id == R.id.menu_sair) {
+            else if (id == R.id.menu_favoritos) {
+                Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
+                startActivity(i);
+            } else if (id == R.id.menu_ajuda) {
+                Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
+                startActivity(i);
+            } else if (id == R.id.menu_sair) {
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
                 finish();
@@ -339,9 +334,11 @@ public class PrincipalActivity extends AppCompatActivity
                 alerta("Usuario desconectado!");
             }
 
-            DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
-
+        }else {
+            alerta("Faça login para acessar");
+        }
         return true;
     }
 
@@ -405,10 +402,6 @@ public class PrincipalActivity extends AppCompatActivity
         usuario = new Usuarios();
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
-//        menuEmail = findViewById(R.id.textMenuPrincipalEmail);
-//        menuEmail.setText(usuario);
-//        menuNome = findViewById(R.id.textMenuPrincipalNome);
-//        menuNome.setText(usuario.getNome());
         menuIMGPerfil = findViewById(R.id.imagePefilFoto);
 
     }

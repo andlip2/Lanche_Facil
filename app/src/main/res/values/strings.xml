@@ -65,4 +65,5 @@
     <string name="editar">Editar Anuncio</string>
     <string name="excluir">Excluir anúncio</string>
     <string name="ocutar">Ocutar Anuncio</string>
+    <string name="excluir_conta">Excluir conta</string>
 </resources>
