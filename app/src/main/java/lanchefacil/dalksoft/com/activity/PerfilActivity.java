@@ -172,6 +172,8 @@ public class PerfilActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.d("sucesso", "Conta excluida.");
                     finish();
+                    Intent i = new Intent(PerfilActivity.this, PrincipalActivity.class);
+                    startActivity(i);
                 }
             }
         });
