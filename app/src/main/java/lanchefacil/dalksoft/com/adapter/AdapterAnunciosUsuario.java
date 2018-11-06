@@ -32,22 +32,31 @@ public class AdapterAnunciosUsuario  extends RecyclerView.Adapter<AdapterAnuncio
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_anuncios_usuario, parent, false);
-        return new MyViewHolder(item);
+        View item = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_anuncios_usuario, parent, false);
+
+        MyViewHolder holder = new MyViewHolder(item);
+
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
+        if ( (anuncios != null) && (anuncios.size() >0) ){
+
         Anuncio anuncio = anuncios.get(position);
         holder.titulo.setText(anuncio.getTitulo());
         holder.valor.setText(anuncio.getValor());
         holder.descricao.setText(anuncio.getDescricao());
+        holder.status.setText(anuncio.getStatus());
+
 
         List<String> urlIMG = anuncio.getFotos();
         String urlCapa = urlIMG.get(0);
 
         Picasso.get().load(urlCapa).into(holder.foto);
+        }
     }
 
     @Override
@@ -55,10 +64,13 @@ public class AdapterAnunciosUsuario  extends RecyclerView.Adapter<AdapterAnuncio
         return anuncios.size();
     }
 
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView titulo;
         TextView valor;
         TextView descricao;
+        TextView status;
         ImageView foto;
 
         public MyViewHolder(View itemView) {
@@ -68,6 +80,7 @@ public class AdapterAnunciosUsuario  extends RecyclerView.Adapter<AdapterAnuncio
             valor = itemView.findViewById(R.id.textAdapterUsuarioValor);
             foto = itemView.findViewById(R.id.imageAdapterUsuarioAnuncio);
             descricao = itemView.findViewById(R.id.textAdapterUsuarioDescricao);
+            status = itemView.findViewById(R.id.textAdapterUsuarioStatus);
 
         }
     }

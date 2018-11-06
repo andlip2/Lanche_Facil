@@ -313,6 +313,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
                 if (totalIMG == listaURLFotos.size()) {
                     anuncio.setFotos(listaURLFotos);
+                    anuncio.setStatus("Status: Ativo");
                     //Salvar anuncio
                     anuncio.salvar();
 
@@ -337,7 +338,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         buttonGPS = findViewById(R.id.buttonEditarAnuncioGPS);
         buttonGPS.setOnClickListener(this);
         editCEP = findViewById(R.id.editAnuncioCP);
+        editCEP.setFocusable(false);
         editEndereco = findViewById(R.id.editAnuncioRua);
+        editEndereco.setFocusable(false);
         editTitulo = findViewById(R.id.editAnuncioTitulo);
         editDescricao = findViewById(R.id.editAnuncioDescricao);
         cancelarCadastro = findViewById(R.id.buttonCadAnuncioCancelar);

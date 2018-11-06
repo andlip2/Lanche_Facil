@@ -73,6 +73,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private List<String> image02 = new ArrayList<>();
     private List<String> image03 = new ArrayList<>();
     int teste =0;
+    int teste2 =0;
     private double latitude =0.0;
     private double longitude = 0.0;
     private String cidade;
@@ -108,6 +109,8 @@ public class EditarAnuncioActivity extends AppCompatActivity
             //Recuperar IMG
             recuperarFotos();
             }
+
+
 
 
 
@@ -343,6 +346,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     public void atualizarAnuncio() {
+        anuncio.setStatus("Status: Ativo");
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Atualizando Anúncio")
@@ -377,7 +381,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
         buttonGPS = findViewById(R.id.buttonEditAnuncioGPS);
         buttonGPS.setOnClickListener(this);
         editCEP = findViewById(R.id.editEditAnuncioCP);
+        editCEP.setFocusable(false);
         editEndereco = findViewById(R.id.editEditAnuncioRua);
+        editEndereco.setFocusable(false);
         editTitulo = findViewById(R.id.editEditAnuncioTitulo);
         editDescricao = findViewById(R.id.editEditAnuncioDescricao);
 //        buttonExcluir = findViewById(R.id.buttonEditAnuncioExcluir);
@@ -463,8 +469,11 @@ public class EditarAnuncioActivity extends AppCompatActivity
         builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
                 anuncio.excluirAnuncioPublico();
+                anuncio.setStatus("Status: Inativo");
+                anuncio.atualizarStatus();
+
+                finish();
 
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

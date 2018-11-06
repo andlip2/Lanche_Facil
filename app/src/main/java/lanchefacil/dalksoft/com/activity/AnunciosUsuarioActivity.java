@@ -46,7 +46,8 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
                 .child(ConfigFireBase.getIdUsuario());
         inicializarComponentes ();
 
-        recyclerAnuncios.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerAnuncios.setLayoutManager(linearLayoutManager);
         recyclerAnuncios.setHasFixedSize(true);
         adapterMeusAnuncios = new AdapterAnunciosUsuario(anuncios,this);
         recyclerAnuncios.setAdapter(adapterMeusAnuncios);
