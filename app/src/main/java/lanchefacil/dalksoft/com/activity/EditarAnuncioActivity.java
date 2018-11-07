@@ -197,8 +197,15 @@ public class EditarAnuncioActivity extends AppCompatActivity
                                         if (!anuncio.getDescricao().isEmpty()){
 
                                             add(image01,image02,image03);
-
-                                            atualizarAnuncio();
+                                            if (anuncio.getStatus().equals("Status: Inativo")) {
+                                                if (listaImgRecuperadas.size() != 0){
+                                                    atualizarAnuncio();
+                                                }else {
+                                                    alerta("Você precisa atualizar as fotos do anuncio para recadastrar");
+                                                }
+                                            }else {
+                                                atualizarAnuncio();
+                                            }
                                         }else {
                                             alerta("Defina a descrição do anúncio");
                                         }
@@ -348,13 +355,23 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     public void atualizarAnuncio() {
-        anuncio.setStatus("Status: Ativo");
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Atualizando Anúncio")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        if (anuncio.getStatus().equals("Status: Inativo")) {
+            anuncio.setStatus("Status: Ativo");
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Ativando Anúncio")
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
+        }else {
+            anuncio.setStatus("Status: Ativo");
+            dialog = new SpotsDialog.Builder()
+                    .setContext(this)
+                    .setMessage("Atualizando Anúncio")
+                    .setCancelable(false)
+                    .build();
+            dialog.show();
+        }
         //Salvar imagens
         if (teste >0){
             for (int i=0; i< listaImgRecuperadas.size(); i++) {
