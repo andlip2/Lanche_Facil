@@ -1,6 +1,7 @@
 package lanchefacil.dalksoft.com.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -85,6 +86,7 @@ public class PrincipalActivity extends AppCompatActivity
             Manifest.permission.CAMERA,
     };
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,18 +107,19 @@ public class PrincipalActivity extends AppCompatActivity
 
         //iniciar tela para cadastrar anuncios
         fab = findViewById(R.id.fab);
+        if (autenticacao.getCurrentUser() != null){
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-        if (autenticacao.getCurrentUser() != null){
+
                     Intent i = new Intent(PrincipalActivity.this, CadastrarAnuncioActivity.class);
                     startActivity(i);
 
-        }else {
-            alerta("Você precisa está logado para cadastrar um anúncio!");
-        }
+
             }
-        });
+        });}else {
+            fab.setVisibility(View.GONE);
+        }
 
         //Verificar se o usuario está logado
         if (autenticacao.getCurrentUser() != null) {

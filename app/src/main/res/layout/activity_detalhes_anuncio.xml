@@ -128,11 +128,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:onClick="adicionarFavoritos"
                 android:paddingLeft="50dp"
                 android:paddingRight="50dp"
                 android:text="@string/favoritos"
                 android:theme="@style/botaoPadrao" />
+
         </LinearLayout>
     </ScrollView>
 

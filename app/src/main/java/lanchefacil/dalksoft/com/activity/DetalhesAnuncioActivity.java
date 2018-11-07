@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
     private Anuncio anuncioSelecionado;
     private Button verLocalizacao, favoritos;
     private FirebaseAuth autenticacao = ConfigFireBase.getFirebaseAuth();
+    private LinearLayout llConteudo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,10 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalhes_anuncio);
 
         inicializarComponentes();
+
+
+
+
 
         verLocalizacao.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,18 +72,17 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
             carouselView.setPageCount(anuncioSelecionado.getFotos().size());
             carouselView.setImageListener(imageListener);
         }
+
+
+
+
+
     }
 
 
     public void abrirTelefone (View view) {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", anuncioSelecionado.getTelefone(),null));
         startActivity(i);
-
-    }
-
-    public void adicionarFavoritos (View view) {
-        anuncioSelecionado.salvarFavoritos();
-        alerta("Adicionado com sucesso!");
 
     }
 
