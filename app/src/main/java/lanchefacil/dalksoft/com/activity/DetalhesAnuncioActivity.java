@@ -36,7 +36,17 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
         inicializarComponentes();
 
 
-
+        if (autenticacao.getCurrentUser() != null) {
+            favoritos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    anuncioSelecionado.salvarFavoritos();
+                    alerta("Adicionado com sucesso!");
+                }
+            });
+        }else {
+            favoritos.setVisibility(View.GONE);
+        }
 
 
         verLocalizacao.setOnClickListener(new View.OnClickListener() {
