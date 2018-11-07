@@ -1,5 +1,6 @@
 package lanchefacil.dalksoft.com.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 //import java.lang.reflect.Array;
 
+import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.model.Usuarios;
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 //    private LoginButton btFacobook;
     FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseAuth autenticacao;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         inicializarComponentes();
 //        inicializarFirebaseCallback();
 //        loginFace();
+
 
         btCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +77,12 @@ public class LoginActivity extends AppCompatActivity {
                 String email = editEmail.getText().toString();
                 String senha = editSenha.getText().toString();
                 if (!email.isEmpty() && !senha.isEmpty()) {
+                    dialog = new SpotsDialog.Builder()
+                            .setContext(LoginActivity.this)
+                            .setMessage("Cadastrando Usuário")
+                            .setCancelable(false)
+                            .build();
+                    dialog.show();
                     usuarios = new Usuarios();
                     usuarios.setEmail(email);
                     usuarios.setSenha(senha);
@@ -92,7 +102,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     alerta("Login efetuado com sucesso");
                     Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // adiciona a flag para a intent
                     startActivity(i);
+                    dialog.dismiss();
                 }else {
                     alerta("Erro ao realizar login");
                 }

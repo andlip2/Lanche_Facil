@@ -53,7 +53,7 @@ public class CadastroActivity extends AppCompatActivity {
                     if (!senha.isEmpty() && senha.equals(confSenha)) {
                         dialog = new SpotsDialog.Builder()
                                 .setContext(CadastroActivity.this)
-                                .setMessage("Ativando Anúncio")
+                                .setMessage("Cadastrando Usuário")
                                 .setCancelable(false)
                                 .build();
                         dialog.show();

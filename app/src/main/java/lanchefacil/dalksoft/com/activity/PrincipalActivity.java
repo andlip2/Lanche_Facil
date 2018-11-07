@@ -86,8 +86,6 @@ public class PrincipalActivity extends AppCompatActivity
             Manifest.permission.CAMERA,
     };
 
-    public PrincipalActivity() {
-    }
 
     @SuppressLint("WrongConstant")
     @Override
@@ -107,6 +105,8 @@ public class PrincipalActivity extends AppCompatActivity
         callAccessLocation();
 
         inicializarComponentes ();
+
+
 
         //iniciar tela para cadastrar anuncios
         fab = findViewById(R.id.fab);
@@ -304,10 +304,14 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (autenticacao.getCurrentUser() != null){
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }else {
+            drawer.setVisibility(View.GONE);
         }
     }
 
@@ -347,6 +351,7 @@ public class PrincipalActivity extends AppCompatActivity
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
         }else {
+            item.setVisible(false);
             alerta("Faça login para acessar");
         }
         return true;
@@ -393,13 +398,16 @@ public class PrincipalActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && null != data) {
+
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
             cursor.moveToFirst();
+
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
+
             menuIMGPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         }
     }
