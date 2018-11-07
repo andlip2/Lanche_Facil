@@ -21,7 +21,7 @@ import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
-import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
+import lanchefacil.dalksoft.com.adapter.AdapterFavoritos;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
 import lanchefacil.dalksoft.com.model.Anuncio;
@@ -29,7 +29,7 @@ import lanchefacil.dalksoft.com.model.Anuncio;
 public class FavoritosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerFavoritos;
-    private AdapterMeusAnuncios adapterMeusAnuncios;
+    private AdapterFavoritos adapterFavoritos;
     private DatabaseReference usuarioRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
     private AlertDialog dialog;
@@ -49,8 +49,8 @@ public class FavoritosActivity extends AppCompatActivity {
     public void exibirAnuncios () {
         recyclerFavoritos.setLayoutManager(new LinearLayoutManager(this));
         recyclerFavoritos.setHasFixedSize(true);
-        adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
-        recyclerFavoritos.setAdapter(adapterMeusAnuncios);
+        adapterFavoritos = new AdapterFavoritos(listaAnuncios,this);
+        recyclerFavoritos.setAdapter(adapterFavoritos);
         recuperarFavoritos();
         recyclerFavoritos.addOnItemTouchListener(new RecyclerItemClickListener(
                 this,
@@ -58,14 +58,14 @@ public class FavoritosActivity extends AppCompatActivity {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        alerdDialogEscluirAnuncio(position);
+                    }
+                    @Override
+                    public void onLongItemClick(View view, int position) {
                         Anuncio anuncioSelecionado = listaAnuncios.get(position);
                         Intent i = new Intent(FavoritosActivity.this, DetalhesAnuncioActivity.class);
                         i.putExtra("anuncioSelecionado", anuncioSelecionado);
                         startActivity(i);
-                    }
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        alerdDialogEscluirAnuncio(position);
                     }
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +89,7 @@ public class FavoritosActivity extends AppCompatActivity {
                     listaAnuncios.add(id.getValue(Anuncio.class));
                 }
                 Collections.reverse(listaAnuncios);
-                adapterMeusAnuncios.notifyDataSetChanged();
+                adapterFavoritos.notifyDataSetChanged();
                 dialog.dismiss();
             }
             @Override
@@ -108,7 +108,7 @@ public class FavoritosActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Anuncio anuncioSelecionado = listaAnuncios.get(position);
                 anuncioSelecionado.excluirFavorito();
-                adapterMeusAnuncios.notifyDataSetChanged();
+                adapterFavoritos.notifyDataSetChanged();
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
