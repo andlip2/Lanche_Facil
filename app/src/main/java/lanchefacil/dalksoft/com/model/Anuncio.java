@@ -33,7 +33,6 @@ public class Anuncio implements Serializable{
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
         setIdAnuncio(anuncioRef.push().getKey());
     }
-
     public void salvarFavoritos () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("favoritos");
@@ -42,7 +41,6 @@ public class Anuncio implements Serializable{
                 .child(getIdAnuncio())
                 .setValue(this);
     }
-
     public void salvar () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
@@ -53,16 +51,12 @@ public class Anuncio implements Serializable{
                 .setValue(this);
         salvarPublico();
     }
-
-
-
     public void salvarPublico () {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
                 .child("anuncios");
         anuncioRef.child(getIdAnuncio())
                 .setValue(this);
     }
-
     public void  atualizarFavoritos () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
@@ -72,7 +66,6 @@ public class Anuncio implements Serializable{
         Map<String, Object> valoresUsuario = converterMap();
         anuncioRef.updateChildren(valoresUsuario);
     }
-
     public void atualizar () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
@@ -84,8 +77,6 @@ public class Anuncio implements Serializable{
         anuncioRef.updateChildren(valoresUsuario);
         atualizarPublico();
     }
-
-
     public void atualizarPublico () {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
                 .child("anuncios")
@@ -183,7 +174,6 @@ public class Anuncio implements Serializable{
         anuncioRef.removeValue();
 
     }
-
     public void excluirFavorito () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
@@ -194,7 +184,6 @@ public class Anuncio implements Serializable{
         anuncioRef.removeValue();
 
     }
-
     public String getStatus() {
         return status;
     }
@@ -259,7 +248,6 @@ public class Anuncio implements Serializable{
     public void setTitulo_pesquisa(String titulo_pesquisa) {
         this.titulo_pesquisa = titulo_pesquisa;
     }
-
     public String getIdAnuncio() {
         return idAnuncio;
     }

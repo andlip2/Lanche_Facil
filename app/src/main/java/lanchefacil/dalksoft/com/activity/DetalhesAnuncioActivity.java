@@ -35,7 +35,6 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
-
         if (autenticacao.getCurrentUser() != null) {
             favoritos.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -47,8 +46,6 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
         }else {
             favoritos.setVisibility(View.GONE);
         }
-
-
         verLocalizacao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +58,6 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
         //Titulo da pagina
         getSupportActionBar().setTitle("Detelhes do Produto");
 
-
         //recuperar dados
         anuncioSelecionado = (Anuncio) getIntent().getSerializableExtra("anuncioSelecionado");
 
@@ -70,7 +66,6 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
             descricao.setText(anuncioSelecionado.getDescricao());
             cidade.setText(anuncioSelecionado.getCidade());
             valor.setText(anuncioSelecionado.getValor());
-
             //exibindo slide
             ImageListener imageListener = new ImageListener() {
                 @Override
@@ -82,18 +77,11 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
             carouselView.setPageCount(anuncioSelecionado.getFotos().size());
             carouselView.setImageListener(imageListener);
         }
-
-
-
-
-
     }
-
 
     public void abrirTelefone (View view) {
         Intent i = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", anuncioSelecionado.getTelefone(),null));
         startActivity(i);
-
     }
 
     private void inicializarComponentes() {
@@ -104,7 +92,6 @@ public class DetalhesAnuncioActivity extends AppCompatActivity {
         valor = findViewById(R.id.textDetelhesAnuncioValor);
         verLocalizacao = findViewById(R.id.buttonDetalheAnuncioFazerPedido);
         favoritos = findViewById(R.id.buttonDetalheAnuncioFavoritos);
-
     }
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();

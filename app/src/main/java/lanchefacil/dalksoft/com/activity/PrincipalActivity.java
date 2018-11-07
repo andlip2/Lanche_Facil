@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -27,12 +28,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SearchView;
-import android.widget.TextView;
+//import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dmax.dialog.SpotsDialog;
@@ -51,7 +52,6 @@ import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
-import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
 import lanchefacil.dalksoft.com.model.Anuncio;
 import lanchefacil.dalksoft.com.model.Usuarios;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -66,25 +66,28 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
-    private FloatingActionButton fab;
+    FloatingActionButton fab;
     private RecyclerView recyclerAnunciosPublicos;
     private SearchView pesquisa;
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anunciosPublicosRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
     private AlertDialog dialog;
-    private String filtroTitulo ="";
-    private Anuncio anuncio = new Anuncio();
-    private Usuarios usuario = new Usuarios();
-    private TextView menuEmail, menuNome;
+//    private String filtroTitulo ="";
+//    private Anuncio anuncio = new Anuncio();
+    Usuarios usuario = new Usuarios();
+//    private TextView menuEmail, menuNome;
     private CircleImageView menuIMGPerfil;
-    private String listaImgRecuperadas;
-    private List<String> listaURLFotos = new ArrayList<>();
-    private StorageReference storage;
+//    private String listaImgRecuperadas;
+//    private List<String> listaURLFotos = new ArrayList<>();
+    StorageReference storage;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
     };
+
+    public PrincipalActivity() {
+    }
 
     @SuppressLint("WrongConstant")
     @Override
@@ -93,10 +96,10 @@ public class PrincipalActivity extends AppCompatActivity
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = findViewById(R.id.toolbarEditAnuncio);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Lanche Fácil");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Lanche Fácil");
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
-        FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
+//        FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
         storage = ConfigFireBase.getReferenciaStorage();
         Permissoes.validarPermissoes(permissoes, this,1);
 
@@ -138,16 +141,6 @@ public class PrincipalActivity extends AppCompatActivity
         exibirAnuncios();
         pesquisar();
 
-//        Uri url = user.getPhotoUrl();
-//        if (url != null) {
-//            Glide.with(PrincipalActivity.this)
-//                    .load(url)
-//                    .into(menuIMGPerfil);
-//        }else {
-//            menuIMGPerfil.setImageResource(R.drawable.padrao);
-//
-//
-//        }
 
     }
 
@@ -292,8 +285,6 @@ public class PrincipalActivity extends AppCompatActivity
 
         if (autenticacao.getCurrentUser() == null){
             menu.setGroupVisible(R.id.group_deslogado, true);
-        }else {
-
         }
 
         return super.onPrepareOptionsMenu(menu);
@@ -323,7 +314,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         if (autenticacao.getCurrentUser() != null) {
             int id = item.getItemId();
@@ -374,9 +365,6 @@ public class PrincipalActivity extends AppCompatActivity
             else{
                 ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_CODE );
             }
-        }
-        else{
-
         }
     }
 

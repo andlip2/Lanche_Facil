@@ -89,9 +89,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         });
 
         anuncio = new Anuncio();
-
-
-
     }
 
     private void geolocalizacao() {
@@ -158,10 +155,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     public void validarDadosAnuncio (View view) {
-
-
         String valor = String.valueOf(editValor.getRawValue());
-
         String fone = "";
         if (editTelefone.getRawText() != null) {
             fone = editTelefone.getRawText().toString();
@@ -176,7 +170,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                                 if (!anuncio.getTelefone().isEmpty()){
                                     if (fone.length() >=11) {
                                         if (!anuncio.getDescricao().isEmpty()){
-
                                             salvarAnuncio();
                                         }else {
                                             alerta("Defina a descrição do anúncio");
@@ -202,30 +195,22 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         }else {
             alerta("Você precisa adicionar ao menos uma foto!");
         }
-
     }
 
     public void salvarAnuncio () {
-
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
                 .setMessage("Salvando Anúncio")
                 .setCancelable(false)
                 .build();
         dialog.show();
-
         //Salvar imagens
         for (int i=0; i< listaImgRecuperadas.size(); i++) {
             String urlIMG = listaImgRecuperadas.get(i);
             int tamanho = listaImgRecuperadas.size();
            salvarImagens (urlIMG, tamanho, i);
         }
-
     }
-
-
-
-
 
     @Override
     public void onClick(View v) {
@@ -243,7 +228,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             case R.id.buttonEditarAnuncioGPS:
                 geolocalizacao ();
                 break;
-
         }
     }
 
@@ -251,6 +235,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, requestCode);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -276,8 +261,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 image03.add(caminhoImagem);
             }
         }
-
-
     }
 
     private void add (List<String> image01, List<String> image02, List<String> image03) {
@@ -285,7 +268,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             listaImgRecuperadas.add(0,"");
             listaImgRecuperadas.remove(0);
             listaImgRecuperadas.add(0, image01.get(0));
-
         }
         if (!image02.isEmpty()){
             listaImgRecuperadas.add(1, image02.get(0));
@@ -301,7 +283,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 .child("anuncios")
                 .child(anuncio.getIdAnuncio())
                 .child("imagem"+contador+".jpeg");
-
         //enviar imagem e anuncio
         UploadTask uploadTask = imgAnuncio.putFile(Uri.parse(urlIMG));
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -321,8 +302,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     //finaliza carregamento
                     dialog.dismiss();
                     finish();
-                }else {
-
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -332,7 +311,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 Log.i("INFO", "Falha ao fazer upload: " + e.getMessage());
             }
         });
-
     }
 
     private void iniciarComponentes () {
@@ -345,12 +323,10 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         editTitulo = findViewById(R.id.editAnuncioTitulo);
         editDescricao = findViewById(R.id.editAnuncioDescricao);
         cancelarCadastro = findViewById(R.id.buttonCadAnuncioCancelar);
-
         editValor = findViewById(R.id.editEditarAnuncioValor);
         //configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
         editValor.setLocale(locale);
-
         editTelefone = findViewById(R.id.editEditarAnuncioTelefone);
         imagem1 = findViewById(R.id.imageCadAnuncio1);
         imagem1.setOnClickListener(this);
@@ -358,13 +334,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         imagem2.setOnClickListener(this);
         imagem3 = findViewById(R.id.imageEditarAnuncio3);
         imagem3.setOnClickListener(this);
-
-
-
-
-
     }
-
 
     //Verifica as permissões de galeria
     @Override
@@ -391,6 +361,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
     }

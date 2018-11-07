@@ -10,22 +10,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
+//import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+//import com.facebook.FacebookCallback;
+//import com.facebook.FacebookException;
+//import com.facebook.login.LoginResult;
+//import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
+//import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthProvider;
+//import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthProvider;
+//import com.google.firebase.auth.FirebaseAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.lang.reflect.Array;
+//import java.lang.reflect.Array;
 
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
@@ -34,12 +34,12 @@ import lanchefacil.dalksoft.com.model.Usuarios;
 public class LoginActivity extends AppCompatActivity {
 
     private TextView btCadastrar, btRecuSenha;
-    private Button btEntrar, btGoogle;
+    private Button btEntrar;
     private EditText editEmail, editSenha;
     private Usuarios usuarios;
-    private CallbackManager callbackManager;
+    CallbackManager callbackManager;
 //    private LoginButton btFacobook;
-    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseAuth autenticacao;
 
     @Override
@@ -72,21 +72,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = editEmail.getText().toString();
                 String senha = editSenha.getText().toString();
-                if (!email.equals(null) && !senha.equals(null)) {
-
+                if (!email.isEmpty() && !senha.isEmpty()) {
                     usuarios = new Usuarios();
                     usuarios.setEmail(email);
                     usuarios.setSenha(senha);
                     validarLogin();
-
                 }else {
                     alerta("Preencha todos os campos");
                 }
             }
         });
-
-
-
     }
 
     private void validarLogin () {

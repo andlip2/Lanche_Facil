@@ -1,5 +1,6 @@
 package lanchefacil.dalksoft.com.activity;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,7 +17,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,7 @@ import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
-import lanchefacil.dalksoft.com.adapter.AdapterAnunciosUsuario;
+//import lanchefacil.dalksoft.com.adapter.AdapterAnunciosUsuario;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.model.Anuncio;
@@ -54,7 +55,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private EditText editCEP, editEndereco, editTitulo, editDescricao;
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
-    private static final int SELECAO_GALERIA = 200;
     private ImageView imagem1, imagem2, imagem3;
     private Button buttonGPS, buttonAtualizar, buttonOcutar;
     private LocationManager mLocalizacao;
@@ -73,13 +73,13 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private List<String> image02 = new ArrayList<>();
     private List<String> image03 = new ArrayList<>();
     int teste =0;
-    int teste2 =0;
     private double latitude =0.0;
     private double longitude = 0.0;
     private String cidade;
 
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +89,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
         getSupportActionBar().setTitle("Editar Anúncio");
 
         Permissoes.validarPermissoes(permissoes, this,1);
-//
+
         iniciarComponentes();
-//
+
         storage = ConfigFireBase.getReferenciaStorage();
 
 //      Recuperando e enviando dados
@@ -108,28 +108,22 @@ public class EditarAnuncioActivity extends AppCompatActivity
             if (anuncio.getStatus().equals("Status: Inativo")) {
                 buttonAtualizar.setText("ATIVAR ANÚNCIO");
             }
-
             //Recuperar IMG
             recuperarFotos();
             }
         }
 
         public void recuperarFotos () {
-
             List<String> listaURLFotosSalvas;
-
             listaURLFotosSalvas = anuncio.getFotos();
-
         for (int cont = 0; cont <= listaURLFotosSalvas.size()-1; cont++){
             if (cont == 0 ) {
                 String url = listaURLFotosSalvas.get(0);
                 Picasso.get().load(url).into(imagem1);
-
             }
             else if (cont == 1) {
                 String url1 = listaURLFotosSalvas.get(1);
                 Picasso.get().load(url1).into(imagem2);
-
             }
             else if (cont == 2){
                 String url2 = listaURLFotosSalvas.get(2);
@@ -143,17 +137,14 @@ public class EditarAnuncioActivity extends AppCompatActivity
         private void geolocalizacao() {
             if (ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             }else {
                 mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
                 localizacao = mLocalizacao.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }
-
             if (localizacao != null) {
                 longitude = localizacao.getLongitude();
                 latitude = localizacao.getLatitude();
             }
-
             try {
                 endereco = buscarEndereco(latitude, longitude);
                 editCEP.setText(endereco.getPostalCode());
@@ -179,11 +170,8 @@ public class EditarAnuncioActivity extends AppCompatActivity
             return address;
         }
 
-
     public void validarDados(View view) {
-
         String valor = String.valueOf(editValor.getRawValue());
-
         String fone = "";
         if (editTelefone.getRawText() != null) {
             fone = editTelefone.getRawText().toString();
@@ -227,13 +215,10 @@ public class EditarAnuncioActivity extends AppCompatActivity
             }else {
                 alerta("Defina o titulo do anúncio");
             }
-
         }
-
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.imageEditAnuncio1:
                 escolherImagem(1);
@@ -252,14 +237,15 @@ public class EditarAnuncioActivity extends AppCompatActivity
                 break;
         }
     }
+
     private void escolherImagem(int requestCode) {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, requestCode);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == Activity.RESULT_OK) {
             Uri imagemSelecionada = data.getData();
             String caminhoImagem = imagemSelecionada.toString();
@@ -280,8 +266,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
                 image03.add(caminhoImagem);
             }
         }
-
-
     }
 
     private void add (List<String> image01, List<String> image02, List<String> image03) {
@@ -290,7 +274,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
             listaImgRecuperadas.add(0,"");
             listaImgRecuperadas.remove(0);
             listaImgRecuperadas.add(0, image01.get(0));
-
         }
         if (!image02.isEmpty()){
             listaImgRecuperadas.add(1,"");
@@ -316,11 +299,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                 Uri firebaseUrl = taskSnapshot.getDownloadUrl();
                 String urlConvertida = firebaseUrl.toString();
                 listaURLFotos.add(urlConvertida);
-
                 if (totalIMG == listaURLFotos.size()) {
                     anuncio.setTitulo(editTitulo.getText().toString());
                     anuncio.setTitulo_pesquisa(editTitulo.getText().toString().toUpperCase());
@@ -334,14 +315,11 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     anuncio.setLongitude(longitude);
                     anuncio.setCidade(cidade);
                     anuncio.setCidade_pesquisa(cidade.toUpperCase());
-
+                    //Salvar
                     anuncio.atualizar();
-
                     //finaliza carregamento
                     dialog.dismiss();
                     finish();
-                }else {
-
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -395,7 +373,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
             dialog.dismiss();
             finish();
         }
-
     }
 
     private void iniciarComponentes () {
@@ -414,7 +391,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
 //        configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
         editValor.setLocale(locale);
-//
         editTelefone = findViewById(R.id.editEditAnuncioTelefone);
         imagem1 = findViewById(R.id.imageEditAnuncio1);
         imagem1.setOnClickListener(this);

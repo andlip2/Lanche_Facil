@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
@@ -53,7 +54,7 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
         recyclerAnuncios.setAdapter(adapterMeusAnuncios);
 
         recuperarAnuncios ();
-        getSupportActionBar().setTitle("Meus Anúncios");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Meus Anúncios");
 
         recyclerAnuncios.addOnItemTouchListener(new RecyclerItemClickListener(
                 this,
@@ -66,19 +67,12 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
                         i.putExtra("anuncioSelecionado", anuncioSelecionado);
                         startActivity(i);
                     }
-
                     @Override
                     public void onLongItemClick(View view, int position) {
-
-
                         alerdDialogEscluirAnuncio(position);
                     }
-
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-
                     }
                 }
         ));
@@ -101,17 +95,14 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
         usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 anuncios.clear();
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     anuncios.add(ds.getValue(Anuncio.class));
                 }
                 Collections.reverse(anuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
-
                 dialog.dismiss();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -129,7 +120,6 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Anuncio anuncioSelecionado = anuncios.get(position);
                 anuncioSelecionado.excluirAnuncio();
-
                 adapterMeusAnuncios.notifyDataSetChanged();
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

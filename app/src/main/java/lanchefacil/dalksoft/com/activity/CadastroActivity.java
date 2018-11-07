@@ -1,5 +1,6 @@
 package lanchefacil.dalksoft.com.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
+import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.Base64Custom;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
@@ -31,6 +33,7 @@ public class CadastroActivity extends AppCompatActivity {
     private Button btCadastrar;
     private FirebaseAuth autenticacao;
     private Usuarios usuarios;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +51,22 @@ public class CadastroActivity extends AppCompatActivity {
                 String confSenha = editComSenha.getText().toString();
 
                     if (!senha.isEmpty() && senha.equals(confSenha)) {
+                        dialog = new SpotsDialog.Builder()
+                                .setContext(CadastroActivity.this)
+                                .setMessage("Ativando Anúncio")
+                                .setCancelable(false)
+                                .build();
+                        dialog.show();
                         usuarios = new Usuarios();
                         usuarios.setEmail(email);
                         usuarios.setSenha(senha);
                         usuarios.setNome(nome);
                         criarUser ();
-
                     }else {
                         alerta("Senha invalida!");
                     }
             }
         });
-
     }
 
     private void criarUser() {
@@ -68,17 +75,15 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
                     String idUsuario = task.getResult().getUser().getUid();
                     usuarios.setId(idUsuario);
-
                     UsuarioFirebase.atualizarNomeUsuario(usuarios.getNome());
-
                     Preferencias preferencias = new Preferencias(CadastroActivity.this);
                     preferencias.salvarPreferenciasUsuario(idUsuario, usuarios.getEmail());
                     alerta("Usuario cadastrado com sucesso! ");
                     abrirLoginUsuario();
                     usuarios.salvar();
+                    dialog.dismiss();
                 }
                 else {
                     String erro = "";
