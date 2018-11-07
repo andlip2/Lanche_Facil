@@ -186,20 +186,37 @@ public class PrincipalActivity extends AppCompatActivity
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    listaAnuncios.clear();
+//                    listaAnuncios.clear();
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         listaAnuncios.add(ds.getValue(Anuncio.class));
                     }
 
                     adapterMeusAnuncios.notifyDataSetChanged();
-//                    int total = listaAnuncios.size();
-//                    Log.i("totalAnuncios","Total: " + total);
 
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+                    alerta("não foi encontrado");
+                }
+            });
+            Query query2 = anunciosPublicosRef.orderByChild("titulo_pesquisa")
+                    .startAt(txtDigitado)
+                    .endAt(txtDigitado + "\uf8ff");
+            query2.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    listaAnuncios.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        listaAnuncios.add(ds.getValue(Anuncio.class));
+                    }
 
+                    adapterMeusAnuncios.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    alerta("não foi encontrado");
                 }
             });
         }

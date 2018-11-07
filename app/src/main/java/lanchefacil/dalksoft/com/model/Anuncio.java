@@ -127,7 +127,7 @@ public class Anuncio implements Serializable{
         usuarioMap.put("titulo_pesquisa", getTitulo_pesquisa());
         usuarioMap.put("id", getIdAnuncio());
         usuarioMap.put("cidade", getCidade());
-        usuarioMap.put("cidade_pesquisa", getTitulo_pesquisa());
+        usuarioMap.put("cidade_pesquisa", getCidade_pesquisa());
         usuarioMap.put("endereco", getEndereco());
         usuarioMap.put("valor", getValor());
         usuarioMap.put("telefone",getTelefone());
