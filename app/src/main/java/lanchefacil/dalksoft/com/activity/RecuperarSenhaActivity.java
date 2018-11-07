@@ -48,8 +48,6 @@ public class RecuperarSenhaActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 
     private void inicializarComponentes () {
@@ -58,6 +56,7 @@ public class RecuperarSenhaActivity extends AppCompatActivity {
         btEnviar = findViewById(R.id.buttonRecuSenhaEnvia);
         editEmail = findViewById(R.id.editRecuSenhaEmail);
     }
+
     private void alerta (String texto) {
         Toast.makeText(RecuperarSenhaActivity.this, texto, Toast.LENGTH_SHORT).show();
     }

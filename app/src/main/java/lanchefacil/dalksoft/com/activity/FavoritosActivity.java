@@ -52,7 +52,6 @@ public class FavoritosActivity extends AppCompatActivity {
         adapterMeusAnuncios = new AdapterMeusAnuncios(listaAnuncios,this);
         recyclerFavoritos.setAdapter(adapterMeusAnuncios);
         recuperarFavoritos();
-
         recyclerFavoritos.addOnItemTouchListener(new RecyclerItemClickListener(
                 this,
                 recyclerFavoritos,
@@ -64,19 +63,17 @@ public class FavoritosActivity extends AppCompatActivity {
                         i.putExtra("anuncioSelecionado", anuncioSelecionado);
                         startActivity(i);
                     }
-
                     @Override
                     public void onLongItemClick(View view, int position) {
                         alerdDialogEscluirAnuncio(position);
                     }
-
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                     }
                 }
         ));
     }
+
     private void recuperarFavoritos() {
         dialog = new SpotsDialog.Builder()
                 .setContext(this)
@@ -87,20 +84,16 @@ public class FavoritosActivity extends AppCompatActivity {
         usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 listaAnuncios.clear();
                 for (DataSnapshot id: dataSnapshot.getChildren()){
                     listaAnuncios.add(id.getValue(Anuncio.class));
                 }
                 Collections.reverse(listaAnuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
-
                 dialog.dismiss();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
@@ -115,7 +108,6 @@ public class FavoritosActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 Anuncio anuncioSelecionado = listaAnuncios.get(position);
                 anuncioSelecionado.excluirFavorito();
-
                 adapterMeusAnuncios.notifyDataSetChanged();
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

@@ -27,9 +27,7 @@ public class LocalizacaoActivity extends FragmentActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         anuncio = new Anuncio();
-
     }
 
 
@@ -44,11 +42,8 @@ public class LocalizacaoActivity extends FragmentActivity implements OnMapReadyC
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         anuncio = (Anuncio) getIntent().getSerializableExtra("anuncioSelecionado");
-
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
         LatLng localizacao = new LatLng(anuncio.getLatitude(), anuncio.getLongitude());
         mMap.addMarker(new MarkerOptions()

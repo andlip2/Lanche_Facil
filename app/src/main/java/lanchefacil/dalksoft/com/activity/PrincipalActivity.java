@@ -286,7 +286,6 @@ public class PrincipalActivity extends AppCompatActivity
         if (autenticacao.getCurrentUser() == null){
             menu.setGroupVisible(R.id.group_deslogado, true);
         }
-
         return super.onPrepareOptionsMenu(menu);
     }
 

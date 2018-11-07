@@ -71,20 +71,16 @@ public class PerfilActivity extends AppCompatActivity {
         }else {
             imagePerfil.setImageResource(R.drawable.padrao);
         }
-
         btSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String novoNome = editNome.getText().toString();
-
                 UsuarioFirebase.atualizarNomeUsuario(novoNome);
-
                 usuarioLogado.setNome(novoNome);
                 usuarioLogado.atualizar();
                 alerta("Alteração feita com sucesso");
             }
         });
-
         txtAlterarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,14 +90,12 @@ public class PerfilActivity extends AppCompatActivity {
                 }
             }
         });
-
         btExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 excluirUsuario();
             }
         });
-
     }
 
     @Override
@@ -110,25 +104,19 @@ public class PerfilActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             Bitmap imagem = null;
-
             try {
-
                 switch (requestCode) {
                     case SELECAO_GALERIA:
                         Uri imagemSelecionada = data.getData();
                         imagem = MediaStore.Images.Media.getBitmap(getContentResolver(), imagemSelecionada);
                         break;
                 }
-
                 if (imagem !=null) {
                     imagePerfil.setImageBitmap(imagem);
-
                     //recupera
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
                     byte[] dadosImagem = outputStream.toByteArray();
-
-
                     dialog = new SpotsDialog.Builder()
                             .setContext(this)
                             .setMessage("Atualizando Anúncio")
@@ -150,22 +138,18 @@ public class PerfilActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Uri url = taskSnapshot.getDownloadUrl();
                             atualizarFoto(url);
-
                             dialog.dismiss();
                             alerta("Sucesso ao fazer upload da imagem");
                         }
                     });
                 }
-
             }catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
     private void excluirUsuario () {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -183,7 +167,6 @@ public class PerfilActivity extends AppCompatActivity {
         UsuarioFirebase.atualizarFotoUsuario(url);
         usuarioLogado.setCaminhoFoto(url.toString());
         usuarioLogado.atualizar();
-
         alerta("Foto atualizada com sucesso!");
     }
 
