@@ -56,7 +56,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private MaskEditText editTelefone;
     private static final int SELECAO_GALERIA = 200;
     private ImageView imagem1, imagem2, imagem3;
-    private Button buttonGPS, buttonExcluir, buttonOcutar;
+    private Button buttonGPS, buttonAtualizar, buttonOcutar;
     private LocationManager mLocalizacao;
     protected Location localizacao;
     private Address endereco;
@@ -105,15 +105,13 @@ public class EditarAnuncioActivity extends AppCompatActivity
             editValor.setText(anuncio.getValor());
             cidade = anuncio.getCidade();
 
+            if (anuncio.getStatus().equals("Status: Inativo")) {
+                buttonAtualizar.setText("ATIVAR ANÚNCIO");
+            }
 
             //Recuperar IMG
             recuperarFotos();
             }
-
-
-
-
-
         }
 
         public void recuperarFotos () {
@@ -318,6 +316,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
                 if (totalIMG == listaURLFotos.size()) {
                     anuncio.setTitulo(editTitulo.getText().toString());
+                    anuncio.setTitulo_pesquisa(editTitulo.getText().toString().toUpperCase());
                     anuncio.setCep(editCEP.getText().toString());
                     anuncio.setDescricao(editDescricao.getText().toString());
                     anuncio.setEndereco(editEndereco.getText().toString());
@@ -327,6 +326,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     anuncio.setLatitude(latitude);
                     anuncio.setLongitude(longitude);
                     anuncio.setCidade(cidade);
+                    anuncio.setCidade_pesquisa(cidade.toUpperCase());
 
                     anuncio.atualizar();
 
@@ -364,6 +364,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
             }}else {
             anuncio.setTitulo(editTitulo.getText().toString());
+            anuncio.setTitulo_pesquisa(editTitulo.getText().toString().toUpperCase());
             anuncio.setCep(editCEP.getText().toString());
             anuncio.setDescricao(editDescricao.getText().toString());
             anuncio.setEndereco(editEndereco.getText().toString());
@@ -372,6 +373,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
             anuncio.setLatitude(latitude);
             anuncio.setLongitude(longitude);
             anuncio.setCidade(cidade);
+            anuncio.setCidade_pesquisa(cidade.toUpperCase());
             anuncio.atualizarParcial();
             dialog.dismiss();
             finish();
@@ -388,10 +390,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
         editEndereco.setFocusable(false);
         editTitulo = findViewById(R.id.editEditAnuncioTitulo);
         editDescricao = findViewById(R.id.editEditAnuncioDescricao);
-//        buttonExcluir = findViewById(R.id.buttonEditAnuncioExcluir);
-//        buttonExcluir.setOnClickListener(this);
         buttonOcutar = findViewById(R.id.buttonEditAnuncioOcutar);
         buttonOcutar.setOnClickListener(this);
+        buttonAtualizar = findViewById(R.id.buttonEditAnuncioAtualizarAnuncio);
         editValor = findViewById(R.id.editEditAnuncioValor);
 //        configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");

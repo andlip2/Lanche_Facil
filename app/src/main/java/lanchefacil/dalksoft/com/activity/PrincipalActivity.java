@@ -179,7 +179,7 @@ public class PrincipalActivity extends AppCompatActivity
         listaAnuncios.clear();
 
         if (txtDigitado.length() >=2) {
-            Query query = anunciosPublicosRef.orderByChild("titulo_pesquisa")
+            Query query = anunciosPublicosRef.orderByChild("cidade_pesquisa")
                     .startAt(txtDigitado)
                     .endAt(txtDigitado + "\uf8ff");
 

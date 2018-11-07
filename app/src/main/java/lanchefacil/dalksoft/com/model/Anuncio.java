@@ -13,6 +13,7 @@ public class Anuncio implements Serializable{
     private String idAnuncio;
     private String titulo;
     private String titulo_pesquisa;
+    private String cidade_pesquisa;
     private String cidade;
     private String cep;
     private String endereco;
@@ -123,9 +124,10 @@ public class Anuncio implements Serializable{
     public Map<String, Object> converterMap () {
         HashMap<String, Object> usuarioMap = new HashMap<>();
         usuarioMap.put("titulo", getTitulo());
-        usuarioMap.put("titulo_pesquisa", getTitulo().toUpperCase());
+        usuarioMap.put("titulo_pesquisa", getTitulo_pesquisa());
         usuarioMap.put("id", getIdAnuncio());
         usuarioMap.put("cidade", getCidade());
+        usuarioMap.put("cidade_pesquisa", getTitulo_pesquisa());
         usuarioMap.put("endereco", getEndereco());
         usuarioMap.put("valor", getValor());
         usuarioMap.put("telefone",getTelefone());
@@ -147,6 +149,8 @@ public class Anuncio implements Serializable{
         usuarioMap.put("telefone",getTelefone());
         usuarioMap.put("descricao", getDescricao());
         usuarioMap.put("status", getStatus());
+        usuarioMap.put("cidade", getCidade());
+        usuarioMap.put("cidade_pesquisa", getCidade_pesquisa());
         usuarioMap.put("latitude", getLatitude());
         usuarioMap.put("Longitude", getLongitude());
 
@@ -238,6 +242,14 @@ public class Anuncio implements Serializable{
     public void setFavoritos(int favoritos) {
 
         this.favoritos = favoritos;
+    }
+
+    public String getCidade_pesquisa() {
+        return cidade_pesquisa;
+    }
+
+    public void setCidade_pesquisa(String cidade_pesquisa) {
+        this.cidade_pesquisa = cidade_pesquisa;
     }
 
     public String getTitulo_pesquisa() {

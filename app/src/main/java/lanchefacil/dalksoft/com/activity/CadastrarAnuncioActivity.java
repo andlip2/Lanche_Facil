@@ -152,6 +152,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         anuncio.setLatitude(latitude);
         anuncio.setLongitude(longitude);
         anuncio.setCidade(cidade);
+        anuncio.setCidade_pesquisa(cidade.toUpperCase());
 
         return anuncio;
     }
