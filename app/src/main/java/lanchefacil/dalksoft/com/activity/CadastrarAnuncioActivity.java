@@ -166,6 +166,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             fone = editTelefone.getRawText().toString();
         }
         anuncio = configurarAnuncio();
+        add(image01,image02,image03);
         if (listaImgRecuperadas.size() != 0){
             if (!anuncio.getCep().isEmpty()){
                 if (!anuncio.getEndereco().isEmpty()){
@@ -175,7 +176,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                                     if (fone.length() >=11) {
                                         if (!anuncio.getDescricao().isEmpty()){
 
-                                            add(image01,image02,image03);
                                             salvarAnuncio();
                                         }else {
                                             alerta("Defina a descrição do anúncio");

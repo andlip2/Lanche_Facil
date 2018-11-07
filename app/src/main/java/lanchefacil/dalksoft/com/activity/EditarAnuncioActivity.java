@@ -197,7 +197,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
                                 if (!anuncio.getTelefone().isEmpty()){
                                     if (fone.length() >=11) {
                                         if (!anuncio.getDescricao().isEmpty()){
+
                                             add(image01,image02,image03);
+
                                             atualizarAnuncio();
                                         }else {
                                             alerta("Defina a descrição do anúncio");
