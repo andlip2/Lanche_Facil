@@ -28,13 +28,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 //import android.widget.TextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.cazaea.sweetalert.SweetAlertDialog;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,9 +58,12 @@ import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
+import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
 import lanchefacil.dalksoft.com.model.Anuncio;
 import lanchefacil.dalksoft.com.model.Usuarios;
 import me.drakeet.materialdialog.MaterialDialog;
+
+import static android.provider.CalendarContract.CalendarCache.URI;
 
 public class PrincipalActivity extends AppCompatActivity
 
@@ -75,6 +82,8 @@ public class PrincipalActivity extends AppCompatActivity
     private DatabaseReference anunciosPublicosRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
     private SweetAlertDialog pDialog;
+    private TextView txtNome, txtEmail;
+    private ImageView imgPerfil;
 //    private String filtroTitulo ="";
 //    private Anuncio anuncio = new Anuncio();
     Usuarios usuario = new Usuarios();
@@ -140,8 +149,24 @@ public class PrincipalActivity extends AppCompatActivity
             toggle.syncState();
 
             NavigationView navigationView =  findViewById(R.id.nav_view);
+            View view = navigationView.getHeaderView(0);
+            txtNome = view.findViewById(R.id.textPrincipalNome);
+            txtEmail = view.findViewById(R.id.textPrincipalEmail);
+            imgPerfil = view.findViewById(R.id.imagePrincipalPerfil);
+
+
+            FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
+            Uri url = user.getPhotoUrl();
+                Glide.with(PrincipalActivity.this)
+                        .load(url)
+                        .into(imgPerfil);
+            txtEmail.setText(user.getEmail());
+            txtNome.setText(user.getDisplayName());
+
             navigationView.setNavigationItemSelectedListener(this);
         }
+
+
 
         //Acho q o nome do metodo já diz tudo né
         exibirAnuncios();
