@@ -126,7 +126,7 @@ public class Anuncio implements Serializable{
         usuarioMap.put("fotos" , getFotos());
         usuarioMap.put("status", getStatus());
         usuarioMap.put("latitude", getLatitude());
-        usuarioMap.put("Longitude", getLongitude());
+        usuarioMap.put("longitude", getLongitude());
 
         return usuarioMap;
     }
@@ -143,7 +143,7 @@ public class Anuncio implements Serializable{
         usuarioMap.put("cidade", getCidade());
         usuarioMap.put("cidade_pesquisa", getCidade_pesquisa());
         usuarioMap.put("latitude", getLatitude());
-        usuarioMap.put("Longitude", getLongitude());
+        usuarioMap.put("longitude", getLongitude());
 
         return usuarioMap;
     }
