@@ -38,6 +38,7 @@ import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
+import lanchefacil.dalksoft.com.model.Anuncio;
 import lanchefacil.dalksoft.com.model.Usuarios;
 
 public class PerfilActivity extends AppCompatActivity {
@@ -101,7 +102,25 @@ public class PerfilActivity extends AppCompatActivity {
         btExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                excluirUsuario();
+                new SweetAlertDialog(PerfilActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Excluir Conta")
+                        .setContentText("Tem certeza que deseja excluir sua conta?")
+                        .setConfirmText("SIM")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                excluirUsuario();
+                            }
+                        })
+                        .setCancelText("NÃO")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -170,8 +189,9 @@ public class PerfilActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d("sucesso", "Conta excluida.");
+                    usuarioLogado.excluir();
                     finish();
-                    Intent i = new Intent(PerfilActivity.this, PrincipalActivity.class);
+                    Intent i = new Intent(PerfilActivity.this, MainActivity.class);
                     startActivity(i);
                 }
             }

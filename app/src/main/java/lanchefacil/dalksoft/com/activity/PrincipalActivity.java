@@ -123,6 +123,10 @@ public class PrincipalActivity extends AppCompatActivity
 
             }
         });}else {
+            finish();
+            Intent i = new Intent(PrincipalActivity.this, MainActivity.class);
+//            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // adiciona a flag para a intent
+            startActivity(i);
             fab.setVisibility(View.GONE);
         }
 
@@ -272,36 +276,6 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-
-    //Codigos q eu escrevi, Config_Menu_Logar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    //Codigos q eu escrevi, Config_Menu_Logar
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        if (autenticacao.getCurrentUser() == null){
-            menu.setGroupVisible(R.id.group_deslogado, true);
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-        @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_cadastrar:
-                    Intent i = new Intent(PrincipalActivity.this, LoginActivity.class);
-                    startActivity(i);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -341,12 +315,32 @@ public class PrincipalActivity extends AppCompatActivity
                 Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
                 startActivity(i);
             } else if (id == R.id.menu_sair) {
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                finish();
-                Intent i = new Intent(PrincipalActivity.this, MainActivity.class);
-                startActivity(i);
-                alerta("Usuario desconectado!");
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Desconectar conta")
+                        .setContentText("Você realmente deseja sair da sua conta?")
+                        .setCancelText("Não")
+                        .setConfirmText("Sim")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+                            }
+                        })
+                        .showConfirmButton(true)
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                                FirebaseAuth.getInstance().signOut();
+                                LoginManager.getInstance().logOut();
+                                finish();
+                                Intent i = new Intent(PrincipalActivity.this, MainActivity.class);
+                                startActivity(i);
+                                alerta("Usuario desconectado!");
+                            }
+                        })
+                        .show();
             }
 
             DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -365,7 +359,7 @@ public class PrincipalActivity extends AppCompatActivity
         if( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ){
 
             if( ActivityCompat.shouldShowRequestPermissionRationale( this, Manifest.permission.ACCESS_FINE_LOCATION ) ){
-                callDialog( "É preciso a permission ACCESS_FINE_LOCATION para apresentação dos eventos locais.", new String[]{Manifest.permission.ACCESS_FINE_LOCATION} );
+                callDialog( "É preciso que seja altorizada a permissão ao GPS para poder realizar cadastro de anuncios.", new String[]{Manifest.permission.ACCESS_FINE_LOCATION} );
             }
             else{
                 ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_CODE );
@@ -375,24 +369,21 @@ public class PrincipalActivity extends AppCompatActivity
 
     //Configura a caixa para aceitar permissão
     private void callDialog( String message, final String[] permissions ){
-        mMaterialDialog = new MaterialDialog(this)
-                .setTitle("Permission")
-                .setMessage( message )
-                .setPositiveButton("Ok", new View.OnClickListener() {
+        new SweetAlertDialog(PrincipalActivity.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Permission")
+                .setContentText(message)
+                .setCancelText("NÃO")
+                .setCancelClickListener(null)
+                .setConfirmText("SIM")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onClick(View v) {
-
+                    public void onClick(SweetAlertDialog sDialog) {
                         ActivityCompat.requestPermissions(PrincipalActivity.this, permissions, REQUEST_PERMISSIONS_CODE);
-                        mMaterialDialog.dismiss();
+
+                        sDialog.cancel();
                     }
                 })
-                .setNegativeButton("Cancel", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mMaterialDialog.dismiss();
-                    }
-                });
-        mMaterialDialog.show();
+                .show();
     }
 
 //    @Override

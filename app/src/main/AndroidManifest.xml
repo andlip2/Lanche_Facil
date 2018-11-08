@@ -18,9 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.PrincipalActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -105,8 +105,8 @@
         <activity
             android:name=".activity.LocalizacaoActivity"
             android:label="@string/title_activity_localizacao" />
-        <activity android:name=".activity.PrincipalActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme">
 
         </activity>
     </application>

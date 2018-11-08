@@ -32,6 +32,15 @@ public class Usuarios {
 
     }
 
+    public void excluir () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("usuarios")
+                .child(String.valueOf(getId()));
+
+        anuncioRef.removeValue();
+    }
+
     public void atualizar () {
         DatabaseReference reference = ConfigFireBase.getFirebase();
         DatabaseReference usuarioRef = reference

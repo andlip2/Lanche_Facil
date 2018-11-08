@@ -15,6 +15,7 @@ import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -59,8 +60,25 @@ public class FavoritosActivity extends AppCompatActivity {
                 recyclerFavoritos,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
-                        alerdDialogEscluirAnuncio(position);
+                    public void onItemClick(View view, final int position) {
+                        new SweetAlertDialog(FavoritosActivity.this, SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("Remover Favorito")
+                                .setContentText("Tem certeza que deseja remover esse anúncio de seus favoritos?")
+                                .setCancelText("NÃO")
+                                .setCancelClickListener(null)
+                                .setConfirmText("SIM")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        Anuncio anuncioSelecionado = listaAnuncios.get(position);
+                                        anuncioSelecionado.excluirFavorito();
+                                        adapterFavoritos.notifyDataSetChanged();
+
+                                        feito();
+                                        sDialog.cancel();
+                                    }
+                                })
+                                .show();
                     }
                     @Override
                     public void onLongItemClick(View view, int position) {
@@ -74,6 +92,14 @@ public class FavoritosActivity extends AppCompatActivity {
                     }
                 }
         ));
+    }
+
+    public void feito () {
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Removido")
+                .setContentText("O anúncio foi removido de seus favoritos")
+                .setConfirmText("OK")
+                .show();
     }
 
     private void recuperarFavoritos() {
@@ -99,25 +125,5 @@ public class FavoritosActivity extends AppCompatActivity {
         });
     }
 
-    private void alerdDialogEscluirAnuncio (final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Remover Favorito");
-        builder.setMessage("Tem certeza que deseja remover esse anuncio dos seus favoritos? ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Anuncio anuncioSelecionado = listaAnuncios.get(position);
-                anuncioSelecionado.excluirFavorito();
-                adapterFavoritos.notifyDataSetChanged();
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+
 }

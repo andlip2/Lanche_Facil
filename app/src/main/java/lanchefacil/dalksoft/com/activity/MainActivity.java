@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private SweetAlertDialog pDialog;
     Usuarios usuario = new Usuarios();
     StorageReference storage;
-    private String [] permissoes = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA,
-    };
+//    private String [] permissoes = new String[]{
+//            Manifest.permission.READ_EXTERNAL_STORAGE,
+//            Manifest.permission.CAMERA,
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
         storage = ConfigFireBase.getReferenciaStorage();
-        Permissoes.validarPermissoes(permissoes, this,1);
+//        Permissoes.validarPermissoes(permissoes, this,1);
 
         //Solicitar permição ao GPS
-        callAccessLocation();
+//        callAccessLocation();
 
         inicializarComponentes ();
 
@@ -232,42 +232,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Verifica/solicita permissão ao GPS
-    public void callAccessLocation() {
-        Log.i (TAG,"callAccessLocation()");
-
-        if( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ){
-
-            if( ActivityCompat.shouldShowRequestPermissionRationale( this, Manifest.permission.ACCESS_FINE_LOCATION ) ){
-                callDialog( "É preciso a permission ACCESS_FINE_LOCATION para apresentação dos eventos locais.", new String[]{Manifest.permission.ACCESS_FINE_LOCATION} );
-            }
-            else{
-                ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_CODE );
-            }
-        }
-    }
-
-    //Configura a caixa para aceitar permissão
-    private void callDialog( String message, final String[] permissions ){
-        mMaterialDialog = new MaterialDialog(this)
-                .setTitle("Permission")
-                .setMessage( message )
-                .setPositiveButton("Ok", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        ActivityCompat.requestPermissions(MainActivity.this, permissions, REQUEST_PERMISSIONS_CODE);
-                        mMaterialDialog.dismiss();
-                    }
-                })
-                .setNegativeButton("Cancel", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mMaterialDialog.dismiss();
-                    }
-                });
-        mMaterialDialog.show();
-    }
+//    //Verifica/solicita permissão ao GPS
+//    public void callAccessLocation() {
+//        Log.i (TAG,"callAccessLocation()");
+//
+//        if( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ){
+//
+//            if( ActivityCompat.shouldShowRequestPermissionRationale( this, Manifest.permission.ACCESS_FINE_LOCATION ) ){
+//                callDialog( "É preciso a permission ACCESS_FINE_LOCATION para apresentação dos eventos locais.", new String[]{Manifest.permission.ACCESS_FINE_LOCATION} );
+//            }
+//            else{
+//                ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_CODE );
+//            }
+//        }
+//    }
+//
+//    //Configura a caixa para aceitar permissão
+//    private void callDialog( String message, final String[] permissions ){
+//        mMaterialDialog = new MaterialDialog(this)
+//                .setTitle("Permission")
+//                .setMessage( message )
+//                .setPositiveButton("Ok", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        ActivityCompat.requestPermissions(MainActivity.this, permissions, REQUEST_PERMISSIONS_CODE);
+//                        mMaterialDialog.dismiss();
+//                    }
+//                })
+//                .setNegativeButton("Cancel", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        mMaterialDialog.dismiss();
+//                    }
+//                });
+//        mMaterialDialog.show();
+//    }
 
     private void inicializarComponentes() {
         usuario = new Usuarios();
