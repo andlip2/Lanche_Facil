@@ -104,7 +104,7 @@ public class PrincipalActivity extends AppCompatActivity
         Permissoes.validarPermissoes(permissoes, this,1);
 
         //Solicitar permição ao GPS
-        callAccessLocation();
+        alerdDialogPermissaoGPS();
 
         inicializarComponentes ();
 
@@ -353,7 +353,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     //Verifica/solicita permissão ao GPS
-    public void callAccessLocation() {
+    public void alerdDialogPermissaoGPS() {
         Log.i (TAG,"callAccessLocation()");
 
         if( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ){

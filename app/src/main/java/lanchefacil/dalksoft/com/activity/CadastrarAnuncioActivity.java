@@ -94,7 +94,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         anuncio = new Anuncio();
 
-
+        alerdDialogPermissaoGPS();
 
     }
 
@@ -397,7 +397,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                 .show();
     }
 
-    public void callAccessLocation() {
+    public void alerdDialogPermissaoGPS() {
         Log.i ("LOG","callAccessLocation()");
 
         if( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ){
