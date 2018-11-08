@@ -2,6 +2,7 @@ package lanchefacil.dalksoft.com.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.facebook.AccessToken;
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.facebook.CallbackManager;
 //import com.facebook.FacebookCallback;
 //import com.facebook.FacebookException;
@@ -43,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 //    private LoginButton btFacobook;
     FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseAuth autenticacao;
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                 String email = editEmail.getText().toString();
                 String senha = editSenha.getText().toString();
                 if (!email.isEmpty() && !senha.isEmpty()) {
-                    dialog = new SpotsDialog.Builder()
-                            .setContext(LoginActivity.this)
-                            .setMessage("Cadastrando Usuário")
-                            .setCancelable(false)
-                            .build();
-                    dialog.show();
                     usuarios = new Usuarios();
                     usuarios.setEmail(email);
                     usuarios.setSenha(senha);
@@ -100,11 +96,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Loading");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     alerta("Login efetuado com sucesso");
+                    finish();
                     Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // adiciona a flag para a intent
+//                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // adiciona a flag para a intent
                     startActivity(i);
-                    dialog.dismiss();
+                    pDialog.dismiss();
                 }else {
                     alerta("Erro ao realizar login");
                 }

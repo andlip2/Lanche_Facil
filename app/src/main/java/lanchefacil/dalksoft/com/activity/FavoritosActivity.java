@@ -3,6 +3,7 @@ package lanchefacil.dalksoft.com.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +34,7 @@ public class FavoritosActivity extends AppCompatActivity {
     private AdapterFavoritos adapterFavoritos;
     private DatabaseReference usuarioRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +77,11 @@ public class FavoritosActivity extends AppCompatActivity {
     }
 
     private void recuperarFavoritos() {
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Carregando Favoritos")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        pDialog = new SweetAlertDialog(FavoritosActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
         usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,7 +91,7 @@ public class FavoritosActivity extends AppCompatActivity {
                 }
                 Collections.reverse(listaAnuncios);
                 adapterFavoritos.notifyDataSetChanged();
-                dialog.dismiss();
+                pDialog.dismiss();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

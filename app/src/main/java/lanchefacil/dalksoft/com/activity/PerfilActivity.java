@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +49,7 @@ public class PerfilActivity extends AppCompatActivity {
     private Usuarios usuarioLogado;
     private static final int SELECAO_GALERIA = 200;
     private String identificadorUsuario;
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +76,16 @@ public class PerfilActivity extends AppCompatActivity {
         btSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pDialog = new SweetAlertDialog(PerfilActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Carregando");
+                pDialog.setCancelable(false);
+                pDialog.show();
                 String novoNome = editNome.getText().toString();
                 UsuarioFirebase.atualizarNomeUsuario(novoNome);
                 usuarioLogado.setNome(novoNome);
                 usuarioLogado.atualizar();
+                pDialog.dismiss();
                 alerta("Alteração feita com sucesso");
             }
         });
@@ -117,12 +125,11 @@ public class PerfilActivity extends AppCompatActivity {
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
                     byte[] dadosImagem = outputStream.toByteArray();
-                    dialog = new SpotsDialog.Builder()
-                            .setContext(this)
-                            .setMessage("Atualizando Anúncio")
-                            .setCancelable(false)
-                            .build();
-                    dialog.show();
+                    pDialog = new SweetAlertDialog(PerfilActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Carregando");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     StorageReference imagemRef = ConfigFireBase.getReferenciaStorage()
                             .child("imagens")
                             .child("perfil")
@@ -138,7 +145,7 @@ public class PerfilActivity extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Uri url = taskSnapshot.getDownloadUrl();
                             atualizarFoto(url);
-                            dialog.dismiss();
+                            pDialog.dismiss();
                             alerta("Sucesso ao fazer upload da imagem");
                         }
                     });

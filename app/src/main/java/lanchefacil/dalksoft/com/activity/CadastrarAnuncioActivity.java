@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
@@ -54,7 +56,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private Address endereco;
     private Anuncio anuncio;
     private StorageReference storage;
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
@@ -206,12 +208,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     public void salvarAnuncio () {
 
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Salvando Anúncio")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        pDialog = new SweetAlertDialog(CadastrarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
 
         //Salvar imagens
         for (int i=0; i< listaImgRecuperadas.size(); i++) {
@@ -318,7 +319,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                     anuncio.salvar();
 
                     //finaliza carregamento
-                    dialog.dismiss();
+                    pDialog.dismiss();
                     finish();
                 }else {
 

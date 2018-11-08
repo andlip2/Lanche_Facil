@@ -2,6 +2,7 @@ package lanchefacil.dalksoft.com.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,7 +35,7 @@ public class CadastroActivity extends AppCompatActivity {
     private Button btCadastrar;
     private FirebaseAuth autenticacao;
     private Usuarios usuarios;
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +53,6 @@ public class CadastroActivity extends AppCompatActivity {
                 String confSenha = editComSenha.getText().toString();
 
                     if (!senha.isEmpty() && senha.equals(confSenha)) {
-                        dialog = new SpotsDialog.Builder()
-                                .setContext(CadastroActivity.this)
-                                .setMessage("Cadastrando Usuário")
-                                .setCancelable(false)
-                                .build();
-                        dialog.show();
                         usuarios = new Usuarios();
                         usuarios.setEmail(email);
                         usuarios.setSenha(senha);
@@ -75,6 +71,11 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    pDialog = new SweetAlertDialog(CadastroActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Loading");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     String idUsuario = task.getResult().getUser().getUid();
                     usuarios.setId(idUsuario);
                     UsuarioFirebase.atualizarNomeUsuario(usuarios.getNome());
@@ -83,7 +84,7 @@ public class CadastroActivity extends AppCompatActivity {
                     alerta("Usuario cadastrado com sucesso! ");
                     abrirLoginUsuario();
                     usuarios.salvar();
-                    dialog.dismiss();
+                    pDialog.dismiss();
                 }
                 else {
                     String erro = "";

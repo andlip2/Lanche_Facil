@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
@@ -62,7 +64,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private Address endereco;
     private Anuncio anuncio;
     private StorageReference storage;
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
@@ -318,7 +320,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     //Salvar
                     anuncio.atualizar();
                     //finaliza carregamento
-                    dialog.dismiss();
+                    pDialog.dismiss();
                     finish();
                 }
             }
@@ -335,20 +337,18 @@ public class EditarAnuncioActivity extends AppCompatActivity
     public void atualizarAnuncio() {
         if (anuncio.getStatus().equals("Status: Inativo")) {
             anuncio.setStatus("Status: Ativo");
-            dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage("Ativando Anúncio")
-                    .setCancelable(false)
-                    .build();
-            dialog.show();
+            pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Ativando");
+            pDialog.setCancelable(false);
+            pDialog.show();
         }else {
             anuncio.setStatus("Status: Ativo");
-            dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage("Atualizando Anúncio")
-                    .setCancelable(false)
-                    .build();
-            dialog.show();
+            pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Atualizando");
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
         //Salvar imagens
         if (teste >0){
@@ -370,7 +370,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
             anuncio.setCidade(cidade);
             anuncio.setCidade_pesquisa(cidade.toUpperCase());
             anuncio.atualizarParcial();
-            dialog.dismiss();
+            pDialog.dismiss();
             finish();
         }
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,6 +32,7 @@ import android.widget.SearchView;
 //import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cazaea.sweetalert.SweetAlertDialog;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -72,7 +74,7 @@ public class PrincipalActivity extends AppCompatActivity
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anunciosPublicosRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
-    private AlertDialog dialog;
+    private SweetAlertDialog pDialog;
 //    private String filtroTitulo ="";
 //    private Anuncio anuncio = new Anuncio();
     Usuarios usuario = new Usuarios();
@@ -247,12 +249,11 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     public void recuperarAnunciosPublicos () {
-        dialog = new SpotsDialog.Builder()
-                .setContext(this)
-                .setMessage("Carregando Anúncios")
-                .setCancelable(false)
-                .build();
-        dialog.show();
+        pDialog = new SweetAlertDialog(PrincipalActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Carregando");
+        pDialog.setCancelable(false);
+        pDialog.show();
         anunciosPublicosRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -262,7 +263,7 @@ public class PrincipalActivity extends AppCompatActivity
                 }
                 Collections.reverse(listaAnuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
-                dialog.dismiss();
+                pDialog.dismiss();
                     }
             @Override
             public void onCancelled(DatabaseError databaseError) {
