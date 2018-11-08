@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +52,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private MaskEditText editTelefone;
     private ImageView imagem1, imagem2, imagem3;
     private Button buttonGPS, cancelarCadastro;
+    public static final int REQUEST_PERMISSIONS_CODE = 128;
     private LocationManager mLocalizacao;
     protected Location localizacao;
     private Address endereco;
@@ -378,18 +380,52 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     private void alerdDialogPermissaoGaleria () {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissões Negadas");
-        builder.setMessage("Para cadastrar um anúncio é necessário aceitar as permissões");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
+        new SweetAlertDialog(CadastrarAnuncioActivity.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Permissões Negadas")
+                .setContentText("Para cadastrar um anúncio é necessário aceitar as permissões")
+                .setCancelText(null)
+                .setCancelClickListener(null)
+                .setConfirmText("ACEITAR")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        finish();
+
+                        sDialog.cancel();
+                    }
+                })
+                .show();
+    }
+
+    public void callAccessLocation() {
+        Log.i ("LOG","callAccessLocation()");
+
+        if( ContextCompat.checkSelfPermission( this, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ){
+
+            if( ActivityCompat.shouldShowRequestPermissionRationale( this, Manifest.permission.ACCESS_FINE_LOCATION ) ){
+                callDialog( "É preciso que seja altorizada a permissão ao GPS para poder realizar cadastro de anuncios.", new String[]{Manifest.permission.ACCESS_FINE_LOCATION} );
             }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+            else{
+                ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSIONS_CODE );
+            }
+        }
+    }
+
+    //Configura a caixa para aceitar permissão
+    private void callDialog( String message, final String[] permissions ){
+        new SweetAlertDialog(CadastrarAnuncioActivity.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Permission")
+                .setContentText(message)
+                .setConfirmText("ACEITAR")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        ActivityCompat.requestPermissions(CadastrarAnuncioActivity.this, permissions, REQUEST_PERMISSIONS_CODE);
+
+                        sDialog.cancel();
+                    }
+                })
+                .show();
     }
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();

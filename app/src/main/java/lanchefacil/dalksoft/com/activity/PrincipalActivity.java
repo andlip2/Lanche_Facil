@@ -372,9 +372,7 @@ public class PrincipalActivity extends AppCompatActivity
         new SweetAlertDialog(PrincipalActivity.this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Permission")
                 .setContentText(message)
-                .setCancelText("NÃO")
-                .setCancelClickListener(null)
-                .setConfirmText("SIM")
+                .setConfirmText("ACEITAR")
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {

@@ -437,64 +437,62 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     private void alerdDialogEscluirAnuncio () {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Excluir anúncio");
-        builder.setMessage("Tem certeza que deseja excluir esse anuncio? ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                anuncio.excluirAnuncio();
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+          new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Excluir anúncio")
+                .setContentText("Tem certeza que deseja excluir esse anuncio?")
+                .setCancelText("NÃO")
+                .setCancelClickListener(null)
+                .setConfirmText("SIM")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        finish();
+                        anuncio.excluirAnuncio();
+
+                        sDialog.cancel();
+                    }
+                })
+                .show();
     }
 
     private void alerdDialogOcutarAnuncio () {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Ocutar anúncio");
-        builder.setMessage("Tem certeza que deseja ocutar esse anuncio para o publico? ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                anuncio.excluirAnuncioPublico();
-                anuncio.setStatus("Status: Inativo");
-                anuncio.atualizarStatus();
+        new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Ocutar anúncio")
+                .setContentText("Tem certeza que deseja ocutar esse anuncio para o publico?")
+                .setCancelText("NÃO")
+                .setCancelClickListener(null)
+                .setConfirmText("SIM")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        anuncio.excluirAnuncioPublico();
+                        anuncio.setStatus("Status: Inativo");
+                        anuncio.atualizarStatus();
 
-                finish();
+                        finish();
 
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+                        sDialog.cancel();
+                    }
+                })
+                .show();
     }
 
     private void alerdDialogPermissaoGaleria () {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissões Negadas");
-        builder.setMessage("Para cadastrar um anúncio é necessário aceitar as permissões");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Permissões Negadas")
+                .setContentText("Para cadastrar um anúncio é necessário aceitar as permissões")
+                .setCancelText(null)
+                .setCancelClickListener(null)
+                .setConfirmText("ACEITAR")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        finish();
+
+                        sDialog.cancel();
+                    }
+                })
+                .show();
     }
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();
