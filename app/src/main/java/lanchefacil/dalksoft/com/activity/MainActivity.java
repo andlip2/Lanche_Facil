@@ -1,39 +1,23 @@
 package lanchefacil.dalksoft.com.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SearchView;
-//import android.widget.TextView;
 import android.widget.Toast;
-
 import com.cazaea.sweetalert.SweetAlertDialog;
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,14 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
@@ -58,48 +38,32 @@ import lanchefacil.dalksoft.com.model.Anuncio;
 import lanchefacil.dalksoft.com.model.Usuarios;
 import me.drakeet.materialdialog.MaterialDialog;
 
-public class PrincipalActivity extends AppCompatActivity
-
-
-        implements NavigationView.OnNavigationItemSelectedListener{
-
+public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao = ConfigFireBase.getFirebaseAuth();
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
-    FloatingActionButton fab;
     private RecyclerView recyclerAnunciosPublicos;
     private SearchView pesquisa;
     private AdapterMeusAnuncios adapterMeusAnuncios;
     private DatabaseReference anunciosPublicosRef;
     private List<Anuncio> listaAnuncios = new ArrayList<>();
     private SweetAlertDialog pDialog;
-//    private String filtroTitulo ="";
-//    private Anuncio anuncio = new Anuncio();
     Usuarios usuario = new Usuarios();
-//    private TextView menuEmail, menuNome;
-    private CircleImageView menuIMGPerfil;
-//    private String listaImgRecuperadas;
-//    private List<String> listaURLFotos = new ArrayList<>();
     StorageReference storage;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
     };
 
-
-    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_principal);
-        Toolbar toolbar = findViewById(R.id.toolbarEditAnuncio);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Lanche Fácil");
+        setContentView(R.layout.activity_main);
+
 
         anunciosPublicosRef = ConfigFireBase.getFirebase().child("anuncios");
-//        FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
         storage = ConfigFireBase.getReferenciaStorage();
         Permissoes.validarPermissoes(permissoes, this,1);
 
@@ -108,42 +72,8 @@ public class PrincipalActivity extends AppCompatActivity
 
         inicializarComponentes ();
 
-
-
-        //iniciar tela para cadastrar anuncios
-        fab = findViewById(R.id.fab);
-        if (autenticacao.getCurrentUser() != null){
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                    Intent i = new Intent(PrincipalActivity.this, CadastrarAnuncioActivity.class);
-                    startActivity(i);
-
-
-            }
-        });}else {
-            fab.setVisibility(View.GONE);
-        }
-
-        //Verificar se o usuario está logado
-        if (autenticacao.getCurrentUser() != null) {
-            //Codigos gerados automaticos abaixo
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
-            NavigationView navigationView =  findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-        }
-
-        //Acho q o nome do metodo já diz tudo né
         exibirAnuncios();
         pesquisar();
-
-
     }
 
     public void pesquisar () {
@@ -217,6 +147,36 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //Codigos q eu escrevi, Config_Menu_Logar
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if (autenticacao.getCurrentUser() == null){
+            menu.setGroupVisible(R.id.group_deslogado, true);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_cadastrar:
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     public void exibirAnuncios () {
         recyclerAnunciosPublicos.setHasFixedSize(true);
         recyclerAnunciosPublicos.setLayoutManager(new LinearLayoutManager(this));
@@ -231,7 +191,7 @@ public class PrincipalActivity extends AppCompatActivity
                     @Override
                     public void onItemClick(View view, int position) {
                         Anuncio anuncioSelecionado = listaAnuncios.get(position);
-                        Intent i = new Intent(PrincipalActivity.this, DetalhesAnuncioActivity.class);
+                        Intent i = new Intent(MainActivity.this, DetalhesAnuncioActivity.class);
                         i.putExtra("anuncioSelecionado", anuncioSelecionado);
                         startActivity(i);
                     }
@@ -249,7 +209,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     public void recuperarAnunciosPublicos () {
-        pDialog = new SweetAlertDialog(PrincipalActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("Carregando");
         pDialog.setCancelable(false);
@@ -264,98 +224,12 @@ public class PrincipalActivity extends AppCompatActivity
                 Collections.reverse(listaAnuncios);
                 adapterMeusAnuncios.notifyDataSetChanged();
                 pDialog.dismiss();
-                    }
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-    }
-
-
-    //Codigos q eu escrevi, Config_Menu_Logar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    //Codigos q eu escrevi, Config_Menu_Logar
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        if (autenticacao.getCurrentUser() == null){
-            menu.setGroupVisible(R.id.group_deslogado, true);
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-        @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_cadastrar:
-                    Intent i = new Intent(PrincipalActivity.this, LoginActivity.class);
-                    startActivity(i);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (autenticacao.getCurrentUser() != null){
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }else {
-            drawer.setVisibility(View.GONE);
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        if (autenticacao.getCurrentUser() != null) {
-            int id = item.getItemId();
-            if (id == R.id.menu_perfil) {
-                Intent i = new Intent(PrincipalActivity.this, PerfilActivity.class);
-                startActivity(i);
-            } else if (id == R.id.menu_anuncios) {
-                Intent i = new Intent(PrincipalActivity.this, AnunciosUsuarioActivity.class);
-                startActivity(i);
-            }
-//        else if (id == R.id.menu_pedidos) {
-//            Intent i = new Intent(PrincipalActivity.this, MeusPedidosActivity.class);
-//            startActivity(i);
-//
-//        }
-            else if (id == R.id.menu_favoritos) {
-                Intent i = new Intent(PrincipalActivity.this, FavoritosActivity.class);
-                startActivity(i);
-            } else if (id == R.id.menu_ajuda) {
-                Intent i = new Intent(PrincipalActivity.this, AjudaActivity.class);
-                startActivity(i);
-            } else if (id == R.id.menu_sair) {
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                finish();
-                Intent i = new Intent(PrincipalActivity.this, MainActivity.class);
-                startActivity(i);
-                alerta("Usuario desconectado!");
-            }
-
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        }else {
-            item.setVisible(false);
-            alerta("Faça login para acessar");
-        }
-        return true;
     }
 
     //Verifica/solicita permissão ao GPS
@@ -382,7 +256,7 @@ public class PrincipalActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
 
-                        ActivityCompat.requestPermissions(PrincipalActivity.this, permissions, REQUEST_PERMISSIONS_CODE);
+                        ActivityCompat.requestPermissions(MainActivity.this, permissions, REQUEST_PERMISSIONS_CODE);
                         mMaterialDialog.dismiss();
                     }
                 })
@@ -395,30 +269,10 @@ public class PrincipalActivity extends AppCompatActivity
         mMaterialDialog.show();
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK && null != data) {
-//
-//            Uri selectedImage = data.getData();
-//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-//            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-//            cursor.moveToFirst();
-//
-//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//            String picturePath = cursor.getString(columnIndex);
-//            cursor.close();
-//
-//            menuIMGPerfil.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//        }
-//    }
-
-
     private void inicializarComponentes() {
         usuario = new Usuarios();
-        recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
-        pesquisa = findViewById(R.id.searchPrincipalPesquisa);
-        menuIMGPerfil = findViewById(R.id.imagePefilFoto);
+        recyclerAnunciosPublicos = findViewById(R.id.recyclerMainAcuncios);
+        pesquisa = findViewById(R.id.searchMainPesquisa);
 
     }
 

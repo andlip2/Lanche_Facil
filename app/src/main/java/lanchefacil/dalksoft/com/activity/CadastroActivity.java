@@ -53,6 +53,11 @@ public class CadastroActivity extends AppCompatActivity {
                 String confSenha = editComSenha.getText().toString();
 
                     if (!senha.isEmpty() && senha.equals(confSenha)) {
+                        pDialog = new SweetAlertDialog(CadastroActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        pDialog.setTitleText("Loading");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
                         usuarios = new Usuarios();
                         usuarios.setEmail(email);
                         usuarios.setSenha(senha);
@@ -71,11 +76,6 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    pDialog = new SweetAlertDialog(CadastroActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    pDialog.setTitleText("Loading");
-                    pDialog.setCancelable(false);
-                    pDialog.show();
                     String idUsuario = task.getResult().getUser().getUid();
                     usuarios.setId(idUsuario);
                     UsuarioFirebase.atualizarNomeUsuario(usuarios.getNome());
@@ -87,6 +87,7 @@ public class CadastroActivity extends AppCompatActivity {
                     pDialog.dismiss();
                 }
                 else {
+                    pDialog.dismiss();
                     String erro = "";
                     try {
                         throw task.getException();

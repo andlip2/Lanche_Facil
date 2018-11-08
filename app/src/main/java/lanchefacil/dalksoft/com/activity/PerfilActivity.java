@@ -45,7 +45,7 @@ public class PerfilActivity extends AppCompatActivity {
     private CircleImageView imagePerfil;
     private TextView txtAlterarFoto;
     private TextInputEditText editNome, editEmail;
-    private Button btSalvar, btExcluir;
+    private Button btSalvar, btExcluir, btAlterarSenha;
     private Usuarios usuarioLogado;
     private static final int SELECAO_GALERIA = 200;
     private String identificadorUsuario;
@@ -102,6 +102,14 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 excluirUsuario();
+            }
+        });
+
+        btAlterarSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PerfilActivity.this, RecuperarSenhaActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -185,6 +193,7 @@ public class PerfilActivity extends AppCompatActivity {
         btSalvar = findViewById(R.id.buttonPerfilSalvarAlteracoes);
         editEmail.setFocusable(false);
         btExcluir = findViewById(R.id.buttonPerfilExcluirConta);
+        btAlterarSenha = findViewById(R.id.buttonPerfilAlterarSenha);
     }
 
     @Override

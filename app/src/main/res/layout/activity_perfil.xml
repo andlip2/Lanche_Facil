@@ -55,12 +55,22 @@
         android:id="@+id/buttonPerfilSalvarAlteracoes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/botaoPadrao"
+        android:layout_marginTop="20dp"
         android:text="Salvar Alterações" />
 
     <Button
         android:id="@+id/buttonPerfilExcluirConta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/botaoPadrao"
         android:text="@string/excluir_conta" />
+
+    <Button
+        android:id="@+id/buttonPerfilAlterarSenha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/alterar_senha"
+        android:theme="@style/botaoPadrao" />
 
 </LinearLayout>

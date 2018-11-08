@@ -79,6 +79,11 @@ public class LoginActivity extends AppCompatActivity {
                 String email = editEmail.getText().toString();
                 String senha = editSenha.getText().toString();
                 if (!email.isEmpty() && !senha.isEmpty()) {
+                    pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    pDialog.setTitleText("Loading");
+                    pDialog.setCancelable(false);
+                    pDialog.show();
                     usuarios = new Usuarios();
                     usuarios.setEmail(email);
                     usuarios.setSenha(senha);
@@ -96,11 +101,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    pDialog.setTitleText("Loading");
-                    pDialog.setCancelable(false);
-                    pDialog.show();
                     alerta("Login efetuado com sucesso");
                     finish();
                     Intent i = new Intent(LoginActivity.this, PrincipalActivity.class);
@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(i);
                     pDialog.dismiss();
                 }else {
+                    pDialog.dismiss();
                     alerta("Erro ao realizar login");
                 }
             }
