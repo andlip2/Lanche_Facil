@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -28,8 +30,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.cazaea.sweetalert.SweetAlertDialog;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santalu.widget.MaskEditText;
@@ -62,7 +67,6 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private Address endereco;
     private Anuncio anuncio;
     private StorageReference storage;
-    private AlertDialog dialog;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
@@ -76,6 +80,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private double latitude =0.0;
     private double longitude = 0.0;
     private String cidade;
+    private SweetAlertDialog pDialog;
+
+    private LocationListener locationListener;
 
 
 
@@ -89,6 +96,57 @@ public class EditarAnuncioActivity extends AppCompatActivity
         getSupportActionBar().setTitle("Editar Anúncio");
 
         Permissoes.validarPermissoes(permissoes, this,1);
+
+        mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+                try {
+
+                    List<Address> listaEndereco = geocoder.getFromLocation(latitude, longitude, 1);
+                    if (listaEndereco !=null && listaEndereco.size() >0) {
+                        Address endereco = listaEndereco.get(0);
+                        editCEP.setText(endereco.getPostalCode());
+                        editEndereco.setText(endereco.getAddressLine(0));
+                        cidade = endereco.getLocality();
+                        alerta(cidade);
+
+                        anuncio.setLatitude(latitude);
+                        anuncio.setLongitude(longitude);
+                        anuncio.setCidade(cidade);
+                        anuncio.setCidade_pesquisa(cidade.toUpperCase());
+                        anuncio.setEndereco(endereco.getAddressLine(0));
+                        anuncio.atualizarLocalizacao();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    alerta("Erro ao recuperar localização");
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
 
         iniciarComponentes();
 
@@ -135,40 +193,19 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     private void geolocalizacao() {
-        if (ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLocalizacao.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    10000,
+                    5,
+                    locationListener);
         }else {
-            mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            localizacao = mLocalizacao.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        if (localizacao != null) {
-            longitude = localizacao.getLongitude();
-            latitude = localizacao.getLatitude();
-        }
-        try {
-            endereco = buscarEndereco(latitude, longitude);
-            editCEP.setText(endereco.getPostalCode());
-            editEndereco.setText(endereco.getAddressLine(0));
-            cidade = endereco.getLocality();
-        } catch (IOException e) {
-            alerta("Erro ao recuperar localização");
+
+
         }
     }
 
-    private Address buscarEndereco(double latitude, double longitude) throws IOException {
-        Geocoder geocoder;
-        Address address = null;
-        List<Address> addresses;
-
-        geocoder = new Geocoder(getApplicationContext());
-
-        addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-        if (addresses.size() >0) {
-            address = addresses.get(0);
-        }
-        return address;
-    }
 
     public void validarDados(View view) {
         String valor = String.valueOf(editValor.getRawValue());
@@ -318,7 +355,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     //Salvar
                     anuncio.atualizar();
                     //finaliza carregamento
-                    dialog.dismiss();
+                    pDialog.dismiss();
                     finish();
                 }
             }
@@ -335,20 +372,18 @@ public class EditarAnuncioActivity extends AppCompatActivity
     public void atualizarAnuncio() {
         if (anuncio.getStatus().equals("Status: Inativo")) {
             anuncio.setStatus("Status: Ativo");
-            dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage("Ativando Anúncio")
-                    .setCancelable(false)
-                    .build();
-            dialog.show();
+            pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Carregando");
+            pDialog.setCancelable(false);
+            pDialog.show();
         }else {
             anuncio.setStatus("Status: Ativo");
-            dialog = new SpotsDialog.Builder()
-                    .setContext(this)
-                    .setMessage("Atualizando Anúncio")
-                    .setCancelable(false)
-                    .build();
-            dialog.show();
+            pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Carregando");
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
         //Salvar imagens
         if (teste >0){
@@ -370,7 +405,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
             anuncio.setCidade(cidade);
             anuncio.setCidade_pesquisa(cidade.toUpperCase());
             anuncio.atualizarParcial();
-            dialog.dismiss();
+            pDialog.dismiss();
             finish();
         }
     }
@@ -437,64 +472,64 @@ public class EditarAnuncioActivity extends AppCompatActivity
     }
 
     private void alerdDialogEscluirAnuncio () {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Excluir anúncio");
-        builder.setMessage("Tem certeza que deseja excluir esse anuncio? ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-                anuncio.excluirAnuncio();
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Excluir anúncio")
+                .setContentText("Tem certeza que deseja excluir esse anuncio?")
+                .setCancelText("NÃO")
+                .setConfirmText("SIM")
+                .showCancelButton(true)
+                .setCancelClickListener(null)
+                .showConfirmButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finish();
+                        anuncio.excluirAnuncio();
+                        sweetAlertDialog.cancel();
+                    }
+                })
+                .show();
     }
 
     private void alerdDialogOcutarAnuncio () {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Ocutar anúncio");
-        builder.setMessage("Tem certeza que deseja ocutar esse anuncio para o publico? ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                anuncio.excluirAnuncioPublico();
-                anuncio.setStatus("Status: Inativo");
-                anuncio.atualizarStatus();
-
-                finish();
-
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Ocutar anúncio")
+                .setContentText("Tem certeza que deseja ocutar esse anuncio para o publico?")
+                .setCancelText("NÃO")
+                .setConfirmText("SIM")
+                .showCancelButton(true)
+                .setCancelClickListener(null)
+                .showConfirmButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        anuncio.excluirAnuncioPublico();
+                        anuncio.setStatus("Status: Inativo");
+                        anuncio.atualizarStatus();
+                        finish();
+                        sweetAlertDialog.cancel();
+                    }
+                })
+                .show();
     }
 
     private void alerdDialogPermissaoGaleria () {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissões Negadas");
-        builder.setMessage("Para cadastrar um anúncio é necessário aceitar as permissões");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("Permissões Negadas")
+                .setContentText("Para cadastrar um anúncio é necessário aceitar as permissões")
+                .setCancelText(null)
+                .setConfirmText("CONFIRMAR")
+                .showCancelButton(true)
+                .setCancelClickListener(null)
+                .showConfirmButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finish();
+                        sweetAlertDialog.cancel();
+                    }
+                })
+                .show();
     }
     private void alerta (String texto) {
         Toast.makeText(this, texto, Toast.LENGTH_SHORT).show();

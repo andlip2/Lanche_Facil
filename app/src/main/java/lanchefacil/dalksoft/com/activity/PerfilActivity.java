@@ -77,17 +77,17 @@ public class PerfilActivity extends AppCompatActivity {
         btSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pDialog = new SweetAlertDialog(PerfilActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Carregando");
-                pDialog.setCancelable(false);
-                pDialog.show();
+
                 String novoNome = editNome.getText().toString();
                 UsuarioFirebase.atualizarNomeUsuario(novoNome);
                 usuarioLogado.setNome(novoNome);
                 usuarioLogado.atualizar();
-                pDialog.dismiss();
-                alerta("Alteração feita com sucesso");
+
+                new SweetAlertDialog(PerfilActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("Bom trabalho")
+                        .setContentText("Suas alterações foram feitas com sucesso")
+                        .setConfirmText("OK")
+                        .show();
             }
         });
         txtAlterarFoto.setOnClickListener(new View.OnClickListener() {

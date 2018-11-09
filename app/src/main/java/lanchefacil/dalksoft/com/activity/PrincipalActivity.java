@@ -173,6 +173,7 @@ public class PrincipalActivity extends AppCompatActivity
             txtEmail.setText(user.getEmail());
             txtNome.setText(user.getDisplayName());
 
+
             navigationView.setNavigationItemSelectedListener(this);
         }
 

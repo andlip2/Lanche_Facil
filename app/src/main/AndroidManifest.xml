@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -105,10 +104,10 @@
         <activity
             android:name=".activity.LocalizacaoActivity"
             android:label="@string/title_activity_localizacao" />
-        <activity android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme">
-
-        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.AdminActivity"></activity>
     </application>
 
 </manifest>

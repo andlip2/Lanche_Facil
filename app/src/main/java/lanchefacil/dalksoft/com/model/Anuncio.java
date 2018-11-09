@@ -27,6 +27,7 @@ public class Anuncio implements Serializable{
     private double latitude;
     private double longitude;
     private String status;
+    private String idUsuario;
 
 
     public Anuncio()  {
@@ -121,13 +122,23 @@ public class Anuncio implements Serializable{
         Map<String, Object> valoresUsuario = converterMapStatus();
         anuncioRef.updateChildren(valoresUsuario);
     }
+    public void atualizarLocalizacao () {
+        String idUsuario = ConfigFireBase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFireBase.getFirebase()
+                .child("meus_anuncios")
+                .child(idUsuario)
+                .child(getIdAnuncio());
+
+        Map<String, Object> valoresUsuario = converterMapLocalizacao();
+        anuncioRef.updateChildren(valoresUsuario);
+    }
     public Map<String, Object> converterMap () {
         HashMap<String, Object> usuarioMap = new HashMap<>();
         usuarioMap.put("titulo", getTitulo());
         usuarioMap.put("titulo_pesquisa", getTitulo_pesquisa());
         usuarioMap.put("id", getIdAnuncio());
         usuarioMap.put("cidade", getCidade());
-        usuarioMap.put("cidade_pesquisa", getTitulo_pesquisa());
+        usuarioMap.put("cidade_pesquisa", getCidade_pesquisa());
         usuarioMap.put("endereco", getEndereco());
         usuarioMap.put("valor", getValor());
         usuarioMap.put("telefone",getTelefone());
@@ -135,7 +146,7 @@ public class Anuncio implements Serializable{
         usuarioMap.put("fotos" , getFotos());
         usuarioMap.put("status", getStatus());
         usuarioMap.put("latitude", getLatitude());
-        usuarioMap.put("Longitude", getLongitude());
+        usuarioMap.put("longitude", getLongitude());
 
         return usuarioMap;
     }
@@ -152,7 +163,7 @@ public class Anuncio implements Serializable{
         usuarioMap.put("cidade", getCidade());
         usuarioMap.put("cidade_pesquisa", getCidade_pesquisa());
         usuarioMap.put("latitude", getLatitude());
-        usuarioMap.put("Longitude", getLongitude());
+        usuarioMap.put("longitude", getLongitude());
 
         return usuarioMap;
     }
@@ -161,7 +172,15 @@ public class Anuncio implements Serializable{
         usuarioMap.put("status", getStatus());
         return usuarioMap;
     }
-
+    public Map<String, Object> converterMapLocalizacao () {
+        HashMap<String, Object> usuarioMap = new HashMap<>();
+        usuarioMap.put("latitude", getLatitude());
+        usuarioMap.put("longitude", getLongitude());
+        usuarioMap.put("cidade", getCidade());
+        usuarioMap.put("cidade_pesquisa", getCidade_pesquisa());
+        usuarioMap.put("endereco", getEndereco());
+        return usuarioMap;
+    }
 
     public void excluirAnuncio () {
         String idUsuario = ConfigFireBase.getIdUsuario();
@@ -193,6 +212,14 @@ public class Anuncio implements Serializable{
 
         anuncioRef.removeValue();
 
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getStatus() {

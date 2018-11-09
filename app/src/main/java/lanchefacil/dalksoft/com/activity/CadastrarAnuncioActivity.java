@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -29,6 +30,7 @@ import com.blackcat.currencyedittext.CurrencyEditText;
 import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.santalu.widget.MaskEditText;
@@ -41,6 +43,7 @@ import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
+import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
 import lanchefacil.dalksoft.com.model.Anuncio;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity
@@ -71,6 +74,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private double latitude =0.0;
     private double longitude = 0.0;
     private String cidade;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,49 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         setContentView(R.layout.activity_cadastrar_anuncio);
 
         Permissoes.validarPermissoes(permissoes, this,1);
+
+        mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+                try {
+
+                    List<Address> listaEndereco = geocoder.getFromLocation(latitude, longitude, 1);
+                    if (listaEndereco !=null && listaEndereco.size() >0) {
+                        Address endereco = listaEndereco.get(0);
+                        editCEP.setText(endereco.getPostalCode());
+                        editEndereco.setText(endereco.getAddressLine(0));
+                        cidade = endereco.getLocality();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    alerta("Erro ao recuperar localização");
+                }
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
 
         iniciarComponentes();
 
@@ -100,44 +147,19 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
     private void geolocalizacao() {
         if (ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
+                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLocalizacao.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    10000,
+                    5,
+                    locationListener);
         }else {
-            mLocalizacao = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            localizacao = mLocalizacao.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
 
-        if (localizacao != null) {
-            longitude = localizacao.getLongitude();
-            latitude = localizacao.getLatitude();
-        }
 
-        try {
-            endereco = buscarEndereco(latitude, longitude);
-            editCEP.setText(endereco.getPostalCode());
-            editEndereco.setText(endereco.getAddressLine(0));
-            cidade = endereco.getLocality();
-            alerta(cidade);
-        } catch (IOException e) {
-            alerta("Erro ao recuperar localização");
-        }
+       }
+
     }
 
-    private Address buscarEndereco(double latitude, double longitude) throws IOException {
-        Geocoder geocoder;
-        Address address = null;
-        List<Address> addresses;
-
-        geocoder = new Geocoder(getApplicationContext());
-
-        addresses = geocoder.getFromLocation(latitude, longitude, 1);
-
-        if (addresses.size() >0) {
-            address = addresses.get(0);
-        }
-        return address;
-    }
 
     private Anuncio configurarAnuncio () {
         String titulo = editTitulo.getText().toString();
@@ -146,6 +168,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         String valor = editValor.getText().toString();
         String telefone = editTelefone.getText().toString();
         String descricao = editDescricao.getText().toString();
+        FirebaseUser user = UsuarioFirebase.getUsuarioAtual();
 
         Anuncio anuncio = new Anuncio();
         anuncio.setTitulo(titulo);
@@ -158,6 +181,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
         anuncio.setLatitude(latitude);
         anuncio.setLongitude(longitude);
         anuncio.setCidade(cidade);
+        anuncio.setIdUsuario(user.getUid());
 
         return anuncio;
     }

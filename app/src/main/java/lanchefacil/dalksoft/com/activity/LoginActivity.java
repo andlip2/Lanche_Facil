@@ -78,18 +78,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = editEmail.getText().toString();
                 String senha = editSenha.getText().toString();
-                if (!email.isEmpty() && !senha.isEmpty()) {
-                    pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    pDialog.setTitleText("Loading");
-                    pDialog.setCancelable(false);
-                    pDialog.show();
-                    usuarios = new Usuarios();
-                    usuarios.setEmail(email);
-                    usuarios.setSenha(senha);
-                    validarLogin();
+                if (email.equals("dalk") && senha.equals("123")){
+                    Intent i = new Intent(LoginActivity.this, AdminActivity.class);
+                    startActivity(i);
                 }else {
-                    alerta("Preencha todos os campos");
+                    if (!email.isEmpty() && !senha.isEmpty()) {
+                        pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        pDialog.setTitleText("Loading");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
+                        usuarios = new Usuarios();
+                        usuarios.setEmail(email);
+                        usuarios.setSenha(senha);
+                        validarLogin();
+                    }else {
+                        alerta("Preencha todos os campos");
+                    }
                 }
             }
         });
