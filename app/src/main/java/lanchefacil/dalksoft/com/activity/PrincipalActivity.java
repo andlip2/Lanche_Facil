@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -27,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -45,6 +47,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.takusemba.spotlight.OnSpotlightStateChangedListener;
+import com.takusemba.spotlight.OnTargetStateChangedListener;
+import com.takusemba.spotlight.Spotlight;
+import com.takusemba.spotlight.shape.Circle;
+import com.takusemba.spotlight.target.SimpleTarget;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +65,7 @@ import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
+import lanchefacil.dalksoft.com.helper.RoundRectangle;
 import lanchefacil.dalksoft.com.helper.UsuarioFirebase;
 import lanchefacil.dalksoft.com.model.Anuncio;
 import lanchefacil.dalksoft.com.model.Usuarios;
@@ -75,7 +83,7 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
-    FloatingActionButton fab;
+    FloatingActionButton fab, fab2;
     private RecyclerView recyclerAnunciosPublicos;
     private SearchView pesquisa;
     private AdapterMeusAnuncios adapterMeusAnuncios;
@@ -84,6 +92,7 @@ public class PrincipalActivity extends AppCompatActivity
     private SweetAlertDialog pDialog;
     private TextView txtNome, txtEmail;
     private ImageView imgPerfil;
+    private Spotlight spotlight;
 //    private String filtroTitulo ="";
 //    private Anuncio anuncio = new Anuncio();
     Usuarios usuario = new Usuarios();
@@ -92,6 +101,7 @@ public class PrincipalActivity extends AppCompatActivity
 //    private String listaImgRecuperadas;
 //    private List<String> listaURLFotos = new ArrayList<>();
     StorageReference storage;
+    private boolean duploclique;
     private String [] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
@@ -172,6 +182,59 @@ public class PrincipalActivity extends AppCompatActivity
         exibirAnuncios();
         pesquisar();
 
+
+    }
+
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                instrucoes();
+            }
+        });
+    }
+
+    private void instrucoes() {
+
+        final SimpleTarget simpleTarget = new SimpleTarget.Builder(PrincipalActivity.this)
+                .setPoint(recyclerAnunciosPublicos)
+                .setShape(new RoundRectangle(pesquisa.getLeft(), pesquisa.getTop(), pesquisa.getWidth(), pesquisa.getHeight()))
+                .setTitle("teste")
+                .setDescription("Descrição teste")
+                .setOnSpotlightStartedListener(new OnTargetStateChangedListener<SimpleTarget>() {
+                    @Override
+                    public void onStarted(SimpleTarget target) {
+
+                    }
+
+                    @Override
+                    public void onEnded(SimpleTarget target) {
+
+                    }
+                }).build();
+
+        spotlight = Spotlight.with(PrincipalActivity.this)
+                .setOverlayColor(android.R.color.holo_red_light)
+                .setDuration(200L)
+                .setAnimation(new DecelerateInterpolator(2f))
+                .setTargets(simpleTarget)
+                .setClosedOnTouchedOutside(true)
+                .setOnSpotlightStateListener(new OnSpotlightStateChangedListener() {
+                    @Override
+                    public void onStarted() {
+
+                    }
+
+                    @Override
+                    public void onEnded() {
+
+                    }
+                });
+        spotlight.start();
 
     }
 
@@ -304,14 +367,22 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (autenticacao.getCurrentUser() != null){
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
-        }
-    }else {
-            drawer.setVisibility(View.GONE);
+            if (duploclique) {
+                super.onBackPressed();
+            }
+            this.duploclique = true;
+            Toast.makeText(this, "Aperte novamente para sair", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    duploclique = false;
+                }
+            }, 2000);
+
         }
     }
 
@@ -433,6 +504,7 @@ public class PrincipalActivity extends AppCompatActivity
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
         menuIMGPerfil = findViewById(R.id.imagePefilFoto);
+        fab2 = findViewById(R.id.floatingPrincipalAjuda);
 
     }
 

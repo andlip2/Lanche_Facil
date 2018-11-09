@@ -2,7 +2,7 @@
 
     <string name="senha">Senha:</string>
     <string name="email">Email:</string>
-    <string name="recuperar_senha">Recuperar senha:</string>
+    <string name="recuperar_senha">Recuperar senha</string>
     <string name="cadastre_se">Cadastre-se</string>
     <string name="entrar">Entrar</string>
     <string name="confirmar_email">Confirmar Email:</string>
@@ -27,7 +27,7 @@
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_anuncios">AnunciosActivity</string>
     <string name="comSenha">Comfirmar Senha:</string>
-    <string name="cadastrar">Cadastrar:</string>
+    <string name="cadastrar">Cadastrar</string>
     <string name="comNewSenha">Confirmar nova senha:</string>
     <string name="titulo_anuncio">Titulo do anúncio</string>
     <string name="facebook_app_id">291388058112722</string>

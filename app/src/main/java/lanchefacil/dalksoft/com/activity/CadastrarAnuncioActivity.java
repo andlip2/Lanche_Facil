@@ -99,7 +99,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     }
 
     private void geolocalizacao() {
-        if (ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
         }else {
@@ -117,6 +118,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
             editCEP.setText(endereco.getPostalCode());
             editEndereco.setText(endereco.getAddressLine(0));
             cidade = endereco.getLocality();
+            alerta(cidade);
         } catch (IOException e) {
             alerta("Erro ao recuperar localização");
         }
@@ -179,7 +181,6 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                             if (!anuncio.getTelefone().isEmpty()){
                                 if (fone.length() >=11) {
                                     if (!anuncio.getDescricao().isEmpty()){
-
                                         salvarAnuncio();
                                     }else {
                                         alerta("Defina a descrição do anúncio");
