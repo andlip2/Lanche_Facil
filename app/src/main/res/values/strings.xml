@@ -84,4 +84,9 @@
     <string name="txt_plano_a">Impulsionar o anúncio por uma semana</string>
     <string name="txt_plano_b">Impulsionar o anúncio por um mês</string>
     <string name="logo_app">Logo do aplicativo lanche facil</string>
+    <string name="imagem_anuncio">Imagem do anuncio</string>
+    <string name="foto_perfil">Foto do perfil</string>
+    <string name="alterar_foto">Alterar Foto</string>
+    <string name="nome_do_us_ario">Nome do Usúario</string>
+    <string name="salvar_altera_es">Salvar Alterações</string>
 </resources>

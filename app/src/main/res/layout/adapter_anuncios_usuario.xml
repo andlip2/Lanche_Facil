@@ -16,6 +16,7 @@
             android:id="@+id/imageAdapterUsuarioAnuncio"
             android:layout_width="140dp"
             android:layout_height="140dp"
+            android:contentDescription="@string/imagem_anuncio"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/padrao" />
 

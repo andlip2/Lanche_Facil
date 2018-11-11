@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/botaoPadrao"
         android:layout_marginTop="20dp"
-        android:text="Salvar Alterações" />
+        android:text="@string/salvar_altera_es" />
 
     <Button
         android:id="@+id/buttonPerfilExcluirConta"

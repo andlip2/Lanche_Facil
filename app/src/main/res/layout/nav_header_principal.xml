@@ -16,7 +16,8 @@
         android:id="@+id/imagePrincipalPerfil"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/padrao"  />
+        android:contentDescription="@string/foto_perfil"
+        android:src="@drawable/perfil_padrao" />
 
     <TextView
         android:id="@+id/textPrincipalNome"
