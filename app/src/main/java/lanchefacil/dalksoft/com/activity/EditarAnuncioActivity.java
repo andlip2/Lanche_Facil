@@ -174,6 +174,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(EditarAnuncioActivity.this, FixaAnuncioActivity.class);
+                i.putExtra("anuncioSelecionado", anuncio);
                 startActivity(i);
             }
         });
