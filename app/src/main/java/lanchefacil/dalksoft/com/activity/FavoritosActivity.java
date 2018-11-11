@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 
 import com.cazaea.sweetalert.SweetAlertDialog;
 import com.google.firebase.database.DataSnapshot;
@@ -60,7 +61,7 @@ public class FavoritosActivity extends AppCompatActivity {
                 recyclerFavoritos,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, final int position) {
+                    public void onItemClick(final View view, final int position) {
                         new SweetAlertDialog(FavoritosActivity.this, SweetAlertDialog.WARNING_TYPE)
                                 .setTitleText("Remover Favorito")
                                 .setContentText("Tem certeza que deseja remover esse anúncio de seus favoritos?")
@@ -92,6 +93,8 @@ public class FavoritosActivity extends AppCompatActivity {
                     }
                 }
         ));
+
+
     }
 
     public void feito () {

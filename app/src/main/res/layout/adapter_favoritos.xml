@@ -63,7 +63,7 @@
                 android:text="Coxinha bem quentinha" />
 
             <Button
-                android:id="@+id/buttonAdapterDetalhes"
+                android:id="@+id/buttonAdapterFavoritosRemover"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="33dp"

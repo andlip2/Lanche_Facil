@@ -107,7 +107,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.AdminActivity"></activity>
+        <activity android:name=".activity.AdminActivity" />
+        <activity android:name=".activity.FixaAnuncioActivity"></activity>
     </application>
 
 </manifest>

@@ -83,7 +83,7 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String TAG = "LOG";
     public static final int REQUEST_PERMISSIONS_CODE = 128;
     private MaterialDialog mMaterialDialog;
-    FloatingActionButton fab, fab2;
+    FloatingActionButton fab;
     private RecyclerView recyclerAnunciosPublicos;
     private SearchView pesquisa;
     private AdapterMeusAnuncios adapterMeusAnuncios;
@@ -191,12 +191,12 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
 
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                instrucoes();
-            }
-        });
+//        fab2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                instrucoes();
+//            }
+//        });
     }
 
     private void instrucoes() {
@@ -505,7 +505,7 @@ public class PrincipalActivity extends AppCompatActivity
         recyclerAnunciosPublicos = findViewById(R.id.recyclerPricipalAcuncios);
         pesquisa = findViewById(R.id.searchPrincipalPesquisa);
         menuIMGPerfil = findViewById(R.id.imagePefilFoto);
-        fab2 = findViewById(R.id.floatingPrincipalAjuda);
+//        fab2 = findViewById(R.id.floatingPrincipalAjuda);
 
     }
 

@@ -61,7 +61,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private CurrencyEditText editValor;
     private MaskEditText editTelefone;
     private ImageView imagem1, imagem2, imagem3;
-    private Button buttonGPS, buttonAtualizar, buttonOcutar;
+    private Button buttonGPS, buttonAtualizar, buttonOcutar, buttonFixa;
     private LocationManager mLocalizacao;
     protected Location localizacao;
     private Address endereco;
@@ -169,6 +169,14 @@ public class EditarAnuncioActivity extends AppCompatActivity
             //Recuperar IMG
             recuperarFotos();
         }
+
+        buttonFixa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EditarAnuncioActivity.this, FixaAnuncioActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public void recuperarFotos () {
@@ -422,6 +430,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
         buttonOcutar = findViewById(R.id.buttonEditAnuncioOcutar);
         buttonOcutar.setOnClickListener(this);
         buttonAtualizar = findViewById(R.id.buttonEditAnuncioAtualizarAnuncio);
+        buttonFixa = findViewById(R.id.buttonEditAnuncioFixa);
         editValor = findViewById(R.id.editEditAnuncioValor);
 //        configurar localidade para pt -> portugues BR -> Brasil
         Locale locale = new Locale ("pt", "BR");
