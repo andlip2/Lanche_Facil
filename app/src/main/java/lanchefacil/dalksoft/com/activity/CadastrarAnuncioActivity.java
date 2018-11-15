@@ -102,6 +102,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
                         editCEP.setText(endereco.getPostalCode());
                         editEndereco.setText(endereco.getAddressLine(0));
                         cidade = endereco.getLocality();
+                        pDialog.dismiss();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -148,6 +149,11 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
     private void geolocalizacao() {
         if (ActivityCompat.checkSelfPermission(CadastrarAnuncioActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            pDialog = new SweetAlertDialog(CadastrarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Checando Localização");
+            pDialog.setCancelable(false);
+            pDialog.show();
             mLocalizacao.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     10000,
@@ -237,7 +243,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity
 
         pDialog = new SweetAlertDialog(CadastrarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText("Loading");
+        pDialog.setTitleText("Salvando");
         pDialog.setCancelable(false);
         pDialog.show();
 

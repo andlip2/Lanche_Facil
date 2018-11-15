@@ -6,6 +6,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import lanchefacil.dalksoft.com.model.Anuncio;
+
 public class ConfigFireBase {
     private static DatabaseReference referenciaDatabase;
     private static FirebaseAuth referenciaAuth;
@@ -38,5 +40,7 @@ public class ConfigFireBase {
         }
         return referenciaStorage;
     }
+
+
 
 }

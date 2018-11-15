@@ -55,7 +55,7 @@ public class CadastroActivity extends AppCompatActivity {
                     if (!senha.isEmpty() && senha.equals(confSenha)) {
                         pDialog = new SweetAlertDialog(CadastroActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                        pDialog.setTitleText("Loading");
+                        pDialog.setTitleText("Cadastrando");
                         pDialog.setCancelable(false);
                         pDialog.show();
                         usuarios = new Usuarios();
@@ -119,8 +119,8 @@ public class CadastroActivity extends AppCompatActivity {
     private void inicializarComponentes () {
         btCadastrar = findViewById(R.id.buttonCadCadratrar);
         editEmail = findViewById(R.id.editCadEmail1);
-        editSenha = findViewById(R.id.editCadSenha1);
-        editComSenha = findViewById(R.id.editCadConfSenha1);
+        editSenha = findViewById(R.id.editCadSenha);
+        editComSenha = findViewById(R.id.editCadConfSenha);
         editnome = findViewById(R.id.editCadNome);
     }
     private void alerta (String texto) {

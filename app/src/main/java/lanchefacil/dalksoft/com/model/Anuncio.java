@@ -1,16 +1,25 @@
 package lanchefacil.dalksoft.com.model;
 
+import android.support.annotation.NonNull;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lanchefacil.dalksoft.com.activity.EditarAnuncioActivity;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 
 public class Anuncio implements Serializable{
     private String idAnuncio;
+
     private String titulo;
     private String titulo_pesquisa;
     private String cidade_pesquisa;
@@ -30,6 +39,8 @@ public class Anuncio implements Serializable{
     private String idUsuario;
 
 
+
+
     public Anuncio()  {
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
         setIdAnuncio(anuncioRef.push().getKey());
@@ -47,7 +58,6 @@ public class Anuncio implements Serializable{
     public void salvar () {
         String idUsuario = ConfigFireBase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFireBase.getFirebase().child("meus_anuncios");
-        setIdAnuncio(anuncioRef.push().getKey());
 
         anuncioRef.child(idUsuario)
                 .child(getIdAnuncio())
@@ -212,6 +222,28 @@ public class Anuncio implements Serializable{
 
         anuncioRef.removeValue();
 
+    }
+
+    public void excluirImagens () {
+        for (int i=0; i< getFotos().size(); i++) {
+        StorageReference storage = FirebaseStorage.getInstance().getReference();
+        StorageReference imgAnuncio = storage.child("imagens")
+                .child("anuncios")
+                .child(getIdAnuncio())
+                .child("imagem"+i+".jpeg");
+
+        imgAnuncio.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
     }
 
     public String getIdUsuario() {

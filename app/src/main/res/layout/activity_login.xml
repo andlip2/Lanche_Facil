@@ -36,13 +36,11 @@
                     android:id="@+id/editLogEmail"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_edit_text"
                     android:paddingEnd="3dp"
-                    app:layout_constraintBottom_toTopOf="@+id/editLogSenha"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView2">
@@ -52,28 +50,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/email"
-                        android:inputType="textEmailAddress" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/editLogSenha"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/bg_edit_text"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editLogEmail">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editLogSenha1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/senha"
-                        android:inputType="textPassword" />
+                        android:inputType="textEmailAddress"
+                        android:singleLine="false" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -82,12 +60,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="32dp"
                     android:text="@string/recuperar_senha"
                     android:textSize="14sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/buttonLogCadastrar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editLogSenha" />
+                    app:layout_constraintTop_toBottomOf="@+id/editLogSenha1" />
 
                 <TextView
                     android:id="@+id/buttonLogCadastrar"
@@ -95,11 +74,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="32dp"
                     android:text="@string/cadastrar"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/buttonLogRecuSenha"
-                    app:layout_constraintTop_toBottomOf="@+id/editLogSenha" />
+                    app:layout_constraintTop_toBottomOf="@+id/editLogSenha1" />
 
                 <Button
                     android:id="@+id/buttonLogEntrar"
@@ -107,13 +87,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="32dp"
                     android:padding="16dp"
                     android:text="@string/entrar"
                     android:theme="@style/botaoPadrao"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/buttonLogRecuSenha" />
+
+                <EditText
+                    android:id="@+id/editLogSenha1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_edit_text"
+                    android:ems="10"
+                    android:hint="@string/senha"
+                    android:inputType="textPassword"
+                    android:paddingBottom="15dp"
+                    android:paddingStart="3dp"
+                    android:paddingTop="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editLogEmail" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>

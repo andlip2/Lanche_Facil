@@ -79,6 +79,7 @@ public class PerfilActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String novoNome = editNome.getText().toString();
+                if (!novoNome.isEmpty()){
                 UsuarioFirebase.atualizarNomeUsuario(novoNome);
                 usuarioLogado.setNome(novoNome);
                 usuarioLogado.atualizar();
@@ -88,6 +89,9 @@ public class PerfilActivity extends AppCompatActivity {
                         .setContentText("Suas alterações foram feitas com sucesso")
                         .setConfirmText("OK")
                         .show();
+            }else {
+                    alerta("O nome não pode ser vazio!");
+                }
             }
         });
         txtAlterarFoto.setOnClickListener(new View.OnClickListener() {

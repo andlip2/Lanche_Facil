@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (!email.isEmpty() && !senha.isEmpty()) {
                         pDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                        pDialog.setTitleText("Loading");
+                        pDialog.setTitleText("Carregando");
                         pDialog.setCancelable(false);
                         pDialog.show();
                         usuarios = new Usuarios();

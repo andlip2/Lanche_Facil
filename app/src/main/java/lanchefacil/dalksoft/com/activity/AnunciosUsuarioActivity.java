@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +14,13 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.cazaea.sweetalert.SweetAlertDialog;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +42,8 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
     private DatabaseReference usuarioRef;
     private SweetAlertDialog pDialog;
     private FloatingActionButton fab;
+    private StorageReference storage;
+    private Anuncio anuncio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,11 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
                 usuarioRef = ConfigFireBase.getFirebase()
                 .child("meus_anuncios")
                 .child(ConfigFireBase.getIdUsuario());
+
+        anuncio = new Anuncio();
+        storage = ConfigFireBase.getReferenciaStorage();
+
+
         inicializarComponentes ();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -71,7 +82,6 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onLongItemClick(View view, int position) {
-                        alerdDialogEscluirAnuncio(position);
                     }
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -87,6 +97,8 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void recuperarAnuncios() {
         pDialog = new SweetAlertDialog(AnunciosUsuarioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -109,28 +121,6 @@ public class AnunciosUsuarioActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void alerdDialogEscluirAnuncio (final int position) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Excluir anúncio");
-        builder.setMessage("Tem certeza que deseja excluir esse anuncio? ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Anuncio anuncioSelecionado = anuncios.get(position);
-                anuncioSelecionado.excluirAnuncio();
-                adapterMeusAnuncios.notifyDataSetChanged();
-            }
-        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                builder.setCancelable(true);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void inicializarComponentes() {

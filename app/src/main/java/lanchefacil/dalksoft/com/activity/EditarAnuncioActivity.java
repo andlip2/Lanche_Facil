@@ -117,13 +117,14 @@ public class EditarAnuncioActivity extends AppCompatActivity
                         editEndereco.setText(endereco.getAddressLine(0));
                         cidade = endereco.getLocality();
                         alerta(cidade);
-
-                        anuncio.setLatitude(latitude);
-                        anuncio.setLongitude(longitude);
-                        anuncio.setCidade(cidade);
-                        anuncio.setCidade_pesquisa(cidade.toUpperCase());
-                        anuncio.setEndereco(endereco.getAddressLine(0));
-                        anuncio.atualizarLocalizacao();
+                        pDialog.dismiss();
+//
+//                        anuncio.setLatitude(latitude);
+//                        anuncio.setLongitude(longitude);
+//                        anuncio.setCidade(cidade);
+//                        anuncio.setCidade_pesquisa(cidade.toUpperCase());
+//                        anuncio.setEndereco(endereco.getAddressLine(0));
+//                        anuncio.atualizarLocalizacao();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -165,6 +166,8 @@ public class EditarAnuncioActivity extends AppCompatActivity
 
             if (anuncio.getStatus().equals("Status: Inativo")) {
                 buttonAtualizar.setText("ATIVAR ANÚNCIO");
+                buttonOcutar.setVisibility(View.GONE);
+                buttonFixa.setVisibility(View.GONE);
             }
             //Recuperar IMG
             recuperarFotos();
@@ -204,10 +207,15 @@ public class EditarAnuncioActivity extends AppCompatActivity
     private void geolocalizacao() {
         if (ActivityCompat.checkSelfPermission(EditarAnuncioActivity.this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setTitleText("Checando Localização");
+            pDialog.setCancelable(false);
+            pDialog.show();
             mLocalizacao.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
                     10000,
-                    5,
+                    2,
                     locationListener);
         }else {
 
@@ -383,14 +391,14 @@ public class EditarAnuncioActivity extends AppCompatActivity
             anuncio.setStatus("Status: Ativo");
             pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("Carregando");
+            pDialog.setTitleText("Ativando");
             pDialog.setCancelable(false);
             pDialog.show();
         }else {
             anuncio.setStatus("Status: Ativo");
             pDialog = new SweetAlertDialog(EditarAnuncioActivity.this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setTitleText("Carregando");
+            pDialog.setTitleText("Atualizando");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -481,6 +489,9 @@ public class EditarAnuncioActivity extends AppCompatActivity
         }
     }
 
+
+//    }
+
     private void alerdDialogEscluirAnuncio () {
         new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("Excluir anúncio")
@@ -495,6 +506,7 @@ public class EditarAnuncioActivity extends AppCompatActivity
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         finish();
                         anuncio.excluirAnuncio();
+                        anuncio.excluirImagens();
                         sweetAlertDialog.cancel();
                     }
                 })
