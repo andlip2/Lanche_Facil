@@ -3,6 +3,7 @@ package lanchefacil.dalksoft.com.activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener firebaseAuthListener;
     private FirebaseAuth autenticacao;
     private SweetAlertDialog pDialog;
+    private boolean duploclique;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (duploclique) {
+            super.onBackPressed();
+        }
+        this.duploclique = true;
+        Toast.makeText(this, "Aperte novamente para sair", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                duploclique = false;
+            }
+        }, 2000);
     }
 
     private void validarLogin () {

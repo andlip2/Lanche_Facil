@@ -88,7 +88,15 @@ public class PerfilActivity extends AppCompatActivity {
                         .setTitleText("Bom trabalho")
                         .setContentText("Suas alterações foram feitas com sucesso")
                         .setConfirmText("OK")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                Intent i = new Intent(PerfilActivity.this, PrincipalActivity.class);
+                                startActivity(i);
+                            }
+                        })
                         .show();
+
             }else {
                     alerta("O nome não pode ser vazio!");
                 }

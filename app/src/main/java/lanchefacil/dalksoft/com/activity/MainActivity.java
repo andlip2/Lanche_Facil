@@ -2,6 +2,7 @@ package lanchefacil.dalksoft.com.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private SweetAlertDialog pDialog;
     Usuarios usuario = new Usuarios();
     StorageReference storage;
+    private boolean duploclique;
 //    private String [] permissoes = new String[]{
 //            Manifest.permission.READ_EXTERNAL_STORAGE,
 //            Manifest.permission.CAMERA,
@@ -64,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
         //Solicitar permição ao GPS
 //        callAccessLocation();
 
-        inicializarComponentes ();
+        inicializarComponentes();
 
         exibirAnuncios();
         pesquisar();
+
     }
 
     public void pesquisar () {
@@ -93,6 +96,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (duploclique) {
+            super.onBackPressed();
+        }
+        this.duploclique = true;
+        Toast.makeText(this, "Aperte novamente para sair", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                duploclique = false;
+            }
+        }, 2000);
+    }
+
 
     private void pesquisarAnuncios(String txtDigitado) {
         listaAnuncios.clear();
