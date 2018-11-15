@@ -1,4 +1,4 @@
-package lanchefacil.dalksoft.com.adapter;
+package lanchefacil.dalksoft.com.helper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -16,39 +16,44 @@ import java.util.List;
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.model.Anuncio;
 
-public class AdapterFavoritos extends RecyclerView.Adapter<AdapterFavoritos.MyViewHolder>{
-
+public class AdapterAnunciosUsuario  extends RecyclerView.Adapter<AdapterAnunciosUsuario.MyViewHolder> {
     private List<Anuncio> anuncios;
     private Context context;
 
-    public AdapterFavoritos(List<Anuncio> anuncios, Context context) {
+    public AdapterAnunciosUsuario(List<Anuncio> anuncios, Context context) {
         this.anuncios = anuncios;
         this.context = context;
     }
 
+
     @NonNull
     @Override
-    public AdapterFavoritos.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_favoritos, parent, false);
-        return new AdapterFavoritos.MyViewHolder(item);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View item = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_anuncios_usuario, parent, false);
+
+        MyViewHolder holder = new MyViewHolder(item);
+
+        return holder;
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull AdapterFavoritos.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+        if ( (anuncios != null) && (anuncios.size() >0) ){
 
         Anuncio anuncio = anuncios.get(position);
         holder.titulo.setText(anuncio.getTitulo());
         holder.valor.setText(anuncio.getValor());
         holder.descricao.setText(anuncio.getDescricao());
+        holder.status.setText(anuncio.getStatus());
+
 
         List<String> urlIMG = anuncio.getFotos();
         String urlCapa = urlIMG.get(0);
 
         Picasso.get().load(urlCapa).into(holder.foto);
-
-
-
+        }
     }
 
     @Override
@@ -56,19 +61,24 @@ public class AdapterFavoritos extends RecyclerView.Adapter<AdapterFavoritos.MyVi
         return anuncios.size();
     }
 
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView titulo;
         TextView valor;
         TextView descricao;
+        TextView status;
         ImageView foto;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            titulo = itemView.findViewById(R.id.textAdapterTitulo);
-            valor = itemView.findViewById(R.id.textAdapterValor);
-            foto = itemView.findViewById(R.id.imageAdapterAnuncio);
-            descricao = itemView.findViewById(R.id.textAdapterDescricao);
+            titulo = itemView.findViewById(R.id.textAdapterUsuarioTitulo);
+            valor = itemView.findViewById(R.id.textAdapterUsuarioValor);
+            foto = itemView.findViewById(R.id.imageAdapterUsuarioAnuncio);
+            descricao = itemView.findViewById(R.id.textAdapterUsuarioDescricao);
+            status = itemView.findViewById(R.id.textAdapterUsuarioStatus);
+
         }
     }
 

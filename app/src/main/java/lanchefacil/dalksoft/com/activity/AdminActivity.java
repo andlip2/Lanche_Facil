@@ -1,6 +1,5 @@
 package lanchefacil.dalksoft.com.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lanchefacil.dalksoft.com.R;
-import lanchefacil.dalksoft.com.adapter.AdapterMeusAnuncios;
+import lanchefacil.dalksoft.com.helper.AdapterMeusAnuncios;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
 import lanchefacil.dalksoft.com.model.Anuncio;

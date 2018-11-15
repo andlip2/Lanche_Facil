@@ -1,6 +1,5 @@
 package lanchefacil.dalksoft.com.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -19,11 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.auth.FirebaseUser;
 
-import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
-import lanchefacil.dalksoft.com.helper.Base64Custom;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Preferencias;
 import lanchefacil.dalksoft.com.helper.UsuarioFirebase;

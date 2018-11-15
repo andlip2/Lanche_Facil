@@ -6,8 +6,8 @@ android {
         applicationId "lanchefacil.dalksoft.com"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 3
-        versionName "1.4"
+        versionCode 4
+        versionName "1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }

@@ -47,7 +47,7 @@ import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
-//import lanchefacil.dalksoft.com.adapter.AdapterAnunciosUsuario;
+//import lanchefacil.dalksoft.com.helper.AdapterAnunciosUsuario;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.Permissoes;
 import lanchefacil.dalksoft.com.model.Anuncio;

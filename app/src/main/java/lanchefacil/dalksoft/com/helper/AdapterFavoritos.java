@@ -1,4 +1,4 @@
-package lanchefacil.dalksoft.com.adapter;
+package lanchefacil.dalksoft.com.helper;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,33 +10,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
 import lanchefacil.dalksoft.com.R;
 import lanchefacil.dalksoft.com.model.Anuncio;
 
-public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncios.MyViewHolder>{
+public class AdapterFavoritos extends RecyclerView.Adapter<AdapterFavoritos.MyViewHolder>{
 
     private List<Anuncio> anuncios;
     private Context context;
 
-    public AdapterMeusAnuncios(List<Anuncio> anuncios, Context context) {
+    public AdapterFavoritos(List<Anuncio> anuncios, Context context) {
         this.anuncios = anuncios;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_meus_anuncios, parent, false);
-        return new MyViewHolder(item);
+    public AdapterFavoritos.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_favoritos, parent, false);
+        return new AdapterFavoritos.MyViewHolder(item);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterFavoritos.MyViewHolder holder, int position) {
 
         Anuncio anuncio = anuncios.get(position);
         holder.titulo.setText(anuncio.getTitulo());
@@ -72,4 +71,5 @@ public class AdapterMeusAnuncios extends RecyclerView.Adapter<AdapterMeusAnuncio
             descricao = itemView.findViewById(R.id.textAdapterDescricao);
         }
     }
+
 }

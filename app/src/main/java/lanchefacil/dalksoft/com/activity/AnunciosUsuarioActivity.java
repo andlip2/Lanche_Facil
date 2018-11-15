@@ -1,11 +1,8 @@
 package lanchefacil.dalksoft.com.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,8 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.cazaea.sweetalert.SweetAlertDialog;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,9 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import dmax.dialog.SpotsDialog;
 import lanchefacil.dalksoft.com.R;
-import lanchefacil.dalksoft.com.adapter.AdapterAnunciosUsuario;
+import lanchefacil.dalksoft.com.helper.AdapterAnunciosUsuario;
 import lanchefacil.dalksoft.com.helper.ConfigFireBase;
 import lanchefacil.dalksoft.com.helper.RecyclerItemClickListener;
 import lanchefacil.dalksoft.com.model.Anuncio;
