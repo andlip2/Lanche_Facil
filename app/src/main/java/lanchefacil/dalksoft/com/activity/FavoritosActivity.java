@@ -57,6 +57,13 @@ public class FavoritosActivity extends AppCompatActivity {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(final View view, final int position) {
+                        Anuncio anuncioSelecionado = listaAnuncios.get(position);
+                        Intent i = new Intent(FavoritosActivity.this, DetalhesAnuncioActivity.class);
+                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
+                        startActivity(i);
+                    }
+                    @Override
+                    public void onLongItemClick(View view, final int position) {
                         new SweetAlertDialog(FavoritosActivity.this, SweetAlertDialog.WARNING_TYPE)
                                 .setTitleText("Remover Favorito")
                                 .setContentText("Tem certeza que deseja remover esse anúncio de seus favoritos?")
@@ -75,13 +82,6 @@ public class FavoritosActivity extends AppCompatActivity {
                                     }
                                 })
                                 .show();
-                    }
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        Anuncio anuncioSelecionado = listaAnuncios.get(position);
-                        Intent i = new Intent(FavoritosActivity.this, DetalhesAnuncioActivity.class);
-                        i.putExtra("anuncioSelecionado", anuncioSelecionado);
-                        startActivity(i);
                     }
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
