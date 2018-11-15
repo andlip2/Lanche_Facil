@@ -91,6 +91,7 @@ public class PerfilActivity extends AppCompatActivity {
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                finish();
                                 Intent i = new Intent(PerfilActivity.this, PrincipalActivity.class);
                                 startActivity(i);
                             }
